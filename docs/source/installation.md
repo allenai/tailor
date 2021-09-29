@@ -1,23 +1,23 @@
 Installation
 ============
 
-**my_package** supports Python >= 3.6.
+**tailor** supports Python >= 3.6.
 
 ## Installing with `pip`
 
-**my_package** is available [on PyPI](https://pypi.org/project/my_package/). Just run
+**tailor** is available [on PyPI](https://pypi.org/project/my_package/). Just run
 
 ```bash
-pip install my_package
+pip install tailor
 ```
 
 ## Installing from source
 
-To install **my_package** from source, first clone [the repository](https://github.com/allenai/my_package):
+To install **tailor** from source, first clone [the repository](https://github.com/allenai/my_package):
 
 ```bash
-git clone https://github.com/allenai/my_package.git
-cd my_package
+git clone https://github.com/allenai/tailor.git
+cd tailor
 ```
 
 Then run
