@@ -17,7 +17,6 @@ sys.path.insert(0, os.path.abspath("../../"))
 
 from tailor.version import VERSION, VERSION_SHORT  # noqa: E402
 
-
 # -- Project information -----------------------------------------------------
 
 project = "tailor"

@@ -1,0 +1,2 @@
+from tailor.steps.load_generator import LoadTailorGenerator
+from tailor.steps.process_with_spacy import ProcessWithSpacy

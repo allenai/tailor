@@ -1,8 +1,8 @@
 import os
 import subprocess
 
-from tailor.perturbations.simple_perturbation import SimplePerturbation
 from tailor.common.testing import TailorTestCase
+from tailor.perturbations.simple_perturbation import SimplePerturbation
 
 
 class TestPerturbations(TailorTestCase):

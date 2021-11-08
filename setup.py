@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 # Load requirements.txt with a special case for allennlp so we can handle
 # cross-library integration testing.

@@ -1,1 +1,2 @@
-ai2-tango
+ai2-tango>=0.3.4
+spacy
