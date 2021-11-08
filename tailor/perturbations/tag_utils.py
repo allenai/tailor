@@ -28,6 +28,8 @@ TAG2READABLE_MAPPING: Dict[str, str] = {
     "CXN": "CONSTRUCTION",
 }
 
+CORE_TAGS: List[str] = ["VERB", "AGENT", "PATIENT"]
+
 READABLE2TAG_MAPPING: Dict[str, str] = {v: k for k, v in TAG2READABLE_MAPPING.items()}
 ADDITIONAL_CASES: List[str] = ["instrument", "attribute", "start", "end"]
 
@@ -37,7 +39,7 @@ def get_argm_values():
 
 
 def get_argm_and_core_values():
-    return get_argm_values() + ["VERB", "AGENT", "PATIENT"]
+    return get_argm_values() + CORE_TAGS
 
 
 GOLD_TAGS: List[str] = get_argm_and_core_values()
