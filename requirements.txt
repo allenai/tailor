@@ -1,2 +1,4 @@
 ai2-tango>=0.3.4
 spacy
+allennlp==2.8.0
+allennlp-models==2.8.0

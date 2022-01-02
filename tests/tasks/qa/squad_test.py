@@ -1,7 +1,7 @@
-import spacy
 from tango.common.dataset_dict import DatasetDict
 
 from tailor.common.testing import TailorTestCase
+from tailor.common.util import SpacyDoc
 from tailor.tasks.qa.squad import LoadSquad, ProcessSquadWithSpacy
 
 
@@ -25,4 +25,4 @@ class TestSquad(TailorTestCase):
         )
 
         assert isinstance(result.splits["squad_dev_small"][0]["paragraph"], str)
-        assert isinstance(result.splits["squad_dev_small"][0]["answer"], spacy.tokens.doc.Doc)
+        assert isinstance(result.splits["squad_dev_small"][0]["answer"], SpacyDoc)

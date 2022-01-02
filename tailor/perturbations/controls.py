@@ -1,13 +1,14 @@
 """
 Define perturbation controls
 """
-import logger
-from typing import NamedTuple, Optional
-import warnings
 import re
+import warnings
+from typing import NamedTuple, Optional
+
+import logger
 from munch import Munch
 
-from ..common.abstractions import Prompt
+from ..common.abstractions import Prompt, VerbVoice, VerbTense, Specificities
 from .tag_utils import *
 
 
@@ -29,8 +30,10 @@ CORE_ONLY = ["SWAP_CORE"]
 CORE_AND_NONCORE = ["CHANGE_CONTENT", "CHANGE_SPECIFICITY", "CHANGE_TAG"]
 NONCORE_ONLY = ["DELETE"]  # TODO: add deletion capabilities to agent/patient too?
 
-SPECIFICITIES = ["sparse", "partial", "complete"]
-VERB_TENSES = ["present", "future", "past"]
+
+RANDOM_TAG = "*"
+EMPTY_FILL = ""
+MAX_NUM_BLANKS = 10
 
 
 CONTROL_CODES = Munch(
@@ -44,6 +47,57 @@ CONTROL_CODES = Munch(
         + NONCORE_ONLY
     }
 )
+
+
+def sample_common_keyword(
+    key_dicts: Dict[str, Dict],
+    label: str,
+    keyword_type: Specificities,
+    orig_keyword: str,
+    top_k: int = 15,
+):
+    """Helper function when target keyword/content not given
+        Used for UL training for keyword following
+        Randomly samples common keyword for a given tag
+
+    Args:
+        key_dicts (dict(str, dict(str, Counter))): dict of sub-dicts
+            See output of get_common_keywords_by_tag()
+        label (str): label for which to sample keyword
+            In control code format (vs. SRL raw tag)
+        keyword_type (str): one of complete/partial/sparse
+        orig_keyword (str): original lemma
+            Needed to make sure we do not re-sample
+            Make sure sampled keyword (returned) is not subset of original keyword
+
+        top_k (int, optional): used to select keywords to sample from
+            i.e., randomly sample keyword from top_k most frequent keywords in key_dicts[label]
+    Returns:
+        str: keyword
+    """
+    keyword = RANDOM_TAG
+    try:
+        if label not in key_dicts or keyword_type not in key_dicts[label]:
+            return RANDOM_TAG  # TODO: change default behavior here
+        keyword_candidates = Counter(key_dicts[label][keyword_type]).most_common(top_k)
+        num_tries = 0
+        successful_sample = False
+        while not successful_sample and num_tries < 5 and len(keyword_candidates):
+            keyword_idx = np.random.choice(len(keyword_candidates), 1)[0]
+            keyword = keyword_candidates[keyword_idx][0]
+            successful_sample = keyword not in orig_keyword
+            num_tries += 1
+    except ValueError as e:
+        error_message = (
+            str(e)
+            + "\n"
+            + f"Error arose for label ({label}),"
+            + f"keyword_type ({keyword_type}) in key_dicts[{label}][{keyword_type}]"
+            + f"{key_dicts[label][keyword_type]}"
+        )
+        print(error_message)
+        return RANDOM_TAG  # TODO: change default behavior here
+    return keyword
 
 
 class Perturbations(NamedTuple):
@@ -63,66 +117,59 @@ class ContextPerturbations(Perturbations):
     is_delete_text: bool = False
     is_delete_punct: bool = False
 
-    def get_prompt(self, *args, **kwargs):
-        # if change index, randomly shuffle
-        # TODO: make this change more meaningful (target idx?)
-        if context_changes.is_change_idx:
-            # TODO: Sherry changed this; The function didn't have empty_only arg?
-            # new_meta = shuffle_empty_blank_indexes(new_meta, empty_only=False)
-            # if None, shuffle
-            if context_changes.idx_changes is None:
-                new_meta = shuffle_empty_blank_indexes(new_meta)
-            else:
-                new_blank_appearance_indexes = new_meta.blank_appearance_indexes
-                for idx, appearance in enumerate(new_blank_appearance_indexes):
-                    len_doc = len(new_meta.doc)
-                    new_idx_changes = {}
-                    for orig, target in context_changes.idx_changes.items():
-                        # negative value means relative idx; convert
-                        if orig < 0:
-                            orig += len_doc
-                        if target < 0:
-                            target += len_doc
-                        new_idx_changes.update({orig: target})
-                    context_changes.idx_changes = new_idx_changes
-                    if appearance in context_changes.idx_changes:
-                        target_idx = context_changes.idx_changes[appearance]
-                        diff = target_idx - appearance
-                        new_blank_appearance_indexes[idx] = appearance + diff
-                new_meta.blank_appearance_indexes = new_blank_appearance_indexes
-
-        new_prompt, new_answer = gen_prompt_and_answer_by_meta(
-            new_meta, return_sequence=return_sequence
-        )
-
-        # TODO: update meta info and answer; right now, hackily deleting words in prompt
-        if context_changes.is_delete_text or context_changes.is_delete_punct:
-            header, nonheader = extract_header_from_prompt(new_prompt)
-            words = nonheader.split(" ")
-            new_words = []
-            for word in words:
-                word = word.strip()
-                if word.startswith("<extra_id_"):
-                    new_words.append(word)
-                    continue
-                # TODO: make more robust; now, if is_delete_text, delete all words that are not in string punctuation
-                if context_changes.is_delete_punct and word in string.punctuation:
-                    continue
-                if context_changes.is_delete_text and not word in string.punctuation:
-                    continue
-                new_words.append(word)
-            new_nonheader = " ".join(new_words)
-            new_prompt = header + " " + new_nonheader
-
 
 class VerbPerturbations(Perturbations):
 
     is_change_vtense: bool = False
     is_change_vvoice: bool = False
     is_change_vlemma: bool = False
-    target_tense: bool = False
-    target_voice: bool = False
+    target_tense: Optional[VerbTense] = None
+    target_voice: Optional[VerbVoice] = None
     target_vlemma: bool = False
+
+    _voice_mapper: Dict = {VerbVoice.ACTIVE: VerbVoice.PASSIVE, VerbVoice.PASSIVE: VerbVoice.ACTIVE}
+
+    def get_prompt(
+        self, base_meta: PromptMeta, common_keywords_by_tag: Optional[Dict] = None, *args, **kwargs
+    ) -> Prompt:
+        new_meta = base_meta.copy()  # TODO: check if deepcopy needed
+
+        if self.is_change_vvoice:
+            new_voice = self.target_voice or self._voice_mapper[base_meta.vvoice]
+
+        if self.is_change_vtense:
+            tense_options = [tense for tense in VerbTense if tense != base_meta.vtense]
+            new_tense = self.target_tense or np.random.choice(tense_options, 1)[0]
+            new_meta.vtense = new_tense
+            # TODO: fix hack: if changing to future, need to make sure MODAL tag exists, since "future"
+            # only returned by get_verb_tense if "will" or "shall" (modals) are in prompt header
+            # only do this during generation time
+
+            if new_tense == VerbTense.FUTURE and not is_training:
+                modal_idx = [
+                    idx for idx, arg in enumerate(new_meta.noncore_args) if arg.tag == "MODAL"
+                ]
+                # if modal already in header, change keyword to * to generate "will" or "shall"
+                if modal_idx:
+                    modal_idx = modal_idx[0]
+                    new_meta.noncore_args[modal_idx].tlemma = RANDOM_TAG
+                    new_meta.noncore_args[modal_idx].tlemma_type = None
+                else:
+                    # TODO: blank_idx=None because won't be used, but make sure this is robust
+                    new_meta.noncore_args.append(
+                        NonCoreArgs(
+                            tlemma=RANDOM_TAG,
+                            tlemma_type=None,
+                            raw_tag="ARGM-MOD",
+                            tag="MODAL",
+                            blank_idx=None,
+                        )
+                    )
+
+        # if self.is_change_vlemma:
+        #     new_vlemma = self.target_vlemma or \
+        #         else sample_common_keyword(common_keywords_by_tag, "VERB", Specificities.COMPLETE, new_meta.vlemma)
+        #     new_meta.vlemma = new_vlemma
 
 
 class TagChanges(Perturbations):

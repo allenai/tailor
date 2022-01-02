@@ -1,8 +1,65 @@
+from enum import Enum
+from typing import List, NamedTuple, Optional
 from munch import Munch
 
+from tailor.common.util import SpacyDoc
 
-class Prompt(Munch):  # TODO: later change this to named tuple and make it specific.
-    pass
+
+class Specificities(Enum):
+    COMPLETE: str = "complete"
+    PARTIAL: str = "partial"
+    SPARSE: str = "sparse"
+
+
+class VerbVoice(Enum):
+    ACTIVE: str = "active"
+    PASSIVE: str = "passive"
+
+
+class VerbTense(Enum):
+    PRESENT: str = "present"
+    FUTURE: str = "future"
+    PAST: str = "past"
+
+
+class NonCoreArgs(NamedTuple):
+    tlemma: str
+    tlemma_type: Optional[str]  # TODO: confirm
+    raw_tag: str
+    tag: str  # TODO: add checks for correctness
+    blank_idx: List[int]  # TODO: should this be Tuple[int, int]?
+
+
+class PromptMeta(NamedTuple):
+
+    noncore_args: List[NonCoreArgs]
+
+    blank_indexes: List[List[int]]  # TODO:  are indexes always lists of 2? should they be a tuple?
+
+    answers: List[str]
+
+    agent: str
+
+    patient: str
+
+    frameset_id: str
+
+    vvoice: VerbVoice  # ACTIVE/PASSIVE
+
+    vtense: VerbTense  # PRESENT/FUTURE/PAST
+
+    vlemma: str
+
+    doc: SpacyDoc
+
+
+class Prompt(NamedTuple):  # TODO: add more functionality?
+
+    prompt: str
+
+    meta: PromptMeta
+
+    answer: str  # TODO: what's this?
 
 
 class CriteriaForPerturbation:
