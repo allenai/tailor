@@ -1,0 +1,42 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="structure">
+    <roleset id="structure.01" name="arrange in a particular fashion">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">structure</alias>
+      </aliases>
+      <note>STRUCTURE-V NOTES: The arg2 is always some descriptor of the way the arg1 is arranged orset up. That descriptor can take several different manifestations,hence the use of the functional tags on a numbered argument. (from structure.01-v)</note>
+      <roles>
+        <role descr="agent, structurer" f="pag" n="0"/>
+        <role descr="thing structured, arranged" f="ppt" n="1"/>
+        <role descr="how or as" f="prd" n="2"/>
+      </roles>
+      <example name="as manner" src="" type="">
+        <inflection aspect="progressive" form="participle" person="ns" tense="ns" voice="active"/>
+        <text>[Jaguar and GM]-1 hope *trace*-1 to win Jaguar shareholders' approval for the accord partly by *trace*-1 structuring it in a way that wouldn't preclude a full Ford bid once the golden share expires.</text>
+        <arg f="" n="0">*trace*</arg>
+        <rel f="">structuring</rel>
+        <arg f="" n="1">it</arg>
+        <arg f="" n="2">in a way that wouldn't preclude a full Ford bid once the golden share expires</arg>
+      </example>
+      <example name="ARG1 and ARG2" src="ontonotes nw/wsj/07/wsj_0788" type="">
+        <text>Other aspects of the bill , however , are either structured in ways that create unnecessary burdens for the industry or actually are harmful to the exchanges , the industry and ultimately the general public .</text>
+        <arg f="" n="1">Other aspects of the bill</arg>
+        <arg f="dis" n="m">however</arg>
+        <arg f="dis" n="m">either</arg>
+        <rel f="">structured</rel>
+        <arg f="" n="2">in ways that create unnecessary burdens for the industry</arg>
+      </example>
+
+      <example name="ARG0 and ARG1 and ARG2" src="ontonotes nw/wsj/14/wsj_1413" type="">
+        <text>Last week , Budget Director Richard Darman structured the $ 16.1 billion spending reduction , half of which must come from defense , to `` impose a little bit more discipline '' by applying cuts to each individual program , project or activity in the budget .</text>
+        <arg f="tmp" n="m">Last week</arg>
+        <arg f="" n="0">Budget Director Richard Darman</arg>
+        <rel f="">structured</rel>
+        <arg f="" n="1">the $ 16.1 billion spending reduction , half of which must come from defense ,</arg>
+        <arg f="" n="2">to `` impose a little bit more discipline '' by applying cuts to each individual program , project or activity in the budget</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

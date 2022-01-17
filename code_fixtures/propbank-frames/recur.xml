@@ -1,0 +1,31 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="recur">
+    <roleset id="recur.01" name="occur over again">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">recur</alias>
+      </aliases>
+      <note>RECUR-V NOTES: Based on WSJ. Member of VNcls occurrence-48.3. (from recur.01-v)</note>
+      <roles>
+        <role descr="event" f="PPT" n="0">
+          <vnrole vncls="48.3" vntheta="Theme"/>
+        </role>
+        <role descr="count of recurrences" f="adv" n="1"/>
+      </roles>
+      <example name="adjectival" src="" type="">
+        <inflection aspect="progressive" form="participle" person="ns" tense="ns" voice="active"/>
+        <text>Mr. Lawson's resignation shocked many analysts, despite the recent recurring speculation of a rift between the chancellor and Prime Minister Margaret Thatcher.</text>
+        <arg f="tmp" n="m">recent</arg>
+        <rel f="">recurring</rel>
+        <arg f="" n="0">speculation</arg>
+      </example>
+      <example name="ARG1" src="probably COCA (2018 example fix)" type="">
+        <text>[Of these forty-five cases]-1, in ten *trace*-1 the hernia recurred</text>
+        <arg f="" n="1">ten *trace*-1 the</arg>
+        <arg f="" n="0">hernia recurred</arg>
+        <rel f=""></rel>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

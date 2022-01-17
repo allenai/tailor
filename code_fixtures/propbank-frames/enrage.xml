@@ -1,0 +1,36 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="enrage">
+    <roleset id="enrage.01" name="make very very angry">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">enrage</alias>
+      </aliases>
+      <note>ENRAGE-V NOTES: Do not try to make an agent/instrument distinction--only use arg2 whenarg0 is also present. (from enrage.01-v)</note>
+      <roles>
+        <role descr="causer of anger, agent" f="pag" n="0">
+          <vnrole vncls="31.1" vntheta="stimulus"/>
+        </role>
+        <role descr="angry entity" f="ppt" n="1">
+          <vnrole vncls="31.1" vntheta="experiencer"/>
+        </role>
+        <role descr="instrument, if separate from arg0" f="mnr" n="2"/>
+      </roles>
+      <example name="just transitive" src="" type="">
+        <inflection aspect="ns" form="full" person="ns" tense="past" voice="active"/>
+        <text>The radio show ``enraged us,'' says Mrs. Ward.</text>
+        <arg f="" n="0">The radio show</arg>
+        <rel f="">enraged</rel>
+        <arg f="" n="1">us</arg>
+      </example>
+      <example name="ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>I only offended, nay, enraged him by the effort.</text>
+        <arg f="" n="0">I</arg>
+        <arg f="adv" n="m">only</arg>
+        <rel f="">enraged</rel>
+        <arg f="" n="1">him</arg>
+        <arg f="" n="2">by the effort.</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

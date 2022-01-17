@@ -1,0 +1,67 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="beguile">
+    <roleset id="beguile.01" name="to amuse or charm">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">beguile</alias>
+      </aliases>
+      <note>BEGUILE-V NOTES: Frames file for 'beguile' based on internet usage examples, membership in VN. Verbnet entry 31.1, comparison with 'amuse,' 'cheat.' (from beguile.01-v predicate notes)</note>
+      <roles>
+        <role descr="causer of amusement" f="pag" n="0">
+          <vnrole vncls="31.1" vntheta="stimulus"/>
+        </role>
+        <role descr="amused entity" f="ppt" n="1">
+          <vnrole vncls="31.1" vntheta="experiencer"/>
+        </role>
+        <role descr="instrument" f="mnr" n="2"/>
+      </roles>
+      <example name="ARG0 and ARG1 and ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>But each time I chanced a return with trepidation, I-1 was beguiled *trace*-1 by some other wonderful dish: chunks of tender beef with crunchy walnuts, a spicy, verdant fish stew, tiny cold clams with garlic chives, and several times, pickled celtuce, a root vegetable that is a cross between knob celery and lettuce.</text>
+        <arg f="dis" n="m">But</arg>
+        <arg f="tmp" n="m">each time I chanced a return with trepidation,</arg>
+        <rel f="">beguiled</rel>
+        <arg f="" n="1">*trace*-1</arg>
+        <arg f="" n="0">by some other wonderful dish: chunks of tender beef with crunchy walnuts, a spicy, verdant fish stew, tiny cold clams with garlic chives, and several times, pickled celtuce, a root vegetable that is a cross between knob celery and lettuce.</arg>
+      </example>
+
+      
+    </roleset>
+    <roleset id="beguile.02" name="deprive, cheat someone out of something">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">beguile</alias>
+      </aliases>
+      <note>BEGUILE-V NOTES: Frames file for 'beguile' based on internet usage examples, membership in VN. Verbnet entry 31.1, comparison with 'amuse,' 'cheat.' (from beguile.02-v predicate notes)</note>
+      <roles>
+        <role descr="entity depriving" f="pag" n="0"/>
+        <role descr="thing taken by trickery" f="ppt" n="1"/>
+        <role descr="taken from who?" f="dir" n="2"/>
+      </roles>
+      <example name="all args" src="" type="">
+        <text>Mary beguiled John of his money.</text>
+        <arg f="" n="0">Mary</arg>
+        <rel f="">beguiled</rel>
+        <arg f="" n="2">John</arg>
+        <arg f="" n="1">of his money</arg>
+      </example>
+    </roleset>
+    <roleset id="beguile.03" name="deceive">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">beguile</alias>
+      </aliases>
+      <note>BEGUILE-V NOTES: Frame by Claire (from beguile.03-v)</note>
+      <roles>
+        <role descr="liar" f="pag" n="0"/>
+        <role descr="deceived" f="gol" n="1"/>
+        <role descr="subject, deceived about" f="ppt" n="2"/>
+      </roles>
+      <example name="ARG0 and ARG1 and ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>He woos fame as if she were a woman, then pretends, when he has beguiled her into his bed, he isn't sure she suits him.</text>
+        <arg f="" n="0">he</arg>
+        <rel f="">beguiled</rel>
+        <arg f="" n="1">her</arg>
+        <arg f="" n="2">into his bed,</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

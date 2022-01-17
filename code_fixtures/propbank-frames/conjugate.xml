@@ -1,0 +1,56 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="conjugate">
+    <roleset id="conjugate.01" name="to add inflections, recite conjugations">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">conjugate</alias>
+        <alias framenet="" pos="n" verbnet="">conjugation</alias>
+      </aliases>
+      <note>CONJUGATE-V NOTES: Roleset based on parallel additions to VN, PB, and sense groupings. No appropriate VN class. Framed by Claire. (from conjugate.01-v)</note>
+      <roles>
+        <role descr="Language student, conjugator" f="pag" n="0"/>
+        <role descr="verb, word inflected" f="ppt" n="1"/>
+        <role descr="inflection, arg1 is conjugated into the...?" f="prd" n="2"/>
+      </roles>
+      <example name="With arg2, the wonder of language acquisition" src="google search" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>For the first time she conjugated a verb to the past participle.</text>
+        <arg f="tmp" n="m">For the first time</arg>
+        <arg f="" n="0">she</arg>
+        <rel f="">conjugated</rel>
+        <arg f="" n="1">a verb</arg>
+        <arg f="" n="2">to the past participle.</arg>
+      </example>
+      <example name="Typical usage" src="google search" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>Today students conjugated the verbs querer and preferir.</text>
+        <arg f="tmp" n="m">Today</arg>
+        <arg f="" n="0">students</arg>
+        <rel f="">conjugated</rel>
+        <arg f="" n="1">the verbs querer and preferir.</arg>
+      </example>
+    </roleset>
+
+    <roleset id="conjugate.02" name="biology: join together two compounds">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">conjugate</alias>
+        <alias framenet="" pos="n" verbnet="">conjugation</alias>
+        <alias framenet="" pos="n" verbnet="">conjugate</alias>
+      </aliases>
+      <roles>
+        <role descr="intentional agent of conjugation (e.g. scientist)" f="pag" n="0" />
+        <role descr="first compound" f="ppt" n="1" />
+        <role descr="second compound" f="ppt" n="2" />
+        <role descr="resulting conjugate" f="prd" n="3" />
+      </roles>
+      <example name="all arguments" src="" type="">
+        <text>We conjugated the two Py-Im polyamides with a cyanine dye, either Cy3 or Cy5, and used the conjugates Cy3-Py-Im polyamide and Cy5-Py-Im polyamide as a fluorescence donor-acceptor pair.</text>
+        <arg f="" n="0">We</arg>
+        <rel f="">conjugated</rel>
+        <arg f="" n="1">the two Py-Im polyamides</arg>
+        <arg f="" n="2">with a cyanine dye, either Cy3 or Cy5</arg>
+        <arg f="" n="3">Cy3-Py-Im polyamide and Cy5-Py-Im polyamide</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

@@ -1,0 +1,53 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="jerk">
+    <roleset id="jerk.01" name="pull with sudden force">
+      <aliases>
+        <alias framenet="Cause_motion Body_movement" pos="v" verbnet="">jerk</alias>
+      </aliases>
+      <note>JERK-V NOTES: Based on WSJ. Member of VNcls push-12-1. (from jerk.01-v)</note>
+      <roles>
+        <role descr="jerker" f="PAG" n="0">
+          <vnrole vncls="12-1" vntheta="Agent"/>
+        </role>
+        <role descr="thing pulled (on)" f="PPT" n="1">
+          <vnrole vncls="12-1" vntheta="Theme"/>
+        </role>
+        <role descr="direction" f="dir" n="2"/>
+      </roles>
+      <example name="jerk-v: passive" src="" type="">
+        <inflection aspect="ns" form="participle" person="ns" tense="present" voice="passive"/>
+        <text>The main sensation, besides feeling like [a puppet]-1 jerked *trace*-1 with invisible strings, is ``like a rap on the head,'' says Sam Bridgers, a neurologist who has studied the brain stimulators at Yale University.</text>
+        <rel f="">jerked</rel>
+        <arg f="" n="1">*trace*-1</arg>
+        <arg f="mnr" n="m">with invisible strings</arg>
+      </example>
+      <example name="ARG0 and ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>She jerked herself back to the present.</text>
+        <arg f="" n="0">She</arg>
+        <rel f="">jerked</rel>
+        <arg f="" n="1">herself</arg>
+        <arg f="" n="2">back to the present.</arg>
+      </example>
+
+    </roleset>
+    <roleset id="jerk.02" name="non-phrasal, masturbate">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">jerk</alias>
+      </aliases>
+      <note>JERK-V NOTES: Added by Julia for AMR.</note>
+      <roles>
+        <role descr="masturbator" f="pag" n="0"/>
+        <role descr="body part affected" f="ppt" n="1"/>
+        <role descr="stimulus referenced" f="gol" n="2"/>
+      </roles>
+      <example name="jerk-v" src="" type="">
+        <text>Newt basically jerked over all their faces and the people wanted more of it.</text>
+        <arg f="" n="0">Newt</arg>
+        <arg f="adv" n="m">basically</arg>
+        <rel f="">jerked</rel>
+        <arg f="gol" n="m">all over their faces</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

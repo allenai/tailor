@@ -1,0 +1,51 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="zone">
+    <roleset id="zone.01" name="establish areas for certain activities">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">zone</alias>
+      </aliases>
+      <note>ZONE-V NOTES: Frames file for 'zone' based on sentences in wsj. No Verbnet entry. (from zone.01-v)</note>
+      <roles>
+        <role descr="zoning board" f="pag" n="0"/>
+        <role descr="area" f="loc" n="1"/>
+        <role descr="activity" f="ppt" n="2"/>
+      </roles>
+      <example name="agentive adjective" src="" type="">
+        <inflection aspect="progressive" form="participle" person="ns" tense="ns" voice="active"/>
+        <text>This would be the department's first suit challenging a local zoning ordinance under 1988 amendments to the Fair Housing Act.</text>
+        <rel f="">zoning</rel>
+        <arg f="" n="0">ordinance</arg>
+      </example>
+      <example name="ARG0 and ARG1 and ARG2" src="ontonotes mz/sinorama/10/ectb_1050" type="">
+        <text>The government , applying urban planning principles , zoned the area for residential and industrial use , in order to create a construction site for the facility .</text>
+        <arg f="" n="0">The government , applying urban planning principles</arg>
+        <rel f="">zoned</rel>
+        <arg f="" n="1">the area</arg>
+        <arg f="" n="2">for residential and industrial use</arg>
+        <arg f="prp" n="m">in order to create a construction site for the facility</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+  <predicate lemma="zone_out">
+    <roleset id="zone_out.02" name="not pay attention to some major stimulus">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">zone_out</alias>
+      </aliases>
+      <note>ZONE_OUT-V NOTES: Added by Julia based on SMS. (from zone.02-v)</note>
+      <roles>
+        <role descr="entity not paying attention" f="pag" n="0"/>
+        <role descr="thing not payed attention to" f="dir" n="1"/>
+        <role descr="thing payed attention to" f="ppt" n="2"/>
+      </roles>
+      <example name="args 0, 2" src="SMS" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>I think on days like those , I-1 tend *PRO*-1 to take myself to the movies or zone out with something</text>
+        <arg f="" n="0">*PRO*-1</arg>
+        <rel f="">[zone] [out]</rel>
+        <arg f="" n="2">with something</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

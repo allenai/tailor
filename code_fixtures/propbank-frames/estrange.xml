@@ -1,0 +1,28 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="estrange">
+    <roleset id="estrange.01" name="marital difficulties">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">estrange</alias>
+      </aliases>
+      <note>ESTRANGE-V NOTES: Frames file for 'estrange' based on sentences in wsj. No Verbnet entry. (from estrange.01-v predicate notes)</note>
+      <roles>
+        <role descr="focussed party" f="ppt" n="1"/>
+        <role descr="prepositional party" f="dir" n="2"/>
+      </roles>
+      <example name="adjectival" src="" type="">
+        <inflection aspect="ns" form="full" person="ns" tense="past" voice="active"/>
+        <text>The British satirical magazine Private Eye won an appeal against the size of a $960,000 libel award to Sonia Sutcliffe, the estranged wife of the ``Yorkshire Ripper'' mass murderer.</text>
+        <rel f="">estranged</rel>
+        <arg f="" n="1">wife</arg>
+      </example>
+      <example name="ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>[More parents]-1 reported being estranged *trace*-1 from daughters than from sons.</text>
+        <rel f="">estranged</rel>
+        <arg f="" n="1">*trace*-1</arg>
+        <arg f="" n="2">from daughters</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

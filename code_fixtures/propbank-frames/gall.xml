@@ -1,0 +1,33 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="gall">
+    <roleset id="gall.01" name="to annoy, irritate, chafe">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">gall</alias>
+      </aliases>
+      <note>GALL-V NOTES: Frames file for 'gall' based on internet usage examples, membershipin VN. VerbNet entry 31.1, comparison with 'vex.' (from gall.01-v predicate notes)</note>
+      <roles>
+        <role descr="causer of irritation" f="pag" n="0">
+          <vnrole vncls="31.1" vntheta="stimulus"/>
+        </role>
+        <role descr="galled entity" f="ppt" n="1">
+          <vnrole vncls="31.1" vntheta="experiencer"/>
+        </role>
+        <role descr="Instrument or Manner if separate from arg 0" f="mnr" n="2"/>
+      </roles>
+      <example name="Chafing" src="" type="">
+        <text>The saddle galled the horse's back.</text>
+        <arg f="" n="0">The saddle</arg>
+        <rel f="">galled</rel>
+        <arg f="" n="1">the horse's back</arg>
+      </example>
+      <example name="ARG" src="probably COCA (2018 example fix)" type="">
+        <text>Brougham-1 was galled *trace*-1 at this conduct</text>
+        <rel f="">galled</rel>
+        <arg f="" n="1">*trace*-1</arg>
+        <arg f="" n="0">at this conduct</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

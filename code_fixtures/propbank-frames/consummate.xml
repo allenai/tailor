@@ -1,0 +1,28 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="consummate">
+    <roleset id="consummate.01" name="bring to completion">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">consummate</alias>
+      </aliases>
+      <note>CONSUMMATE-V NOTES: Frames file for 'consummate' based on sentences in financial subcorpus. No Verbnet entry. No Framenet entry. Comparison with 'complete'. (from consummate.01-v predicate notes)</note>
+      <roles>
+        <role descr="entity/entities completing something" f="PAG" n="0"/>
+        <role descr="thing consumated" f="PPT" n="1"/>
+      </roles>
+      <example name="passive" src="" type="">
+        <inflection aspect="ns" form="participle" person="ns" tense="present" voice="passive"/>
+        <text>A unit of DPC Acquisition Partners launched a $10-a-share tender offer for the shares outstanding of Dataproducts Corp., and said it would seek to liquidate the computer-printer maker ``as soon as possible,'' even if [a merger]-1 isn't consummated *trace*-1.</text>
+        <arg f="NEG" n="M">n't</arg>
+        <rel f="">consummated</rel>
+        <arg f="" n="1">*trace*</arg>
+      </example>
+      <example name="ARG1" src="ontonotes nw/wsj/11/wsj_1190" type="">
+        <text>The executives say Time may seek to break up the transaction after it is consummated , or may seek constraints that would prevent Tele - Communications from dropping HBO in any of its cable systems in favor of Showtime .</text>
+        <arg f="" n="1">it</arg>
+        <rel f="">consummated</rel>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

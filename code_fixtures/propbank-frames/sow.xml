@@ -1,0 +1,37 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="sow">
+    <roleset id="sow.01" name="to scatter seed for growing">
+      <aliases>
+        <alias framenet="Placing Filling" pos="v" verbnet="">sow</alias>
+        <alias framenet="" pos="n" verbnet="">sowing</alias>
+      </aliases>
+      <note>SOW-V NOTES: Based on WSJ. Member of VNcls spray-9.7-1. (from sow.01-v)</note>
+      <roles>
+        <role descr="farmer, sower" f="PAG" n="0">
+          <vnrole vncls="9.7-1" vntheta="Agent"/>
+        </role>
+        <role descr="seed, entity sowed" f="PPT" n="1">
+          <vnrole vncls="9.7-1" vntheta="Theme"/>
+        </role>
+      </roles>
+      <example name="sow-v: transitive" src="" type="">
+        <inflection aspect="ns" form="full" person="ns" tense="present" voice="active"/>
+        <text>They sow a row of male-fertile plants [*ICH*-1] nearby , [which then pollinate the male-sterile plants]-1 .</text>
+        <arg f="" n="0">They</arg>
+        <rel f="">sow</rel>
+        <arg f="" n="1">a row of male-fertile plants [*ICH*-1]</arg>
+        <arg f="loc" n="m">nearby</arg>
+      </example>
+      <example name="ARG0 and ARG1" src="ontonotes mz/sinorama/10/ectb_1003" type="">
+        <text>For the last decade , the CTI has been working hand in hand with the industry , quietly sowing the seeds of research and development in many places .</text>
+        <arg f="" n="0">the CTI</arg>
+        <arg f="mnr" n="m">quietly</arg>
+        <rel f="">sowing</rel>
+        <arg f="" n="1">the seeds of research and development</arg>
+        <arg f="loc" n="m">in many places</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

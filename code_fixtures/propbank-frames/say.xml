@@ -1,0 +1,81 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="say">
+    <roleset id="say.01" name="say">
+      <aliases>
+        <alias framenet="Spelling_and_pronouncing Text_creation Statement" pos="v" verbnet="">say</alias>
+      </aliases>
+      <note>SAY-V NOTES: VN, FN updated by Julia. Member of Vncls say-37.7, indicate-78. (from say.01-v)</note>
+      <roles>
+        <role descr="Sayer" f="pag" n="0">
+          <vnrole vncls="37.7-1" vntheta="agent"/>
+          <vnrole vncls="78-1" vntheta="cause"/>
+        </role>
+        <role descr="Utterance" f="ppt" n="1">
+          <vnrole vncls="37.7-1" vntheta="topic"/>
+          <vnrole vncls="78-1" vntheta="topic"/>
+        </role>
+        <role descr="Hearer" f="gol" n="2">
+          <vnrole vncls="37.7-1" vntheta="recipient"/>
+          <vnrole vncls="78-1" vntheta="recipient"/>
+        </role>
+        <role descr="Attributive" f="adv" n="3"/>
+      </roles>
+      <example name="Transitive" src="" type="">
+        <text>A Lorillard spokeswoman said "This is an old story."</text>
+        <arg f="" n="0">A Lorillard spokeswoman</arg>
+        <rel f="">said</rel>
+        <arg f="" n="1">"This is an old story"</arg>
+      </example>
+      <example name="Fronted" src="" type="">
+        <text>[Kent cigarettes were sold]-1, the company said *trace*-1</text>
+        <arg f="" n="0">the company</arg>
+        <rel f="">said</rel>
+        <arg f="" n="1">*trace*-1</arg>
+      </example>
+      <example name="Inverted" src="" type="">
+        <text>[What matters is what advertisers will pay]-1, said *trace*-1 Newsweek's chairman</text>
+        <rel f="">said</rel>
+        <arg f="" n="1">*trace*-1</arg>
+        <arg f="" n="0">Newsweek's chairman</arg>
+      </example>
+      <example name="ARG0 and ARG1 and ARG2" src="ontonotes mz/sinorama/10/ectb_1043" type="">
+        <text>On December 9 , the British firm Tesco said hello to consumers in Taiwan when it formally opened its clean , bright and spacious store .</text>
+        <arg f="tmp" n="m">On December 9</arg>
+        <arg f="" n="0">the British firm Tesco</arg>
+        <rel f="">said</rel>
+        <arg f="" n="1">hello</arg>
+        <arg f="" n="2">to consumers in Taiwan</arg>
+        <arg f="tmp" n="m">when it formally opened its clean , bright and spacious store</arg>
+      </example>
+
+      
+      <example name="ARG0 and ARG1 and ARG3" src="ontonotes mz/sinorama/10/ectb_1034" type="">
+        <text>Although Lee 's trip would seem to have been a shot in the arm for the deadlocked cross-strait relationship , it also generated a lot of speculation and ill will because neither Lee nor anyone who met with him was willing to say a word about the content of their discussions , and ROC officials who went to call on Lee at his hotel skulked around in underground walkways and service elevators to avoid journalists .</text>
+        <arg f="" n="0">neither Lee nor anyone who met with him</arg>
+        <rel f="">say</rel>
+        <arg f="" n="1">a word</arg>
+        <arg f="" n="3">about the content of their discussions</arg>
+      </example>
+
+      <example name="ARG1 and ARG3" src="ontonotes mz/sinorama/10/ectb_1057" type="">
+        <text>But the truth is that objects said to attract money sell just as well in good times as bad , for when the economy is strong , people are willing to spend large sums to ensure that they can hold onto their wealth .</text>
+        <arg f="" n="1">objects</arg>
+        <rel f="">said</rel>
+        <arg f="" n="3">to attract money</arg>
+      </example>
+
+    </roleset>
+    <roleset id="say.02" name="discourse function">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">say</alias>
+      </aliases>
+      <note>SAY-V NOTES: predicate added by Arrick (from say.02-v)</note>
+      <roles/>
+      <example name="TAKES NO ARGS" src="" type="">
+        <text>Do you think 0 this war is going *-1 to end up...much less popular say a year from now...?</text>
+        <rel f="">say</rel>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

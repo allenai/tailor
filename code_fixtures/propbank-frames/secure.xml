@@ -1,0 +1,109 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="secure">
+    <roleset id="secure.01" name="get">
+      <aliases>
+        <alias framenet="Getting" pos="v" verbnet="">secure</alias>
+      </aliases>
+      <note>SECURE-V NOTES: Frames file for 'secure' based on financial subcorpus andautomatic expansion via verbnet. Member of Vncls get-13.5.1-1. (from secure.01-v)</note>
+      <roles>
+        <role descr="agent, entity acquiring something" f="pag" n="0">
+          <vnrole vncls="13.5.1-1" vntheta="agent"/>
+        </role>
+        <role descr="thing acquired" f="ppt" n="1">
+          <vnrole vncls="13.5.1-1" vntheta="theme"/>
+        </role>
+        <role descr="source, gained from" f="dir" n="2">
+          <vnrole vncls="13.5.1-1" vntheta="source"/>
+        </role>
+        <role descr="benefactive, gained for" f="gol" n="3">
+          <vnrole vncls="13.5.1-1" vntheta="beneficiary"/>
+        </role>
+      </roles>
+      <example name="secure-v: typically passive" src="" type="">
+        <inflection aspect="ns" form="participle" person="ns" tense="present" voice="passive"/>
+        <text>Financing plans include raising $170 million in debt-1 secured *trace*-1 by the company's holdings in New Jersey.</text>
+        <rel f="">secured</rel>
+        <arg f="" n="1">*trace*</arg>
+        <arg f="" n="0">by the company 's holdings in New Jersey</arg>
+      </example>
+      <example name="secure-v: with source" src="" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>McCaw said it has secured commitments from three banks to help finance its $125-a-share bid for 22 million of Lin's shares.</text>
+        <arg f="" n="0">it</arg>
+        <rel f="">secured</rel>
+        <arg f="" n="1">[ commitments ] [ to help finance its $125-a-share bid for 22 million of Lin's shares]</arg>
+        <arg f="" n="2">from three banks</arg>
+      </example>
+    </roleset>
+    <roleset id="secure.02" name="make secure, literally or figuratively">
+      <aliases>
+        <alias framenet="Protecting Attaching" pos="v" verbnet="">secure</alias>
+      </aliases>
+      <note>SECURE-V NOTES: Adjectival 'secure' based on BOLT-2,3. Member of VNcls ensure-99, shake-22.3-2-1. (from secure.02-v)</note>
+      <roles>
+        <role descr="maker" f="pag" n="0">
+          <vnrole vncls="99" vntheta="cause"/>
+          <vnrole vncls="22.3-2-1" vntheta="agent"/>
+        </role>
+        <role descr="thing secured" f="ppt" n="1">
+          <vnrole vncls="99" vntheta="theme"/>
+          <vnrole vncls="22.3-2-1" vntheta="patient"/>
+        </role>
+        <role descr="instrument" f="mnr" n="2"/>
+        <role descr="potential danger" f="vsp" n="3"/>
+      </roles>
+      <example name="ARG0 and ARG1 and ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>The late French filmmaker Jean Vigo managed to secure himself a place in the great filmmaker's pantheon</text>
+        <arg f="mnr" n="m">managed to secure</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+  <predicate lemma="security">
+    <roleset id="security.03" name="be safe, secure">
+      <aliases>
+        <alias framenet="" pos="n" verbnet="">security</alias>
+        <alias framenet="" pos="j" verbnet="">secure</alias>
+      </aliases>
+      <note>SECURITY-N NOTES: Added by Julia for AMR.</note>
+      <note>SECURE-J NOTES: Automatically created as an alias file for unification. (from secure.02-j)</note>
+      <roles>
+        <role descr="agent/causer" f="pag" n="0"/>
+        <role descr="entity who is protected" f="ppt" n="1"/>
+        <role descr="specific domain in which arg1 is safe" f="vsp" n="2"/>
+        <role descr="potential danger" f="GOL" n="3"/>
+      </roles>
+      <example name="security-n" src="" type="">
+        <text>The economic security of families is crucial to creating the optimal conditions through which children can develop, learn and grow.</text>
+        <arg f="" n="2">economic</arg>
+        <rel f="">security</rel>
+        <arg f="" n="1">of families</arg>
+      </example>
+      <example name="security-n" src="" type="">
+        <text>In this work, we propose a novel application of a key-based obfuscation technique to achieve security against hardware Trojans.</text>
+        <rel f="">security</rel>
+        <arg f="" n="3">against hardware Trojans</arg>
+      </example>
+      <example name="secure-j" src="BOLT-2,3" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>You would think that having 4 part time jobs that at least you will have 2 at any one time and that is more secure than having 1 full time job and possibly being given notice to leave .</text>
+        <arg f="" n="1">that</arg>
+        <arg f="cxn" n="m">[more][than having 1 full time job and possibly being given notice to leave]</arg>
+        <rel f="">secure</rel>
+      </example>
+      <example name="secure-j" src="" type="">
+        <text>He was secure in his masculinity</text>
+        <arg f="" n="1">He</arg>
+        <rel f="">secure</rel>
+        <arg f="" n="2">in his masculinity</arg>
+      </example>
+      <example name="secure-j" src="" type="">
+        <text>The house was secure from break-ins</text>
+        <arg f="" n="1">The house</arg>
+        <rel f="">secure</rel>
+        <arg f="" n="3">from break-ins</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

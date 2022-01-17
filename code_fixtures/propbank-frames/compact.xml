@@ -1,0 +1,30 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="compact">
+    <roleset id="compact.01" name="make compact, compress">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">compact</alias>
+        <alias framenet="" pos="n" verbnet="">compaction</alias>
+      </aliases>
+      <note>COMPACT-V NOTES: Frames file for 'compact' based on sentences in wsj. No Verbnet entry. (from compact.01-v predicate notes)</note>
+      <note>COMPACT-V NOTES: Added by Julia for ICE.</note>
+      <roles>
+        <role descr="causer of compaction" f="PAG" n="0"/>
+        <role descr="thing getting compacted" f="PPT" n="1"/>
+      </roles>
+      <example name="ARG1" src="ontonotes nw/wsj/19/wsj_1922" type="">
+        <text>Mr. Johnson , of the Berkeley seismographic station , said : `` Landfill can be done if it 's properly compacted .</text>
+        <arg f="" n="1">it</arg>
+        <arg f="mnr" n="m">properly</arg>
+        <rel f="">compacted</rel>
+      </example>
+
+      <example name="compaction-n" src="" type="">
+        <text>Vibratory plate and spiked or pad roller compactors (at right) can be attached to tracked excavators to provide mechanical compaction of trench backfill, mostly for buried utilities.</text>
+        <arg f="mnr" n="m">mechanical</arg>
+        <rel f="">compaction</rel>
+        <arg f="" n="1">of trench backfill</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

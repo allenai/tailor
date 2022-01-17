@@ -1,0 +1,41 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="delve">
+    <roleset id="delve.01" name="dig (deeply)">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">delve</alias>
+      </aliases>
+      <note>DELVE-V NOTES: Member of VNcls rummage-35.5. (from delve.01-v)</note>
+      <roles>
+        <role descr="digger, delver" f="PAG" n="0">
+          <vnrole vncls="35.5-1" vntheta="Agent"/>
+        </role>
+        <role descr="dug, delved into" f="LOC" n="1">
+          <vnrole vncls="35.5-1" vntheta="Location"/>
+        </role>
+      </roles>
+      <example name="transitive" src="" type="">
+        <text>Mr. Achenbaum, too, delves into his clients' business.</text>
+        <arg f="" n="0">Mr. Achenbaum</arg>
+        <arg f="dis" n="m">too</arg>
+        <rel f="">delves</rel>
+        <arg f="" n="1">into his clients' business</arg>
+      </example>
+      <example name="ARG0 and ARG1" src="ontonotes nw/wsj/02/wsj_0282" type="">
+        <text>Virginia Commonwealth University sociologist David Bromley , who more than any other researcher has delved into the complex world of Unificationist finances , has concluded that profitable operations in the U.S. have been the exceptions rather than the rule .</text>
+        <arg f="" n="0">[Virginia Commonwealth University sociologist David Bromley][who]</arg>
+        <arg f="ext" n="m">more than any other researcher</arg>
+        <rel f="">delved</rel>
+        <arg f="" n="1">into the complex world of Unificationist finances</arg>
+      </example>
+
+      <example name="transitive usage" src="internet" type="-">
+        <inflection aspect="perfect" form="participle" person="other" tense="present" voice="active"/>
+        <text>I have delved the deep recesses of my mind and once sought the help of a clinical psychologist who specialized in hypnotic recreation of past incidents .</text>
+        <arg f="" n="0">I</arg>
+        <rel f="">delved</rel>
+        <arg f="" n="1">the deep recesses of my mind</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

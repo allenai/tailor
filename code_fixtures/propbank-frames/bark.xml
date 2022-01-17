@@ -1,0 +1,59 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="bark">
+    <roleset id="bark.01" name="like a dog">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">bark</alias>
+      </aliases>
+      <note>BARK-V NOTES: Since when did John have a dog? (from bark.01-v)</note>
+      <roles>
+        <role descr="barker" f="PAG" n="0">
+          <vnrole vncls="37.3" vntheta="Agent"/>
+        </role>
+        <role descr="utterance" f="PPT" n="1">
+          <vnrole vncls="37.3" vntheta="Topic"/>
+        </role>
+        <role descr="hearer" f="GOL" n="2">
+          <vnrole vncls="37.3" vntheta="Recipient"/>
+        </role>
+      </roles>
+      <example name="ARG0 and ARG1" src="ontonotes mz/sinorama/10/ectb_1077" type="">
+        <text>Weighing only about 40 kilos , Law looks light enough to blow away in a strong wind , so it 's hard to imagine her barking out orders on a film set .</text>
+        <arg f="" n="0">her</arg>
+        <rel f="">barking</rel>
+        <arg f="dir" n="m">out</arg>
+        <arg f="" n="1">orders</arg>
+        <arg f="loc" n="m">on a film set</arg>
+      </example>
+
+      <example name="ARG0 and ARG1 and ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>She must have barked an order at the driver because he hurled himself into the driver's seat</text>
+        <arg f="" n="0">She</arg>
+        <arg f="mod" n="m">must</arg>
+        <rel f="">barked</rel>
+        <arg f="" n="1">an order</arg>
+        <arg f="" n="2">at the driver</arg>
+        <arg f="cau" n="m">because he hurled himself into the driver's seat</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+  <predicate lemma="bark_up_the_wrong_tree">
+    <roleset id="bark_up_the_wrong_tree.02" name="follow the wrong lead">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">bark_up_the_wrong_tree</alias>
+      </aliases>
+      <note>BARK_UP_THE_WRONG_TREE-V NOTES: (from bark.02-v)</note>
+      <roles>
+        <role descr="barker" f="PAG" n="0"/>
+      </roles>
+      <example name="stupid idioms" src="" type="">
+        <inflection aspect="progressive" form="participle" person="ns" tense="present" voice="active"/>
+        <text>They are barking up the wrong tree, because it is basically their fault they can't attract new employees.</text>
+        <arg f="" n="0">They</arg>
+        <rel f="">[ barking] [ up the wrong tree]</rel>
+        <arg f="cau" n="m">because it is basically their fault they can't attract new employees</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

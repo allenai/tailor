@@ -1,0 +1,70 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="channel">
+    <roleset id="channel.01" name="direct">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">channel</alias>
+      </aliases>
+      <note>CHANNEL-V NOTES: Frames file for 'channel' based on sentences in wsj. No Verbnet entry at the moment. (from channel.01-v predicate notes)</note>
+      <roles>
+        <role descr="director" f="pag" n="0">
+          <vnrole vncls="9.3-1" vntheta="agent"/>
+        </role>
+        <role descr="thing directed" f="ppt" n="1">
+          <vnrole vncls="9.3-1" vntheta="theme"/>
+        </role>
+        <role descr="direction, towards what" f="gol" n="2">
+          <vnrole vncls="9.3-1" vntheta="destination"/>
+        </role>
+        <role descr="source" f="dir" n="3"/>
+      </roles>
+      <example name="usually just with destination" src="" type="">
+        <inflection aspect="ns" form="full" person="ns" tense="present" voice="active"/>
+        <text>Second, they channel monthly mortgage payments into semiannual payments, reducing the administrative burden on investors.</text>
+        <arg f="dis" n="m">Second</arg>
+        <arg f="" n="0">they</arg>
+        <rel f="">channel</rel>
+        <arg f="" n="1">monthly mortgage payments</arg>
+        <arg f="" n="2">into semiannual payments</arg>
+        <arg f="adv" n="m">reducing the administrative burden on investors</arg>
+      </example>
+      <example name="occasionally with source also" src="" type="">
+        <inflection aspect="ns" form="infinitive" person="ns" tense="ns" voice="active"/>
+        <text>The bank also says it'll use its international network *trace* to channel investment from London, Frankfurt, Zurich and Paris into the Spanish stock exchanges.</text>
+        <arg f="" n="0">*trace* -&gt; its international network</arg>
+        <rel f="">channel</rel>
+        <arg f="" n="1">investment</arg>
+        <arg f="" n="3">from London, Frankfurt, Zurich and Paris</arg>
+        <arg f="" n="2">into the Spanish stock exchanges</arg>
+      </example>
+    </roleset>
+    <roleset id="channel.02" name="cause a channel or hollow to form">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">channel</alias>
+        <alias framenet="" pos="n" verbnet="">channelize</alias>
+        <alias framenet="" pos="n" verbnet="">channelization</alias>
+      </aliases>
+      <note>Based on Cryo data. No comparison. No VN or FN classes. Framed by Katie.</note>
+      <roles>
+        <role descr="cause of forming hollow" f="pag" n="0">
+        </role>
+        <role descr="channel, hollow formed" f="ppt" n="1">
+        </role>
+        <role descr="formed where or carved into/out of what" f="loc" n="2">
+        </role>
+      </roles>
+      <example name="Form a groove" src="" type="">
+        <text>She channeled out a groove</text>
+        <arg f="" n="0">She</arg>
+        <rel f="">channeled</rel>
+        <arg f="prd" n="m">out</arg>
+        <arg f="" n="1">a groove</arg>
+      </example>
+      <example name="Arg 2 may more common than arg 1" src="" type="">
+        <text>Glacial channalization</text>
+        <arg f="" n="2">Glacial</arg>
+        <rel f="">channelization</rel>
+      </example>
+   </roleset>
+  </predicate>
+</frameset>

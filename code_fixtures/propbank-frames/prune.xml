@@ -1,0 +1,50 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="prune">
+    <roleset id="prune.01" name="remove branches">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">prune</alias>
+      </aliases>
+      <note>PRUNE-V NOTES: Based on WSJ. Member of Vncls carve-21.2-2, wipe_manner-10.4.1-1. (from prune.01-v)</note>
+      <roles>
+        <role descr="remover, agent" f="PAG" n="0">
+          <vnrole vncls="10.4.1-1" vntheta="Agent"/>
+        </role>
+        <role descr="branches" f="ppt" n="1">
+          <vnrole vncls="10.4.1-1" vntheta="Theme"/>
+          <vnrole vncls="21.2-2" vntheta="Patient"/>
+        </role>
+        <role descr="whole plant" f="DIR" n="2">
+          <vnrole vncls="10.4.1-1" vntheta="Source"/>
+        </role>
+        <role descr="instrument, pruning shears" f="MNR" n="3">
+          <vnrole vncls="21.2-2" vntheta="Instrument"/>
+        </role>
+      </roles>
+      <example name="usual usage" src="" type="">
+        <inflection aspect="ns" form="infinitive" person="ns" tense="ns" voice="ns"/>
+        <text>``We-1 aren't inclined [*-1] to prune stock portfolios now,'' says Steven G. Einhorn, chairman of the investment policy committee of Goldman, Sachs&amp; Co.</text>
+        <arg f="" n="0">[*-1]</arg>
+        <rel f="">prune</rel>
+        <arg f="" n="2">stock portfolios</arg>
+        <arg f="tmp" n="m">now</arg>
+      </example>
+      <example name="ARG1" src="probably COCA (2018 example fix)" type="">
+        <text>Once she pruned it of the telescreen circuit and slipped it out of the massive frontage of cabinets, it was surprisingly small and light, hardly bearing down on her shoulder when she slung it accordion-wise .</text>
+        <arg f="" n="0">she</arg>
+        <rel f="">pruned</rel>
+        <arg f="" n="2">it</arg>
+        <arg f="" n="1">of the telescreen circuit</arg>
+      </example>
+
+      <example name="ARG3" src="probably COCA (2018 example fix)" type="">
+        <text>her father pruned them with shears.</text>
+        <arg f="" n="0">her father</arg>
+        <rel f="">pruned</rel>
+        <arg f="" n="2">them</arg>
+        <arg f="" n="3">with shears.</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

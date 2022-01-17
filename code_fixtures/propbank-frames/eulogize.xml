@@ -1,0 +1,30 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="eulogize">
+    <roleset id="eulogize.01" name="praise highly">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">eulogize</alias>
+      </aliases>
+      <note>EULOGIZE-V NOTES: Frames file for 'eulogize' based on dictionary.com. VerbNet entry 33. (from eulogize.01-v predicate notes)</note>
+      <roles>
+        <role descr="agent, honorer" f="pag" n="0">
+          <vnrole vncls="33" vntheta="agent"/>
+        </role>
+        <role descr="entity eulogized" f="ppt" n="1">
+          <vnrole vncls="33" vntheta="theme"/>
+        </role>
+        <role descr="for what,as what" f="cau" n="2"/>
+      </roles>
+
+      <example name="basic" src="COCA" type="">
+        <text>In the medieval city of Limerick, Ireland, hundreds of mourners eulogize a loving husband and father</text>
+        <arg f="loc" n="m">In the medieval city of Limerick, Ireland,</arg>
+        <arg f="" n="0">hundreds of mourners</arg>
+        <rel f="">eulogize</rel>
+        <arg f="" n="1">a loving husband and father</arg>
+      </example>
+
+    </roleset>
+
+  </predicate>
+</frameset>

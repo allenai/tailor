@@ -1,0 +1,38 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="boggle">
+    <roleset id="boggle.01" name="wonder or be confused">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">boggle</alias>
+      </aliases>
+      <note>BOGGLE-V NOTES: Created by Jena (from boggle.01-v)</note>
+      <roles>
+        <role descr="experiencer of confusion or wonder" f="PPT" n="0">
+          <vnrole vncls="31.1" vntheta="experiencer"/>
+        </role>
+        <role descr="cause of confusion or wonder" f="PAG" n="1">
+          <vnrole vncls="31.1" vntheta="stimulus"/>
+        </role>
+      </roles>
+      <example name="adjectival" src="" type="">
+        <text>... a mind-boggling number of legal provisions ...</text>
+        <arg f="" n="0">mind</arg>
+        <rel f="">boggling</rel>
+        <arg f="" n="1">number</arg>
+      </example>
+      <example name="ARG0 and ARG1" src="ontonotes mz/sinorama/10/ectb_1024" type="">
+        <text>The revision of the family dependents ' section of the civil law was a major undertaking , with a mind - boggling number of legal provisions touching on highly complex issues .</text>
+        <arg f="" n="0">mind</arg>
+        <rel f="">boggling</rel>
+        <arg f="" n="1">number</arg>
+      </example>
+
+      <example name="another transitive" src="" type="">
+        <text>His choice boggles me.</text>
+        <arg f="" n="0">me</arg>
+        <rel f="">boggle</rel>
+        <arg f="" n="1">his choice</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

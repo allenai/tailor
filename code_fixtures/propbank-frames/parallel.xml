@@ -1,0 +1,30 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="parallel">
+    <roleset id="parallel.01" name="be an equal to, match">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">parallel</alias>
+      </aliases>
+      <note>PARALLEL-V NOTES: Hah! Take that, Mary! (from parallel.01-v)</note>
+      <roles>
+        <role descr="thing under consideration, figure" f="PAG" n="0"/>
+        <role descr="in comparison to, ground" f="PPT" n="1"/>
+      </roles>
+      <example name="normally active" src="" type="">
+        <inflection aspect="ns" form="infinitive" person="ns" tense="ns" voice="ns"/>
+        <text>But, analysts say, [Asian cooperation]-1 isn't likely *trace*-1 to parallel the European Common Market approach.</text>
+        <arg f="" n="0">*trace*</arg>
+        <rel f="">parallel</rel>
+        <arg f="" n="1">the European Common Market approach</arg>
+      </example>
+      <example name="ARG0 and ARG1" src="ontonotes nw/p2" type="">
+        <text>The emerging areas in Asia will still witness the most rapid growth , where the growth rate is expected to parallel that of the last century in mid-1990's .</text>
+        <arg f="" n="0">the growth rate</arg>
+        <rel f="">parallel</rel>
+        <arg f="" n="1">that of the last century</arg>
+        <arg f="tmp" n="m">in mid-1990's</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

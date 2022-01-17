@@ -1,0 +1,26 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="bleach">
+    <roleset id="bleach.01" name="whiten or blanch">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">bleach</alias>
+      </aliases>
+      <note>BLEACH-V NOTES: Framed by Neville. (from bleach.01-v)</note>
+      <roles>
+        <role descr="agent, bleacher" f="pag" n="0">
+          <vnrole vncls="45.4" vntheta="agent"/>
+        </role>
+        <role descr="patient, thing made lighter" f="ppt" n="1">
+          <vnrole vncls="45.4" vntheta="patient"/>
+        </role>
+        <role descr="end state" f="prd" n="2"/>
+      </roles>
+      <example name="ARG1" src="ontonotes nw/xinhua/00/chtb_0094" type="">
+        <text>This wood pulp factory , the nation 's largest in scale , will be constructed by the Asian Pulp and Paper Joint Stock Company , Ltd. of Singapore who invested 1.283 billion US dollars and it will annually produce 600,000 tons of bleached wood pulp products .</text>
+        <rel f="">bleached</rel>
+        <arg f="" n="1">[wood][products][pulp]</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

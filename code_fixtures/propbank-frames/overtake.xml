@@ -1,0 +1,23 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="overtake">
+    <roleset id="overtake.01" name="surpass, go past">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">overtake</alias>
+      </aliases>
+      <note>OVERTAKE-V NOTES: Frames file for 'overtake' based on sentences in wsj. No Verbnet entry. (from overtake.01-v predicate notes)</note>
+      <roles>
+        <role descr="thing going beyond" f="PAG" n="0"/>
+        <role descr="thing left in the dust" f="PPT" n="1"/>
+      </roles>
+      <example name="ARG0 and ARG1" src="ontonotes mz/sinorama/10/ectb_1068" type="">
+        <text>The economic malaise which has spread through Taiwan in just the last two years is rapidly overtaking tens of thousands of middle - aged workers .</text>
+        <arg f="" n="0">The economic malaise which has spread through Taiwan in just the last two years</arg>
+        <arg f="adv" n="m">rapidly</arg>
+        <rel f="">overtaking</rel>
+        <arg f="" n="1">tens of thousands of middle - aged workers</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

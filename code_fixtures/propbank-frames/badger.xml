@@ -1,0 +1,30 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="badger">
+    <roleset id="badger.01" name="to harass or urge persistently">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">badger</alias>
+      </aliases>
+      <note>BADGER-V NOTES: Frames file for 'badger' based on dictionary.com. Verbnet entry 58.1. (from badger.01-v predicate notes)</note>
+      <roles>
+        <role descr="harasser" f="PAG" n="0">
+          <vnrole vncls="58.1" vntheta="Agent"/>
+        </role>
+        <role descr="harrassed" f="GOL" n="1">
+          <vnrole vncls="58.1" vntheta="Recipient"/>
+        </role>
+        <role descr="harassed for" f="PPT" n="2">
+          <vnrole vncls="58.1" vntheta="Topic"/>
+        </role>
+      </roles>
+      <example name="ARG0 and ARG1 and ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>the police had badgered him into a confession.</text>
+        <arg f="" n="0">the police</arg>
+        <rel f="">badgered</rel>
+        <arg f="" n="1">him</arg>
+        <arg f="" n="2">into a confession.</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

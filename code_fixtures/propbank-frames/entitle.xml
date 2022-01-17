@@ -1,0 +1,73 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="entitle">
+    <roleset id="entitle.01" name="allow">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">entitle</alias>
+      </aliases>
+      <note>ENTITLE-V NOTES: Frames file for 'entitle' based on sentences in financial subcorpus. No verbnet entry. Comparison with 'name'. Revised by Olga. (from entitle.01-v predicate notes)</note>
+      <roles>
+        <role descr="allower" f="pag" n="0"/>
+        <role descr="action allowed" f="ppt" n="1"/>
+        <role descr="explicit allowed-agent" f="gol" n="2"/>
+      </roles>
+      <example name="sentential action" src="" type="">
+        <text>Each right entitles the shareholder to buy $100 face amount of 13.5% bonds due 1993 and warrants to buy 23.5 common shares at 30 cents a share.</text>
+        <arg f="" n="0">Each right</arg>
+        <rel f="">entitles</rel>
+        <arg f="" n="2">the shareholder</arg>
+        <arg f="" n="1">to buy $100 face amount of 13.5% bonds due 1993 and warrants to buy 23.5 common shares at 30 cents a share</arg>
+      </example>
+      <example name="sentential action with passive extraction" src="" type="">
+        <text>This is because a Delaware court earlier this year said that Drexel is entitled to get its money back before or at the same time as the limited partners.</text>
+        <arg f="" n="2">Drexel</arg>
+        <rel f="">entitled</rel>
+        <arg f="" n="1">to get its money back before or at the same time as the limited partners</arg>
+      </example>
+      <example name="PP entitled-to, passivized" src="" type="">
+        <text>The buy-out group is also entitled to $16 million to repay a fund created by the pilots union for an employee stock ownership plan.</text>
+        <arg f="" n="2">The buy-out group</arg>
+        <arg f="dis" n="m">also</arg>
+        <rel f="">entitled</rel>
+        <arg f="" n="1">to $ 16 million to repay a fund created by the pilots union for an employee stock ownership plan</arg>
+      </example>
+      <example name="ARG2 and ARG1" src="ontonotes mz/sinorama/10/ectb_1008" type="">
+        <text>Now the children of Chinese women and foreign men will also be entitled to ROC nationality -LRB- as the children of Chinese men and foreign women always have been -RRB- , thus realizing equal treatment under the law for men and women .</text>
+        <arg f="dis" n="m">Now</arg>
+        <arg f="" n="2">the children of Chinese women and foreign men</arg>
+        <arg f="mod" n="m">will</arg>
+        <arg f="dis" n="m">also</arg>
+        <rel f="">entitled</rel>
+        <arg f="" n="1">to ROC nationality</arg>
+        <arg f="adv" n="m">thus realizing equal treatment under the law for men and women</arg>
+      </example>
+
+    </roleset>
+    <roleset id="entitle.02" name="assign a name">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">entitle</alias>
+      </aliases>
+      <note>ENTITLE-V NOTES: Frames file for 'entitle' based on sentences in financial subcorpus. No verbnet entry. Comparison with 'name'. Revised by Olga. (from entitle.02-v predicate notes)</note>
+      <roles>
+        <role descr="namer" f="pag" n="0"/>
+        <role descr="named" f="ppt" n="1"/>
+        <role descr="name" f="prd" n="2"/>
+      </roles>
+      <example name="ARG0 and ARG1 and ARG2" src="ontonotes nw/wsj/06/wsj_0694" type="">
+        <text>Your editorial mockingly entitles this legislation the `` Lawyers ' Employment Act . ''</text>
+        <arg f="" n="0">Your editorial</arg>
+        <arg f="mnr" n="m">mockingly</arg>
+        <rel f="">entitles</rel>
+        <arg f="" n="1">this legislation</arg>
+        <arg f="" n="2">the `` Lawyers ' Employment Act</arg>
+      </example>
+
+      <example name="headless relative" src="" type="">
+        <text>In a recent investment letter entitled ``Winners of the `Leverage Wars,'''...</text>
+        <arg f="" n="1">a recent investment letter</arg>
+        <rel f="">entitled</rel>
+        <arg f="" n="2">Winners of the ` Leverage Wars</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

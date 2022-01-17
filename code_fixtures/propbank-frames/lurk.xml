@@ -1,0 +1,30 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="lurk">
+    <roleset id="lurk.01" name="sneak, hang around in dark places">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">lurk</alias>
+        <alias framenet="" pos="n" verbnet="">lurking</alias>
+      </aliases>
+      <note>LURK-V NOTES: Based on WSJ. Member of VNcls exist-47.1-1 (from lurk.01-v)</note>
+      <roles>
+        <role descr="lurker" f="PPT" n="0">
+          <vnrole vncls="47.1-1" vntheta="Theme"/>
+        </role>
+      </roles>
+      <example name="adjectival" src="" type="">
+        <inflection aspect="progressive" form="participle" person="ns" tense="ns" voice="active"/>
+        <text>But the lurking shadow of 1987's stock-market crash still seems dark.</text>
+        <rel f="">lurking</rel>
+        <arg f="" n="0">shadow</arg>
+      </example>
+      <example name="ARG0" src="ontonotes mz/sinorama/10/ectb_1012" type="">
+        <text>Even as discussion on missile systems continues , an unprecedented form of threat - third - wave warfare - is lurking .</text>
+        <arg f="adv" n="m">Even as discussion on missile systems continues</arg>
+        <arg f="" n="0">an unprecedented form of threat - third - wave warfare</arg>
+        <rel f="">lurking</rel>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

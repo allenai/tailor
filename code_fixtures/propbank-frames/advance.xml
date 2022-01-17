@@ -1,0 +1,165 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="advance">
+    <roleset id="advance.01" name="move forward or upward">
+      <aliases>
+        <alias framenet="Change_event_time Progress Self_motion Change_position_on_a_scale" pos="v" verbnet="">advance</alias>
+        <alias framenet="" pos="n" verbnet="">advance</alias>
+      </aliases>
+      <note>ADVANCE-V NOTES: Based on big corpus and comparison with 'rise' and 'propose'. VN updated by Julia. Member of Vncls calibratable_cos-45.6-1, escape-51.1, future_having-13.3, other_cos-45.4, promote-102. (from advance.01-v)</note>
+      <note>ADVANCE-N NOTES: Roleset based on verb entry advance.01, OntoNotes grouping advance-n senses 1,2,3,&amp; 5; maps to VN entries calibratable_cos-45.6-1, escape-51.1-2, other_cos-45.4, promote-102. Framed by Claire. (from advance.01-n)</note>
+      <roles>
+        <note>arg5 here differs from verb frame which lacks attribute argument. (from advance.01-n)</note>
+        <role descr="agent, causing advance" f="pag" n="0">
+          <vnrole vncls="45.4" vntheta="agent"/>
+          <vnrole vncls="102" vntheta="agent"/>
+        </role>
+        <role descr="thing advancing" f="ppt" n="1">
+          <vnrole vncls="45.4" vntheta="patient"/>
+          <vnrole vncls="45.6-1" vntheta="patient"/>
+          <vnrole vncls="51.1-2" vntheta="theme"/>
+          <vnrole vncls="102" vntheta="theme"/>
+        </role>
+        <role descr="extent of advancement" f="ext" n="2">
+          <vnrole vncls="45.6-1" vntheta="extent"/>
+        </role>
+        <role descr="start point" f="dir" n="3"/>
+        <role descr="end point" f="gol" n="4"/>
+        <role descr="attribute of arg1, where this is advancing rather than whole" f="prd" n="5">
+          <vnrole vncls="45.6-1" vntheta="attribute"/>
+        </role>
+      </roles>
+      <example name="bellringing!" src="" type="">
+        <text>[Skilled ringers]-1 use their wrists *trace*-1 to advance or retard the next swing.</text>
+        <arg f="" n="0">*trace*-1</arg>
+        <rel f="">advance</rel>
+        <arg f="" n="1">the next swing.</arg>
+      </example>
+      <example name="ergative" src="" type="">
+        <text>Tokyu Group, Mitsubishi Estates, and Bridgestone/Firestone's deal advanced Tuesday.</text>
+        <arg f="" n="1">Tokyu Group, Mitsubishi Estates, and Bridgestone/Firestone's deal</arg>
+        <rel f="">advanced</rel>
+        <arg f="tmp" n="m">Tuesday</arg>
+      </example>
+      <example name="with EXT and end point" src="" type="">
+        <text>Teikoku Oil advanced 100 yen to 1,460.</text>
+        <arg f="" n="1">Teikoku Oil</arg>
+        <rel f="">advanced</rel>
+        <arg f="ext" n="2">100 yen</arg>
+        <arg f="" n="4">to 1,460</arg>
+      </example>
+      <example name="NP only, financial with args 2 &amp; 4" src="NomBank Frames" type="">
+        <text>an advance of 0.16 cent a pound to 14.27 cents</text>
+        <rel f="">advance</rel>
+        <arg f="" n="2">of 0.16 cent a pound</arg>
+        <arg f="" n="4">to 14.27 cents</arg>
+      </example>
+      <example name="Args 1 &amp; 4" src="ON sense 1" type="">
+        <text>The general noted the enemy's advance to the outskirts of the city.</text>
+        <arg f="" n="0">the enemy's</arg>
+        <rel f="">advance</rel>
+        <arg f="" n="4">to the outskirts of the city.</arg>
+      </example>
+      <example name="Tmp and arg1 only" src="ON sense 2" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>He discussed some recent advances in cancer treatments.</text>
+        <arg f="tmp" n="m">recent</arg>
+        <rel f="">advances</rel>
+        <arg f="" n="1">in cancer treatments</arg>
+      </example>
+      <example name="ARG0" src="ontonotes nw/wsj/15/wsj_1505" type="">
+        <text>The Nikkei , which reached as high as 35611.38 right after the opening , surrendered part of its early advance toward the end of the day because of profit - taking .</text>
+        <arg f="" n="0">its</arg>
+        <arg f="tmp" n="m">early</arg>
+        <rel f="">advance</rel>
+      </example>
+
+      <example name="Possessor as arg1" src="ON sense 5" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>The dollar's recent advances against the euro have surprised investors.</text>
+        <arg f="" n="1">The dollar's</arg>
+        <arg f="tmp" n="m">recent</arg>
+        <rel f="">advances</rel>
+        <arg f="gol" n="m">against the euro</arg>
+      </example>
+      <example name="NP only, with arg3" src="web" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>the advance from preliminaries to finals</text>
+        <rel f="">advance</rel>
+        <arg f="" n="3">from preliminaries</arg>
+        <arg f="" n="4">to finals</arg>
+      </example>
+      <example name="Attribute (arg 5) advancing" src="web" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>For tobacco's advance in price, it was provided that no tobacco was to be exported from the colony until March.</text>
+        <arg f="" n="1">tobacco's</arg>
+        <rel f="">advance</rel>
+        <arg f="" n="5">in price</arg>
+      </example>
+    </roleset>
+    <roleset id="advance.03" name="pay out a portion of wages/credit before they are due">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">advance</alias>
+        <alias framenet="" pos="n" verbnet="">advance</alias>
+      </aliases>
+      <note>ADVANCE-V, ADVANCE-N NOTES: Added by Julia.</note>
+      <roles>
+        <role descr="payer" f="pag" n="0"/>
+        <role descr="wages paid ahead of time" f="ppt" n="1"/>
+        <role descr="payee" f="gol" n="2"/>
+        <role descr="total wages, out of which arg1 is paid" f="vsp" n="3"/>
+        <role descr="transaction, reason for advance" f="prp" n="4"/>
+      </roles>
+      <example name="advance-v" src="" type="">
+        <text>After some examination the elevator company advanced him $100 on the transaction, only to find that he did not live in Scott township and that he had no corn to sell.</text>
+        <arg f="tmp" n="m">After some examination</arg>
+        <arg f="" n="0">the elevator company</arg>
+        <rel f="">advanced</rel>
+        <arg f="" n="2">him</arg>
+        <arg f="" n="1">$100</arg>
+        <arg f="" n="4">on the transaction</arg>
+        <arg f="adv" n="m">only to find that he did not live in Scott township and that he had no corn to sell</arg>
+      </example>
+      <example name="advance-v" src="" type="">
+        <text>The evidence shows that the player's release was purchased by the York Club for $300 and that at his request, that club advanced him $100 on his 1913 salary. </text>
+        <arg f="cau" n="m">at his request</arg>
+        <arg f="" n="0">that club</arg>
+        <rel f="">advanced</rel>
+        <arg f="" n="2">him</arg>
+        <arg f="" n="1">$100</arg>
+        <arg f="" n="3">on his 1913 salary</arg>
+      </example>
+      <example name="advance-n" src="" type="">
+        <text>If you have a $10,000 credit limit on your card and take out a $1,000 advance, you only have $9,000 of available credit left.</text>
+        <arg f="" n="1">$1000</arg>
+        <rel f="">advance</rel>
+      </example>
+    </roleset>
+  </predicate>
+  <predicate lemma="advanced">
+    <roleset id="advanced.02" name="progressive, cutting edge">
+      <aliases>
+        <alias framenet="Position_on_a_scale Stage_of_progress" pos="j" verbnet="">advanced</alias>
+      </aliases>
+      <note>ADVANCED-J NOTES: Added by Julia based on BOLT-6. (from advanced.01-j)</note>
+      <roles>
+        <role descr="progressive entity" f="ppt" n="1"/>
+        <role descr="domain" f="vsp" n="2"/>
+      </roles>
+      <example name="arg1" src="BOLT-6" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>Some people say that it is impossible . Iran 's guided missiles are very advanced -LRB- maybe what Iran can talk about are only guided missiles -RRB- ......</text>
+        <arg f="" n="1">Iran's guided missiles</arg>
+        <arg f="ext" n="m">very</arg>
+        <rel f="">advanced</rel>
+      </example>
+      <example name="both args" src="internet" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>Parents' Observations of Kindergartners Who-1 [*-1] Are Advanced in Mathematical Reasoning.</text>
+        <arg f="" n="1">[*-1]</arg>
+        <rel f="">advanced</rel>
+        <arg f="" n="2">in mathematical reasoning</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

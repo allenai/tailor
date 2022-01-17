@@ -1,0 +1,40 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="sequester">
+    <roleset id="sequester.01" name="to isolate, isolating">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">sequester</alias>
+        <alias framenet="" pos="n" verbnet="">sequestering</alias>
+      </aliases>
+      <note>SEQUESTER-V NOTES: Member of Vncls concealment-16, steal-10.5. (from sequester.01-v)</note>
+      <note>SEQUESTERING-N NOTES: Added by Julia based on BOLT, sequester.01. Corresponds to Vncls concealment-16, steal-10.5. (from sequestering.01-n)</note>
+      <roles>
+        <role descr="cause of isolation" f="PAG" n="0">
+          <vnrole vncls="16" vntheta="Agent"/>
+          <vnrole vncls="10.5" vntheta="Agent"/>
+        </role>
+        <role descr="entity sequestered" f="PPT" n="1">
+          <vnrole vncls="16" vntheta="Patient"/>
+          <vnrole vncls="10.5" vntheta="Theme"/>
+        </role>
+      </roles>
+      <example name="transitive" src="" type="">
+        <inflection aspect="ns" form="infinitive" person="ns" tense="ns" voice="active"/>
+        <text>Credit Agricole asked [a Milan court]-1 [*-1]to sequester the Nuovo Banco shares , the Italian news agency ANSA reported [0] [*T*-2] .</text>
+        <arg f="" n="0">[*-1]</arg>
+        <rel f="">sequester</rel>
+        <arg f="" n="1">the Nuovo Banco shares</arg>
+      </example>
+      <example name="ARG0 and ARG1" src="ontonotes nw/wsj/03/wsj_0312" type="">
+        <text>At times I sequester my mind When I must think with precision , Detached from all other thoughts While trying to reach a decision .</text>
+        <arg f="tmp" n="m">At times</arg>
+        <arg f="" n="0">I</arg>
+        <rel f="">sequester</rel>
+        <arg f="" n="1">my mind</arg>
+        <arg f="tmp" n="m">When I must think with precision</arg>
+        <arg f="prd" n="m">Detached from all other thoughts While trying to reach a decision</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

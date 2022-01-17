@@ -1,0 +1,59 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="assist">
+    <roleset id="assist.01" name="help, assist">
+      <aliases>
+        <alias framenet="Assistance" pos="n" verbnet="">assistance</alias>
+        <alias framenet="Assistance" pos="v" verbnet="">assist</alias>
+      </aliases>
+      <note>ASSIST-V NOTES: Member of Vncls help-72-1. Comparison with 'help'. (from assist.01-v)</note>
+      <note>ASSISTANCE-N NOTES: Roleset based on verb assist.01, OntoNotes grouping assistance-n sense 1; maps to VN class help-72-1. Framed by Claire. (from assistance.01-n)</note>
+      <roles>
+        <note>Args 2 and 3 are reversed from 'help' (from assist.01-v)</note>
+        <role descr="assistant" f="PAG" n="0">
+          <vnrole vncls="72-1" vntheta="Agent"/>
+        </role>
+        <role descr="assisted" f="GOL" n="1">
+          <vnrole vncls="72-1" vntheta="Beneficiary"/>
+        </role>
+        <role descr="project" f="PPT" n="2">
+          <vnrole vncls="72-1" vntheta="Theme"/>
+        </role>
+      </roles>
+      <example name="all arguments present" src="" type="">
+        <text>Sotheby's vice president Diana Levitt says the auction house has been ``assisting'' Mr. Paul in selling the paintings.</text>
+        <arg f="" n="0">the auction house</arg>
+        <rel f="">assisting</rel>
+        <arg f="" n="1">Mr. Paul</arg>
+        <arg f="" n="2">in selling the paintings</arg>
+      </example>
+      <example name="missing assisted entity" src="" type="">
+        <text>Price Stern Sloan Inc. said it hired [an investment banking firm]-2 *trace*-2 to assist in evaluating restructuring or merger alternatives and reported a net loss of $8.1 million, or $2.14 a share, for the third quarter ended Sept.</text>
+        <arg f="" n="0">*trace*-2</arg>
+        <rel f="">assist</rel>
+        <arg f="" n="2">in evaluating restructuring or merger alternatives</arg>
+      </example>
+      <example name="missing project" src="" type="">
+        <text>The troubled Minneapolis-based railroad concern said the committee has the authority to hire [financial and legal advisers]-3 *trace* *trace*-3 to assist it.</text>
+        <arg f="" n="0">*trace*-3</arg>
+        <rel f="">assist</rel>
+        <arg f="" n="1">it</arg>
+      </example>
+      <example name="Args 0 &amp; 1" src="ON sense 1" type="">
+        <text>The UN's assistance to Africa began several years ago.</text>
+        <arg f="" n="0">UN's</arg>
+        <rel f="">assistance</rel>
+        <arg f="" n="1">to Africa</arg>
+      </example>
+      <example name="ARG0 and ARG1 and ARG2" src="ontonotes mz/sinorama/10/ectb_1042" type="">
+        <text>Wu suggests that organizations in Taiwan which are dedicated to teaching management methods , such as the China Productivity Center , should assist companies in systematizing and selling the rights to their mangement and operating philosophies , so that the uniquely flexible Taiwan approach to business can be reproduced and marketed worldwide .</text>
+        <arg f="" n="0">organizations in Taiwan which are dedicated to teaching management methods , such as the China Productivity Center</arg>
+        <arg f="mod" n="m">should</arg>
+        <rel f="">assist</rel>
+        <arg f="" n="1">companies</arg>
+        <arg f="" n="2">in systematizing and selling the rights to their mangement and operating philosophies , so that the uniquely flexible Taiwan approach to business can be reproduced and marketed worldwide</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

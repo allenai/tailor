@@ -1,0 +1,56 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="smuggle">
+    <roleset id="smuggle.01" name="move clandestinely">
+      <aliases>
+        <alias framenet="" pos="n" verbnet="">smuggling</alias>
+        <alias framenet="Smuggling" pos="v" verbnet="">smuggle</alias>
+      </aliases>
+      <note>SMUGGLE-V NOTES: Member of VNcls steal-10.5, send-11.1-1. (from smuggle.01-v)</note>
+      <note>SMUGGLING-N NOTES: Automatically created by Julia as an alias file for unification. (from smuggling.01-n)</note>
+      <roles>
+        <role descr="thief" f="PAG" n="0">
+          <vnrole vncls="10.5-1" vntheta="Agent"/>
+          <vnrole vncls="11.1-1" vntheta="Agent"/>
+        </role>
+        <role descr="stolen object" f="PPT" n="1">
+          <vnrole vncls="10.5-1" vntheta="Theme"/>
+          <vnrole vncls="11.1-1" vntheta="Theme"/>
+        </role>
+        <role descr="stolen-from" f="dir" n="2">
+          <vnrole vncls="10.5-1" vntheta="Source"/>
+          <vnrole vncls="11.1-1" vntheta="Initial_Location"/>
+        </role>
+        <role descr="destination" f="gol" n="3">
+          <vnrole vncls="10.5-1" vntheta="Beneficiary"/>
+          <vnrole vncls="11.1-1" vntheta="Destination"/>
+        </role>
+      </roles>
+      <example name="args as DIR" src="" type="">
+        <inflection aspect="ns" form="infinitive" person="ns" tense="ns" voice="ns"/>
+        <text>Still, employees-1 do occasionally try [*-1] to smuggle out a gem or two.</text>
+        <arg f="" n="0">[*-1]</arg>
+        <rel f="">smuggle</rel>
+        <arg f="" n="2">out</arg>
+        <arg f="" n="1">a gem or two</arg>
+      </example>
+      <example name="ARG0 and ARG2 and ARG1" src="ontonotes nw/wsj/11/wsj_1121" type="">
+        <text>Still , employees do occasionally try to smuggle out a gem or two .</text>
+        <arg f="" n="0">employees</arg>
+        <rel f="">smuggle</rel>
+        <arg f="" n="2">out</arg>
+        <arg f="" n="1">a gem or two</arg>
+      </example>
+
+      <example name="ARG0 and ARG1 and ARG3" src="ontonotes mz/sinorama/10/ectb_1077" type="">
+        <text>Her husband , played by Leung , smuggles himself into America to try to find her .</text>
+        <arg f="" n="0">Her husband , played by Leung</arg>
+        <rel f="">smuggles</rel>
+        <arg f="" n="1">himself</arg>
+        <arg f="" n="3">into America</arg>
+        <arg f="prp" n="m">to try to find her</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

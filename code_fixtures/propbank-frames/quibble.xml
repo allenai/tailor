@@ -1,0 +1,37 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="quibble">
+    <roleset id="quibble.01" name="argue over trifles">
+      <aliases>
+        <alias framenet="Quarreling" pos="v" verbnet="">quibble</alias>
+      </aliases>
+      <note>QUIBBLE-V NOTES: Based on WSJ. Member of VNcls battle-36.4-1. (from quibble.01-v)</note>
+      <roles>
+        <role descr="first actor or all participants" f="pag" n="0">
+          <vnrole vncls="36.4-1" vntheta="agent"/>
+        </role>
+        <role descr="second actor (if separate)" f="com" n="1">
+          <vnrole vncls="36.4-1" vntheta="co-agent"/>
+        </role>
+        <role descr="topic" f="ppt" n="2">
+          <vnrole vncls="36.4-1" vntheta="topic"/>
+        </role>
+      </roles>
+      <example name="nominal with arg" src="" type="">
+        <inflection aspect="ns" form="gerund" person="ns" tense="ns" voice="ns"/>
+        <text>There can be no quibbling that the Armenians endured terrible suffering, but one has to wonder what possible good such a resolution will achieve.</text>
+        <arg f="neg" n="m">no</arg>
+        <rel f="">quibbling</rel>
+        <arg f="" n="2">that the Armenians endured terrible suffering</arg>
+      </example>
+      <example name="ARG0 and ARG1" src="probably COCA (2018 example fix)" type="">
+        <text>Libby had quibbled with him over tapping the tree.</text>
+        <arg f="" n="0">Libby</arg>
+        <rel f="">quibbled</rel>
+        <arg f="" n="1">with him</arg>
+        <arg f="" n="2">over tapping the tree.</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

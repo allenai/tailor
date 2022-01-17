@@ -1,0 +1,33 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="coalesce">
+    <roleset id="coalesce.01" name="to blend or come together">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">coalesce</alias>
+      </aliases>
+      <note>COALESCE-V NOTES: Frames file for 'coalesce' based on dictionary.com. Verbnet entry 22.1. frame by Perryn (from coalesce.01-v predicate notes)</note>
+      <roles>
+        <role descr="agent, mixer" f="pag" n="0">
+          <vnrole vncls="22.1-1-1" vntheta="agent"/>
+        </role>
+        <role descr="ingredient one" f="ppt" n="1">
+          <vnrole vncls="22.1-1-1" vntheta="patient"/>
+        </role>
+        <role descr="ingredient two-1" f="ppt" n="2">
+          <vnrole vncls="22.1-1-1" vntheta="co-patient"/>
+        </role>
+        <role descr="end product" f="prd" n="3"/>
+      </roles>
+      <example name="ARG0 and ARG1 and ARG2" src="probably COCA (2018 example fix)" type="">
+        <text>If the block being freed is adjacent to a free block on either side, it-1 is coalesced *trace*-1with it into a single bigger block, so storage does not become too fragmented.</text>
+        <arg f="adv" n="m">If the block being freed is adjacent to a free block on either side,</arg>
+        <rel f="">coalesced</rel>
+        <arg f="" n="1">*trace*-1with</arg>
+        <arg f="" n="2">it into</arg>
+        <arg f="" n="3">a single bigger block, so</arg>
+        <arg f="prp" n="m">storage does not become too fragmented.</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

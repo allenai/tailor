@@ -1,0 +1,25 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="cuckold">
+    <roleset id="cuckold.01" name="an unfaithful wife who thereby makes a   cuckold of her husband">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">cuckold</alias>
+      </aliases>
+      <note>CUCKOLD-V NOTES: Frames file for 'cuckold' based on dictionary.com. Verbnet entry 29.7. (from cuckold.01-v predicate notes)</note>
+      <roles>
+        <role descr="unfaithful wife, agent" f="PAG" n="0">
+          <vnrole vncls="29.7" vntheta="Agent"/>
+        </role>
+        <role descr="husband" f="PPT" n="1">
+          <vnrole vncls="29.7" vntheta="Theme"/>
+        </role>
+      </roles>
+     <example name="basic" src="COCA" type="">
+        <text>Our studies, showing that stored sperm results in late-season males being cuckolded by a female's early season mate, indicate that such storage may play a more important role in shorebird natural history than previously imagined.</text>
+         <arg f="" n="1">late-season males</arg>
+         <rel f="">cuckolded</rel>
+        <arg f="" n="0">by a female's early season mate</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

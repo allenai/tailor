@@ -1,0 +1,34 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="gallop">
+    <roleset id="gallop.01" name="run very fast">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">gallop</alias>
+      </aliases>
+      <note>GALLOP-V NOTES: Ha! Deny that ArgA, if you can! (from gallop.01-v)</note>
+      <roles>
+        <note>Use argA for outside agent (the rider).</note>
+        <role descr="galloping entity; horse" f="PPT" n="0">
+          <vnrole vncls="51.3.2-2" vntheta="Theme"/>
+        </role>
+        <role descr="path" f="LOC" n="1">
+          <vnrole vncls="51.3.2-2" vntheta="Location"/>
+        </role>
+      </roles>
+      <example name="transitive" src="" type="">
+        <inflection aspect="progressive" form="participle" person="ns" tense="ns" voice="active"/>
+        <text>Right now, Mr. Hulings is waving his racing program, cheering for Karnak on the Nile, a sleek thoroughbred galloping down the home stretch.</text>
+        <arg f="" n="0">a sleek thoroughbred</arg>
+        <rel f="">galloping</rel>
+        <arg f="" n="1">down the home stretch</arg>
+      </example>
+      <example name="ARG0 and ARG1" src="ontonotes nw/wsj/11/wsj_1174" type="">
+        <text>Right now , Mr. Hulings is waving his racing program , cheering for Karnak on the Nile , a sleek thoroughbred galloping down the home stretch .</text>
+        <arg f="" n="0">a sleek thoroughbred</arg>
+        <rel f="">galloping</rel>
+        <arg f="" n="1">down the home stretch</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

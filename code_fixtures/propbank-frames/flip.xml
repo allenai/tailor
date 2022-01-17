@@ -1,0 +1,84 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="flip">
+    <roleset id="flip.01" name="throw, turn over">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">flip</alias>
+        <alias framenet="" pos="n" verbnet="">flipping</alias>
+      </aliases>
+      <note>FLIP-V NOTES: frames created by Olga. Frames file for 'flip' based on survey of sentences in the WSJ corpus. Comparison with 'throw'. (from flip.01-v predicate notes)</note>
+      <roles>
+        <role descr="flipper, agent" f="pag" n="0">
+          <vnrole vncls="17.1-1" vntheta="agent"/>
+        </role>
+        <role descr="thing flipped" f="ppt" n="1">
+          <vnrole vncls="17.1-1" vntheta="theme"/>
+        </role>
+        <role descr="flipped to/into" f="gol" n="2">
+          <vnrole vncls="17.1-1" vntheta="destination"/>
+        </role>
+      </roles>
+      <example name="transitive" src="" type="">
+        <inflection aspect="ns" form="full" person="third" tense="present" voice="active"/>
+        <text>[*-2] Crouched [*-3]at shortstop , Bert Campaneris , once Oakland 's master thief , effortlessly scoops up a groundball and flips it to second .</text>
+        <arg f="adv" n="m">[*-2] Crouched [*-3]at shortstop</arg>
+        <arg f="" n="0">Bert Campaneris , once Oakland 's master thief ,</arg>
+        <rel f="">flips</rel>
+        <arg f="" n="1">it</arg>
+        <arg f="" n="2">to second</arg>
+      </example>
+    </roleset>
+  </predicate>
+  <predicate lemma="flip_out">
+    <roleset id="flip_out.02" name="go crazy">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">flip_out</alias>
+      </aliases>
+      <note>FLIP_OUT-V NOTES: Based on Bolt data. No VN or FN classes. Framed by Katie. (from flip.02-v)</note>
+      <roles>
+        <role descr="entity going crazy" f="pag" n="0"/>
+        <role descr="flipping out about" f="ppt" n="1"/>
+      </roles>
+      <example name="arg 0" src="" type="">
+        <inflection aspect="ns" form="ns" person="ns" tense="ns" voice="ns"/>
+        <text>The video clip of "Door-Slamming Brother Flipping Out" was broadcast on Jilin TV.</text>
+        <arg f="" n="0">Door-Slamming Brother</arg>
+        <rel f="">[Flipping] [Out]</rel>
+      </example>
+      <example name="ARG1" src="probably COCA (2018 example fix)" type="">
+        <text>Kylie Jenner flipped out about a fake post on her app</text>
+        <arg f="" n="0">Kylie Jenner</arg>
+        <rel f="">flipped out</rel>
+        <arg f="" n="1">about a fake post on her app</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+  <predicate lemma="flip_off">
+    <roleset id="flip_off.03" name="obscene gesture: give the finger">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">flip_off</alias>
+        <alias framenet="" pos="n" verbnet="">flip_off</alias>
+      </aliases>
+      <note>FLIP_OFF-V NOTES: Added by Julia.</note>
+      <roles>
+        <role descr="rude gesturer" f="pag" n="0"/>
+        <role descr="recipient" f="ppt" n="1"/>
+      </roles>
+      <example name="flip_off-v" src="" type="">
+        <text>The ACLU alleges that city workers in Piedmont, Missouri, ripped out Tina Warren's water meter after she flipped off the mayor.</text>
+        <arg f="" n="0">she</arg>
+        <rel f="">[flipped][off]</rel>
+        <arg f="" n="1">the mayor</arg>
+      </example>
+      <example name="flip_off-n" src="" type="">
+        <text>her little spazzo meltdown flip-off to Serenity .</text>
+        <arg f="" n="0">her</arg>
+        <arg f="adj" n="m">little</arg>
+        <arg f="adj" n="m">spazzo meltdown</arg>
+        <rel f="">flip-off</rel>
+        <arg f="" n="1">to Serenity</arg>
+      </example>
+    </roleset>
+  </predicate>
+</frameset>

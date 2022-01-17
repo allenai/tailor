@@ -1,0 +1,22 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="disown">
+    <roleset id="disown.01" name="disclaim relationship to">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">disown</alias>
+      </aliases>
+      <note>DISOWN-V NOTES: Framed by Neville. (from disown.01-v)</note>
+      <roles>
+        <role descr="agent, disowner" f="PAG" n="0"/>
+        <role descr="theme, thing disowned" f="PPT" n="1"/>
+      </roles>
+      <example name="ARG0 and ARG1" src="ontonotes bc/cnn/00/cnn_0005" type="">
+        <text>President ought to disown it /.</text>
+        <arg f="" n="0">President</arg>
+        <rel f="">disown</rel>
+        <arg f="" n="1">it</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>

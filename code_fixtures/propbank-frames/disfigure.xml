@@ -1,0 +1,26 @@
+<!DOCTYPE frameset SYSTEM "frameset.dtd">
+<frameset>
+  <predicate lemma="disfigure">
+    <roleset id="disfigure.01" name="to mar the appearance or beauty of">
+      <aliases>
+        <alias framenet="" pos="v" verbnet="">disfigure</alias>
+      </aliases>
+      <note>DISFIGURE-V NOTES: Frames file for 'disfigure' based on dictionary.com. Verbnet entry 44. (from disfigure.01-v predicate notes)</note>
+      <roles>
+        <role descr="agent" f="PAG" n="0">
+          <vnrole vncls="44" vntheta="Agent"/>
+        </role>
+        <role descr="entity mutilated" f="PPT" n="1">
+          <vnrole vncls="44" vntheta="Patient"/>
+        </role>
+      </roles>
+      <example name="ARG0 and ARG1" src="probably COCA (2018 example fix)" type="">
+        <text>He had a big scar on his left cheek that-1 *trace*-1 disfigured his smooth face.</text>
+        <arg f="" n="0">*trace*-1</arg>
+        <rel f="">disfigured</rel>
+        <arg f="" n="1">his smooth face.</arg>
+      </example>
+
+    </roleset>
+  </predicate>
+</frameset>
