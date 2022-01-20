@@ -1,10 +1,6 @@
-import copy
-from typing import Iterable, List, NamedTuple, Optional
+from typing import Iterable
 
 from tango.step import Step
-from tango.common import DatasetDict
-
-# from tango.integrations.datasets import DatasetsFormat
 
 from tailor.common.util import get_spacy_model, SpacyDoc, SpacyModelType
 
@@ -32,59 +28,31 @@ class _WhitespaceSpacyTokenizer:
 
 @Step.register("get-spacy-model")
 class GetSpacyModel(Step):
+    """
+    TODO: Docs
+    """
+
     DETERMINISTIC = True
-    CACHEABLE = True  # TODO: should it be?
+    CACHEABLE = False  # Caching is unnecessary.
 
     def run(
         self,
         spacy_model_name: str = "en_core_web_sm",
         use_white_space_tokenizer: bool = False,
+        **spacy_kwargs,
     ) -> SpacyModelType:
-        spacy_model = get_spacy_model(spacy_model_name)
+        spacy_model = get_spacy_model(spacy_model_name, **spacy_kwargs)
         if use_white_space_tokenizer:
             spacy_model.tokenizer = _WhitespaceSpacyTokenizer(spacy_model.vocab)
         return spacy_model
 
 
-@Step.register("process-dataset-with-spacy")
-class ProcessDatasetWithSpacy(Step):
-    DETERMINISTIC = True
-    CACHEABLE = True
-    # FORMAT = DatasetsFormat()
-
-    def run(
-        self,
-        spacy_model: SpacyModelType,
-        dataset_dict: DatasetDict,
-        key_to_process: str,
-        processed_key_name: Optional[str] = None,
-    ) -> DatasetDict:
-        split_data: Dict[str, List] = {}
-
-        processed_key_name = processed_key_name or key_to_process
-
-        for split in dataset_dict:
-            dataset = dataset_dict[split]
-
-            split_data[split] = []
-
-            for instance in dataset:
-                processed_instance = copy.deepcopy(instance)
-                processed_instance[processed_key_name] = spacy_model(
-                    processed_instance[key_to_process]
-                )
-                split_data[split].append(processed_instance)
-
-        return DatasetDict(split_data)
-
-
-class SpacyOutput(NamedTuple):
-    spacy_doc: SpacyDoc
-    updated_sentence: Optional[str] = None
-
-
 @Step.register("process-with-spacy")
 class ProcessWithSpacy(Step):
+    """
+    TODO: Docs
+    """
+
     DETERMINISTIC = True
     CACHEABLE = True
     VERSION = "001"
@@ -93,13 +61,11 @@ class ProcessWithSpacy(Step):
         self,
         sentences: Iterable[str],
         spacy_model: SpacyModelType,
-    ) -> Iterable[SpacyOutput]:
+    ) -> Iterable[SpacyDoc]:
 
-        outputs: Iterable[SpacyOutput] = []
+        outputs: Iterable[SpacyDoc] = []
         for string in sentences:
             spacy_doc = spacy_model(string)
-            # if save_processed_text:
-            updated_sentence = " ".join([token.text for token in spacy_doc])
-            outputs.append(SpacyOutput(spacy_doc=spacy_doc, updated_sentence=updated_sentence))
+            outputs.append(spacy_doc)
 
         return outputs

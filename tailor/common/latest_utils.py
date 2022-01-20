@@ -2224,3 +2224,48 @@ def add_predictions_to_prompt_dict(generated_dict, predicted, frameset_path=DEFA
             label = convert_tag2readable(vlemma, pred, frameset_id, frameset_path=frameset_path)
             ann.pred = label if label else pred
     return generated_dict
+
+
+def get_unique_prompts(prompts):
+    """Helper function to get unique prompts given list of prompts
+    Helpful when we care about a looser notion of equality than exact string equality
+    Calls is_equal_prompts() to check equality of prompts
+    """
+    prompt_set = []
+    for p in prompts:
+        if not any(is_equal_prompts(p, exist_p) for exist_p in prompt_set):
+            prompt_set.append(p)
+    return prompt_set
+
+
+def is_equal_prompts(p1, p2):
+    """Helper function check for equality of two prompts
+    Insensitive to differences in space and punctuation in context
+    Useful for making sure that edited prompts are different
+    Args:
+        p1 (str): prompt
+        p2 (str): prompt
+    Returns:
+        bool: Whether the two prompts have equal prompts
+    """
+
+    def remove_punctuation(s):
+        return re.sub(r"[.!?,-]", "", s)
+
+    p1_head, p1_context = extract_header_from_prompt(p1)
+    p2_head, p2_context = extract_header_from_prompt(p2)
+    p1_context = remove_punctuation(p1_context).replace(" ", "").strip()
+    p2_context = remove_punctuation(p2_context).replace(" ", "").strip()
+    return p1_head.strip() == p2_head.strip() and p1_context.strip() == p2_context.strip()
+
+
+def is_equal_headers(p1, p2):
+    """Helper function check for equality of headers between two prompts
+    Useful for making sure that edited prompts are different
+    Args:
+        p1 (str): prompt
+        p2 (str): prompt
+    Returns:
+        bool: Whether the two prompts have equal headers
+    """
+    return extract_header_from_prompt(p1)[0] == extract_header_from_prompt(p2)[0]
