@@ -4,7 +4,7 @@
         "spacy_it": {
             "type": "process-with-spacy",
             "spacy_model_name": "en_core_web_sm",
-            "inputs": ["Hi this is a test", "Sample input text"],
+            "sentences": ["Hi this is a test", "Sample input text"],
             //"step_format": "json",
         }
     }

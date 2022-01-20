@@ -64,6 +64,8 @@ def get_srl_tagger(
     else:
         cuda_device = -1
 
-    predictor = Predictor.from_path(cached_path.cached_path(model_path), cuda_device=cuda_device)
+    predictor = Predictor.from_path(
+        cached_path.cached_path(model_path), cuda_device=cuda_device, frozen=True
+    )
     predictor._tokenizer = SpacyTokenizer(pos_tags=True, split_on_spaces=True)
     return predictor

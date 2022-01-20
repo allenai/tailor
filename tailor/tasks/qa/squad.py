@@ -40,25 +40,28 @@ class ProcessSquadWithSpacy(Step):
         self,
         dataset_dict: DatasetDict,
         spacy_model_name: str,
-        keys_to_process: Optional[List[str]] = None,
+        key_to_process: str,
+        processed_key_name: Optional[str] = None,
     ) -> DatasetDict:
         # The model is cached, so no worries about reloading.
         spacy_model = get_spacy_model(spacy_model_name)
         split_data: Dict[str, List] = {}
 
+        processed_key_name = processed_key_name or key_to_process
+
         for split in dataset_dict:
             dataset = dataset_dict[split]
-            keys_to_process = keys_to_process or dataset[0].keys()
 
             split_data[split] = []
 
             for instance in dataset:
-                processed_instance = {}
-                for key in dataset[0].keys():
-                    if key in keys_to_process:
-                        processed_instance[key] = spacy_model(instance[key])
-                    else:
-                        processed_instance[key] = instance[key]
+                # processed_instance = {}
+                instance[processed_key_name] = spacy_model(instance[key_to_process])
+                # for key in dataset[0].keys():
+                #     if key in keys_to_process:
+                #         processed_instance[key] = spacy_model(instance[key])
+                #     else:
+                #         processed_instance[key] = instance[key]
                 split_data[split].append(processed_instance)
 
         return DatasetDict(split_data)

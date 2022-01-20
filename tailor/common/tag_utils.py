@@ -1,8 +1,13 @@
 """
 Helpers for identifying tags from span, and making them readable
 """
+import os
 import difflib
 from typing import Dict, List
+
+DEFAULT_FRAME_SET_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(os.path.realpath(__file__)), "propbank-frames")
+)
 
 # TODO: how to handle B-R-ARGs? right now being encoded in header separately
 

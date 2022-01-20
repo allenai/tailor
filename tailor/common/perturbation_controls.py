@@ -1,14 +1,8 @@
-"""
-Define perturbation controls
-"""
-import re
 import warnings
-from typing import NamedTuple, Optional
-
-import logger
+import re
 from munch import Munch
 
-from ..common.abstractions import Prompt, VerbVoice, VerbTense, Specificities
+# local imports
 from .tag_utils import *
 
 
@@ -18,194 +12,39 @@ def format_warning(msg, *args, **kwargs):
 
 warnings.formatwarning = format_warning
 
-logging.captureWarnings(True)
+######################################################################
+# define perturbation controls
+######################################################################
 
-"""
-TODO: docstrings for ALL.
-"""
-WRAPPERS = ["VERB", "CORE", "NONCORE", "CONTEXT"]
-CONTEXT_CHANGES = ["CHANGE_IDX", "DELETE_TEXT", "DELETE_PUNCT"]
-VFORM_ONLY = ["CHANGE_LEMMA", "CHANGE_TENSE", "CHANGE_VOICE"]
-CORE_ONLY = ["SWAP_CORE"]
-CORE_AND_NONCORE = ["CHANGE_CONTENT", "CHANGE_SPECIFICITY", "CHANGE_TAG"]
-NONCORE_ONLY = ["DELETE"]  # TODO: add deletion capabilities to agent/patient too?
+# wrappers
+VERB = "VERB"
+CORE = "CORE"
+NONCORE = "NONCORE"
+CONTEXT = "CONTEXT"
 
+# context changes
+CHANGE_IDX = "CHANGE_IDX"
+DELETE_TEXT = "DELETE_TEXT"
+DELETE_PUNCT = "DELETE_PUNCT"
 
-RANDOM_TAG = "*"
-EMPTY_FILL = ""
-MAX_NUM_BLANKS = 10
+# vform only
+CHANGE_LEMMA = "CHANGE_LEMMA"
+CHANGE_TENSE = "CHANGE_TENSE"
+CHANGE_VOICE = "CHANGE_VOICE"
 
+# core only
+SWAP_CORE = "SWAP_CORE"
 
-CONTROL_CODES = Munch(
-    {
-        k: k
-        for k in WRAPPERS
-        + CONTEXT_CHANGES
-        + VFORM_ONLY
-        + CORE_ONLY
-        + CORE_AND_NONCORE
-        + NONCORE_ONLY
-    }
-)
+# both core and noncore
+CHANGE_CONTENT = "CHANGE_CONTENT"
+CHANGE_SPECIFICITY = "CHANGE_SPECIFICITY"  # interchange between sparse/partial/complete
+CHANGE_TAG = "CHANGE_TAG"
 
-
-def sample_common_keyword(
-    key_dicts: Dict[str, Dict],
-    label: str,
-    keyword_type: Specificities,
-    orig_keyword: str,
-    top_k: int = 15,
-):
-    """Helper function when target keyword/content not given
-        Used for UL training for keyword following
-        Randomly samples common keyword for a given tag
-
-    Args:
-        key_dicts (dict(str, dict(str, Counter))): dict of sub-dicts
-            See output of get_common_keywords_by_tag()
-        label (str): label for which to sample keyword
-            In control code format (vs. SRL raw tag)
-        keyword_type (str): one of complete/partial/sparse
-        orig_keyword (str): original lemma
-            Needed to make sure we do not re-sample
-            Make sure sampled keyword (returned) is not subset of original keyword
-
-        top_k (int, optional): used to select keywords to sample from
-            i.e., randomly sample keyword from top_k most frequent keywords in key_dicts[label]
-    Returns:
-        str: keyword
-    """
-    keyword = RANDOM_TAG
-    try:
-        if label not in key_dicts or keyword_type not in key_dicts[label]:
-            return RANDOM_TAG  # TODO: change default behavior here
-        keyword_candidates = Counter(key_dicts[label][keyword_type]).most_common(top_k)
-        num_tries = 0
-        successful_sample = False
-        while not successful_sample and num_tries < 5 and len(keyword_candidates):
-            keyword_idx = np.random.choice(len(keyword_candidates), 1)[0]
-            keyword = keyword_candidates[keyword_idx][0]
-            successful_sample = keyword not in orig_keyword
-            num_tries += 1
-    except ValueError as e:
-        error_message = (
-            str(e)
-            + "\n"
-            + f"Error arose for label ({label}),"
-            + f"keyword_type ({keyword_type}) in key_dicts[{label}][{keyword_type}]"
-            + f"{key_dicts[label][keyword_type]}"
-        )
-        print(error_message)
-        return RANDOM_TAG  # TODO: change default behavior here
-    return keyword
+# noncore only
+DELETE = "DELETE"  # TODO: add deletion capabilities to agent/patient too?
 
 
-class Perturbations(NamedTuple):
-    """
-    TODO: named tuple for now. may expand to full class with functionality;
-    how to apply them: logic in head_prompt_utils.gen_prompt_by_perturb_meta
-    """
-
-    def get_prompt(self, *args, **kwargs) -> Prompt:
-        pass
-        # raise NotImplementedError
-
-
-class ContextPerturbations(Perturbations):
-
-    is_change_idx: bool = False
-    is_delete_text: bool = False
-    is_delete_punct: bool = False
-
-
-class VerbPerturbations(Perturbations):
-
-    is_change_vtense: bool = False
-    is_change_vvoice: bool = False
-    is_change_vlemma: bool = False
-    target_tense: Optional[VerbTense] = None
-    target_voice: Optional[VerbVoice] = None
-    target_vlemma: bool = False
-
-    _voice_mapper: Dict = {VerbVoice.ACTIVE: VerbVoice.PASSIVE, VerbVoice.PASSIVE: VerbVoice.ACTIVE}
-
-    def get_prompt(
-        self, base_meta: PromptMeta, common_keywords_by_tag: Optional[Dict] = None, *args, **kwargs
-    ) -> Prompt:
-        new_meta = base_meta.copy()  # TODO: check if deepcopy needed
-
-        if self.is_change_vvoice:
-            new_voice = self.target_voice or self._voice_mapper[base_meta.vvoice]
-
-        if self.is_change_vtense:
-            tense_options = [tense for tense in VerbTense if tense != base_meta.vtense]
-            new_tense = self.target_tense or np.random.choice(tense_options, 1)[0]
-            new_meta.vtense = new_tense
-            # TODO: fix hack: if changing to future, need to make sure MODAL tag exists, since "future"
-            # only returned by get_verb_tense if "will" or "shall" (modals) are in prompt header
-            # only do this during generation time
-
-            if new_tense == VerbTense.FUTURE and not is_training:
-                modal_idx = [
-                    idx for idx, arg in enumerate(new_meta.noncore_args) if arg.tag == "MODAL"
-                ]
-                # if modal already in header, change keyword to * to generate "will" or "shall"
-                if modal_idx:
-                    modal_idx = modal_idx[0]
-                    new_meta.noncore_args[modal_idx].tlemma = RANDOM_TAG
-                    new_meta.noncore_args[modal_idx].tlemma_type = None
-                else:
-                    # TODO: blank_idx=None because won't be used, but make sure this is robust
-                    new_meta.noncore_args.append(
-                        NonCoreArgs(
-                            tlemma=RANDOM_TAG,
-                            tlemma_type=None,
-                            raw_tag="ARGM-MOD",
-                            tag="MODAL",
-                            blank_idx=None,
-                        )
-                    )
-
-        # if self.is_change_vlemma:
-        #     new_vlemma = self.target_vlemma or \
-        #         else sample_common_keyword(common_keywords_by_tag, "VERB", Specificities.COMPLETE, new_meta.vlemma)
-        #     new_meta.vlemma = new_vlemma
-
-
-class TagChanges(Perturbations):
-
-    is_delete: bool = False
-    is_change_tag: bool = False
-    target_tag: Optional[str] = None
-    is_change_content: bool = False
-    target_content: Optional[str] = None
-    is_change_content_type: bool = False
-    target_content_type: bool = False
-
-
-class CorePerturbations(Perturbations):
-
-    is_swap_core: bool = False
-    is_change_agent: bool = False
-    is_change_patient: bool = False
-    agent_changes: Optional[TagChanges] = None
-    patient_changes: Optional[TagChanges] = None
-
-
-class NonCorePerturbations(Perturbations):
-    is_change_noncore: bool = (
-        False  # TODO: Is this required now that we have split out into separate class?
-    )
-    changes_by_arg: Optional[Dict[str, TagChanges]] = None
-
-
-def parse_wrappers(control_code_str: str, wrapper: str) -> str:
-    r_search = re.search(rf"{wrapper}\((?P<wrapper_changes>[^;]+)\)", control_code_str)
-    wrapper_input = None if not r_search else r_search.group("wrapper_changes")
-    return wrapper_input
-
-
-def parse_change_context(control_code_str: str) -> ContextPerturbations:
+def parse_change_context(change_type_str):
     # TODO: build functionality to set target blank position
     """Helper function parse changes to context from string perturbation code
     Parses whole change_type_str to get context specific changes
@@ -224,33 +63,33 @@ def parse_change_context(control_code_str: str) -> ContextPerturbations:
     idx_changes is a dict mapping original indices to new indices for blank tokens
         if idx_changes is not supplied and is_change_idx, will randomly shuffle empty (?) blank indices at perturbation
     Args:
-        control_code_str (str): the meta ctrl code.
+        change_type_str (str): the meta ctrl code.
 
     Returns:
         Munch object (example above)
 
-    # TODO: update docstring.
     """
 
-    context_change_str = parse_wrappers(control_code_str, CONTROL_CODES.CONTEXT)
+    r = re.search(rf"{CONTEXT}\((?P<context_changes>[^;]+)\)", change_type_str)
+    context_change_str = None if not r else r.group("context_changes")
 
     # no changes to context
     if context_change_str is None:
         if (
-            CONTROL_CODES.DELETE_TEXT in change_type_str
-            or CONTROL_CODES.DELETE_PUNCT in change_type_str
-            or CONTROL_CODES.CHANGE_IDX in change_type_str
+            DELETE_TEXT in change_type_str
+            or DELETE_PUNCT in change_type_str
+            or CHANGE_IDX in change_type_str
         ):
             warnings_message = (
-                f"Context change wrapper ({CONTROL_CODES.CONTEXT}) not found in supplied perturb string "
-                + f"({control_code_str}) but found parts of {[CONTROL_CODES.CHANGE_IDX, CONTROL_CODES.DELETE_TEXT, CONTROL_CODES.DELETE_PUNCT]} in string. "
-                + f"Did you mean to wrap these changes in context wrapper {CONTROL_CODES.CONTEXT}? "
+                f"Context change wrapper ({CONTEXT}) not found in supplied perturb string "
+                + f"({change_type_str}) but found parts of {[CHANGE_IDX, DELETE_TEXT, DELETE_PUNCT]} in string. "
+                + f"Did you mean to wrap these changes in context wrapper {CONTEXT}? "
                 + "\n"
                 + f"Default parsing behavior: Returning no context changes. "
             )
             warnings.warn(warnings_message)
 
-        return ContextPerturbations(
+        return Munch(
             is_delete_text=False,
             is_delete_punct=False,
             is_change_idx=False,
@@ -271,15 +110,17 @@ def parse_change_context(control_code_str: str) -> ContextPerturbations:
             changes_by_idx.update({int(orig): int(end)})
         return changes_by_idx
 
-    r = re.search(rf"{CONTROL_CODES.CHANGE_IDX}\((?P<idx_changes>[^\)]+)\)", context_change_str)
+    r = re.search(rf"{CHANGE_IDX}\((?P<idx_changes>[^\)]+)\)", context_change_str)
     if is_change_idx:
         if r:
             idx_changes = r.group("idx_changes")
             idx_changes = parse_idx_changes(idx_changes)
         else:
             idx_changes = None
+    else:
+        idx_changes = None
 
-    context_changes = ContextPerturbations(
+    context_changes = Munch(
         idx_changes=idx_changes,
         is_change_idx=is_change_idx,
         is_delete_text=is_delete_text,
@@ -288,9 +129,9 @@ def parse_change_context(control_code_str: str) -> ContextPerturbations:
     return context_changes
 
 
-def parse_change_verb(control_code_str: str) -> VerbPerturbations:
+def parse_change_verb(change_type_str):
     """Helper function get target vform from string perturbation code
-    Parses whole control_code_str to get verb specific changes
+    Parses whole change_type_str to get verb specific changes
 
     Note: Verb specific changes must be wrapped in VERB tag
 
@@ -306,32 +147,33 @@ def parse_change_verb(control_code_str: str) -> VerbPerturbations:
                     })
 
     Args:
-        control_code_str (str): the meta ctrl code.
+        change_type_str (str): the meta ctrl code.
 
     Returns:
         Munch object (example above)
 
     """
 
-    verb_change_str = parse_wrappers(control_code_str, CONTROL_CODES.VERB)
+    r = re.search(rf"{VERB}\((?P<verb_changes>[^;]+)\)", change_type_str)
+    verb_change_str = None if not r else r.group("verb_changes")
 
     # no changes to verb
     if verb_change_str is None:
         if (
-            (CONTROL_CODES.CHANGE_LEMMA in control_code_str)
-            or (CONTROL_CODES.CHANGE_TENSE in control_code_str)
-            or (CONTROL_CODES.CHANGE_VOICE in control_code_str)
+            (CHANGE_LEMMA in change_type_str)
+            or (CHANGE_TENSE in change_type_str)
+            or (CHANGE_VOICE in change_type_str)
         ):
             warnings_message = (
-                f"Verb change wrapper ({CONTROL_CODES.VERB}) not found in supplied perturb string "
-                + f"({control_code_str}) but found parts of {[CONTROL_CODES.CHANGE_LEMMA, CONTROL_CODES.CHANGE_TENSE, CONTROL_CODES.CHANGE_VOICE]} in string. "
-                + f"Did you mean to wrap these changes in verb wrapper {CONTROL_CODES.VERB}? "
+                f"Verb change wrapper ({VERB}) not found in supplied perturb string "
+                + f"({change_type_str}) but found parts of {[CHANGE_LEMMA, CHANGE_TENSE, CHANGE_VOICE]} in string. "
+                + f"Did you mean to wrap these changes in verb wrapper {VERB}? "
                 + "\n"
                 + f"Default parsing behavior: Returning no verb changes. "
             )
             warnings.warn(warnings_message)
 
-        return VerbPerturbations(
+        return Munch(
             is_change_vtense=False,
             is_change_vvoice=False,
             is_change_vlemma=False,
@@ -340,11 +182,11 @@ def parse_change_verb(control_code_str: str) -> VerbPerturbations:
             target_vlemma=None,
         )
 
-    is_change_vtense = CONTROL_CODES.CHANGE_TENSE in verb_change_str
-    is_change_vvoice = CONTROL_CODES.CHANGE_VOICE in verb_change_str
-    is_change_vlemma = CONTROL_CODES.CHANGE_LEMMA in verb_change_str
+    is_change_vtense = CHANGE_TENSE in verb_change_str
+    is_change_vvoice = CHANGE_VOICE in verb_change_str
+    is_change_vlemma = CHANGE_LEMMA in verb_change_str
 
-    r = re.search(rf"{CONTROL_CODES.CHANGE_TENSE}\((?P<vtense>[^,\)]+)\)", verb_change_str)
+    r = re.search(rf"{CHANGE_TENSE}\((?P<vtense>[^,\)]+)\)", verb_change_str)
     vtense = None if not r else r.group("vtense")
     if not vtense:
         tense = None
@@ -353,7 +195,7 @@ def parse_change_verb(control_code_str: str) -> VerbPerturbations:
         if vtense not in ["present", "future", "past"]:
             raise ValueError(f"Incorrect form for verb tense {vtense}")
 
-    r = re.search(rf"{CONTROL_CODES.CHANGE_VOICE}\((?P<vvoice>[^,\)]+)\)", verb_change_str)
+    r = re.search(rf"{CHANGE_VOICE}\((?P<vvoice>[^,\)]+)\)", verb_change_str)
     vvoice = None if not r else r.group("vvoice")
     if not vvoice:
         voice = None
@@ -362,10 +204,10 @@ def parse_change_verb(control_code_str: str) -> VerbPerturbations:
         if vvoice not in ["active", "passive"]:
             raise ValueError(f"Incorrect form for verb voice {vvoice}")
 
-    r = re.search(rf"{CONTROL_CODES.CHANGE_LEMMA}\((?P<target_vlemma>[^\)]+)\)", verb_change_str)
+    r = re.search(rf"{CHANGE_LEMMA}\((?P<target_vlemma>[^\)]+)\)", verb_change_str)
     target_vlemma = None if not r else r.group("target_vlemma")
 
-    verb_changes = VerbPerturbations(
+    verb_changes = Munch(
         is_change_vtense=is_change_vtense,
         is_change_vvoice=is_change_vvoice,
         is_change_vlemma=is_change_vlemma,
