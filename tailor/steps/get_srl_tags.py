@@ -8,6 +8,19 @@ from tailor.steps.process_with_spacy import SpacyDoc
 
 
 class ProcessedSentence(NamedTuple):
+    """
+    Abstraction for a sentence processed with spacy and srl tagger.
+
+    sentence : :class:`str`
+        The original sentence string.
+
+    spacy_doc : :class:`SpacyDoc`
+        The spacy doc for the sentence string.
+
+    verbs : :class:`List[Dict]`
+        The list of detected verbs in the sentence. Each verb `Dict`
+        contains all the tags for that verb.
+    """
 
     sentence: str
     spacy_doc: SpacyDoc
@@ -20,7 +33,11 @@ class ProcessedSentence(NamedTuple):
 @Step.register("get-srl-tags")
 class GetSRLTags(Step):
     """
-    TODO: Docs
+    This step applies the SRL tagger to the provided list of spacy docs.
+
+    .. tip::
+
+        Registered as a :class:`~tango.step.Step` under the name "get-srl-tags".
     """
 
     DETERMINISTIC = True
@@ -30,7 +47,23 @@ class GetSRLTags(Step):
         self,
         spacy_outputs: List[SpacyDoc],
         srl_tagger: Optional[Predictor] = None,
-    ) -> List[ProcessedSentence]:  # Multiple verbs for each sentence.
+    ) -> List[ProcessedSentence]:
+        """
+        Returns the list of sentences with SRL tags.
+
+        Parameters
+        ----------
+        spacy_outputs : :class:`List[SpacyDoc]`
+            The list of spacy docs for the list of sentences.
+        srl_tagger : :class:`Predictor`, optional
+            An AllenNLP predictor for srl tagging. The default is the `srl-bert` predictor.
+
+        Returns
+        -------
+        :class:`List[ProcessedSentence]`
+            The list of processed sentences with spacy docs and SRL tags.
+
+        """
         srl_tagger = srl_tagger or get_srl_tagger()
         outputs = []
         for spacy_doc in spacy_outputs:

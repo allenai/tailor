@@ -37,6 +37,12 @@ class GetSentences(Step):
             Optionally, specify a starting index to extract a subset of all instances.
         end_idx : :class:`int`, optional
             Optionally, specify an ending index to extract a subset of all instances.
+
+        Returns
+        -------
+
+        :class:`Iterable[str]`
+            The specific text field as an iterable.
         """
 
         # TODO: should check if the field is string.

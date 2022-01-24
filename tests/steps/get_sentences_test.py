@@ -19,7 +19,7 @@ class TestGetSpacyModel(TailorTestCase):
         step = GetSentences()
 
         with pytest.raises(KeyError):
-            result = step.run(dataset=dataset, key="invalid_key")
+            step.run(dataset=dataset, key="invalid_key")
 
     def test_run_start_end_idx(self):
         dataset = datasets.load_from_disk(str(self.FIXTURES_ROOT / "data" / "snli_snippet"))
