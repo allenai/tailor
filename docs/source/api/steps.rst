@@ -25,3 +25,8 @@ Process With Spacy step
 .. autoclass:: tailor.steps.process_with_spacy.ProcessWithSpacy
    :members:
 
+Get SRL Tags step
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: tailor.steps.get_srl_tags.GetSRLTags
+   :members:
