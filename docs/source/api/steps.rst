@@ -6,6 +6,13 @@ Tailor Steps
 Reference
 ---------
 
+Get Sentences step
+~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: tailor.steps.get_sentences.GetSentences
+   :members:
+
+
 Get Spacy Model step
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -17,3 +24,4 @@ Process With Spacy step
 
 .. autoclass:: tailor.steps.process_with_spacy.ProcessWithSpacy
    :members:
+
