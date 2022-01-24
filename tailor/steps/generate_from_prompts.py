@@ -1,5 +1,4 @@
-from munch import Munch
-from typing import Dict, Iterable, List, NamedTuple, Optional
+from typing import Iterable, List, Optional
 from tango.step import Step
 
 from tailor.steps.get_srl_tags import ProcessedSentence
@@ -7,8 +6,11 @@ from tailor.steps.get_srl_tags import ProcessedSentence
 from tailor.common.latest_utils import parse_filled_prompt
 from tailor.common.util import SpacyModelType
 
-# from tailor.common.model_utils import generate_and_clean_batch, load_generator
-from tailor.common.generate_utils import compute_edit_ops, generate_and_clean_batch, load_generator
+from tailor.steps.perturb_prompt import PromptObject
+
+from tailor.common.model_utils import generate_and_clean_batch, load_generator
+
+# from tailor.common.generate_utils import compute_edit_ops, generate_and_clean_batch, load_generator
 
 
 # class GeneratedPrompt(NamedTuple):
@@ -25,7 +27,7 @@ class GenerateFromPrompts(Step):
     def run(
         self,
         processed_sentences: Iterable[ProcessedSentence],
-        prompts: List[List[str]],
+        prompts: List[List[PromptObject]],
         spacy_model: SpacyModelType,
         num_perturbations: int = 3,
         perplex_thred: Optional[int] = None,
@@ -40,7 +42,7 @@ class GenerateFromPrompts(Step):
         assert len(prompts) == len(processed_sentences)
 
         for idx, sentence in enumerate(processed_sentences):
-            prompt_list = prompts[idx]  # list of str prompts
+            prompt_list = [p.prompt for p in prompts[idx]]  # list of str prompts
             generated_prompts = generate_and_clean_batch(
                 prompts=prompt_list,
                 generator=generator,
@@ -75,7 +77,7 @@ class GenerateFromPrompts(Step):
                     # if is_valid:
                     #     predicted = self.srl_predict(generated_s)
                     #     prompt_dict = add_predictions_to_prompt_dict(prompt_dict, predicted)
-                    #     is_valid = is_vaild and is_followed_ctrl(prompt_dict, generated_doc, self.spacy_processor)
+                    #     is_valid = is_valid and is_followed_ctrl(prompt_dict, generated_doc, self.spacy_processor)
                     if is_valid:
                         validated_set.append(generated)
 

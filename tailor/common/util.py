@@ -14,11 +14,20 @@ import torch
 
 logger = logging.getLogger(__name__)
 
-LOADED_SPACY_MODELS: Dict[Tuple[str, bool, bool, bool], SpacyModelType] = {}
+LOADED_SPACY_MODELS: Dict[Tuple[str, bool, bool, bool, bool], SpacyModelType] = {}
+
+DEFAULT_SRL_TAGGER = (
+    "https://storage.googleapis.com/allennlp-public-models/"
+    + "structured-prediction-srl-bert.2020.12.15.tar.gz"
+)
 
 
 def get_spacy_model(
-    spacy_model_name: str, pos_tags: bool = True, parse: bool = False, ner: bool = False
+    spacy_model_name: str,
+    pos_tags: bool = True,
+    parse: bool = False,
+    ner: bool = False,
+    updated_tokenizer: bool = False,
 ) -> SpacyModelType:
     """
     Copied over from allennlp.common.util
@@ -26,9 +35,12 @@ def get_spacy_model(
     In order to avoid loading spacy models a whole bunch of times, we'll save references to them,
     keyed by the options we used to create the spacy model, so any particular configuration only
     gets loaded once.
+
+    `updated_tokenizer` is only used so that we cache the model separately if we know we are going
+    to change its tokenizer.
     """
 
-    options = (spacy_model_name, pos_tags, parse, ner)
+    options = (spacy_model_name, pos_tags, parse, ner, updated_tokenizer)
     if options not in LOADED_SPACY_MODELS:
         disable = ["vectors", "textcat"]
         if not pos_tags:
@@ -53,9 +65,7 @@ def get_spacy_model(
     return LOADED_SPACY_MODELS[options]
 
 
-def get_srl_tagger(
-    model_path: str = "https://storage.googleapis.com/allennlp-public-models/structured-prediction-srl-bert.2020.12.15.tar.gz",
-):
+def get_srl_tagger(model_path: str = DEFAULT_SRL_TAGGER):
     """
     Returns an AllenNLP predictor for getting SRL tags.
     """

@@ -21,6 +21,12 @@ Contents
    CHANGELOG
 
 .. toctree::
+   :maxdepth: 2
+   :caption: API Reference
+
+   api/steps
+
+.. toctree::
    :hidden:
    :caption: Development
 

@@ -1,5 +1,5 @@
 from munch import Munch
-from typing import Any, Iterable, List, NamedTuple, Optional
+from typing import Any, List, NamedTuple, Optional
 from tango.step import Step
 
 from tailor.steps.get_srl_tags import ProcessedSentence
@@ -35,7 +35,7 @@ class GeneratePromptsByTags(Step):
 
     def run(
         self,
-        processed_sentences: Iterable[ProcessedSentence],
+        processed_sentences: List[ProcessedSentence],
         criteria_func: Optional[Any] = None,  # TODO
         **intermediate_prompt_kwargs,
     ) -> List[List[PromptObject]]:

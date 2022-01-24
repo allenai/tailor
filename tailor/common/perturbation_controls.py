@@ -44,6 +44,17 @@ CHANGE_TAG = "CHANGE_TAG"
 DELETE = "DELETE"  # TODO: add deletion capabilities to agent/patient too?
 
 
+def validate_perturb_str(change_type_str):
+    """
+    Ensure that the string contains at least one of the perturbation wrappers.
+    """
+    present_wrappers = re.findall(rf"[^N]*{CORE}|{NONCORE}|{VERB}|{CONTEXT}", change_type_str)
+    assert len(present_wrappers) > 0, (
+        f"Invalid perturb string: {change_type_str}. "
+        + "Please see documentation for constructing perturbation strings."
+    )
+
+
 def parse_change_context(change_type_str):
     # TODO: build functionality to set target blank position
     """Helper function parse changes to context from string perturbation code

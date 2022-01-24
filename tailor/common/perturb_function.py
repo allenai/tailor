@@ -3,12 +3,12 @@ from tango.common.registrable import Registrable
 
 class PerturbFunction(Registrable):
     def __call__(self, *args, **kwargs):  # TODO: maybe fix args?
-        return NotImplementedError
+        raise NotImplementedError
 
 
 class PerturbStringFunction(Registrable):
     def __call__(self, prompt_meta, *args, **kwargs) -> str:
-        return NotImplementedError
+        raise NotImplementedError
 
 
 @PerturbStringFunction.register("change_voice")
@@ -33,7 +33,7 @@ class ChangeTense(PerturbStringFunction):
 
 @PerturbStringFunction.register("change_lemma")
 class ChangeLemma(PerturbStringFunction):
-    def __call__(self, prompt_meta, lemma: str, *args, **kwargs) -> str:
+    def __call__(self, prompt_meta, lemma: str, *args, **kwargs) -> str:  # type: ignore
         return f"VERB(CHANGE_LEMMA({lemma}))"
 
 
@@ -44,7 +44,7 @@ class DeleteText(PerturbStringFunction):
 
 
 @PerturbStringFunction.register("delete_punctuation")
-class DeleteText(PerturbStringFunction):
+class DeletePunctuation(PerturbStringFunction):
     def __call__(self, prompt_meta, *args, **kwargs) -> str:
         return "CONTEXT(DELETE_PUNCT)"
 

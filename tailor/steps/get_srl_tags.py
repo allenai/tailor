@@ -1,4 +1,4 @@
-from typing import Dict, Iterable, List, NamedTuple, Optional
+from typing import Dict, List, NamedTuple, Optional
 
 from allennlp.predictors import Predictor
 from tango.step import Step
@@ -28,9 +28,9 @@ class GetSRLTags(Step):
 
     def run(
         self,
-        spacy_outputs: Iterable[SpacyDoc],
+        spacy_outputs: List[SpacyDoc],
         srl_tagger: Optional[Predictor] = None,
-    ) -> Iterable[List[Dict]]:  # Multiple verbs for each sentence.
+    ) -> List[ProcessedSentence]:  # Multiple verbs for each sentence.
         srl_tagger = srl_tagger or get_srl_tagger()
         outputs = []
         for spacy_doc in spacy_outputs:

@@ -947,7 +947,8 @@ def gen_random_prompt(
     nblanks=None,
     return_sequence=True,
     frameset_path=DEFAULT_FRAME_SET_PATH,
-    keyword_str="NOUN_CHUNKS,RANDOM_SUBTREES,EXACT,PREFIX",
+    # keyword_str="NOUN_CHUNKS,RANDOM_SUBTREES,EXACT,PREFIX",
+    keyword_str="EXACT,UNCASED",
     p_overblank=0.0,
 ):
     """Get prompt with randomly chosen subset of tags

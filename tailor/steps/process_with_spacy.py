@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Iterable, List
 
 from tango.step import Step
 
@@ -29,7 +29,12 @@ class _WhitespaceSpacyTokenizer:
 @Step.register("get-spacy-model")
 class GetSpacyModel(Step):
     """
-    TODO: Docs
+    This step simply returns a spacy model, and optionally replaces its tokenizer
+    with a white-space tokenizer.
+
+    .. tip::
+
+        Registered as a :class:`~tango.step.Step` under the name "get-spacy-model".
     """
 
     DETERMINISTIC = True
@@ -38,10 +43,39 @@ class GetSpacyModel(Step):
     def run(
         self,
         spacy_model_name: str = "en_core_web_sm",
+        parse: bool = False,
         use_white_space_tokenizer: bool = False,
         **spacy_kwargs,
     ) -> SpacyModelType:
-        spacy_model = get_spacy_model(spacy_model_name, **spacy_kwargs)
+        """
+        Returns a (possibly cached) spacy model.
+
+        Parameters
+        ----------
+
+        spacy_model_name : :class:`str`
+            The name of the spacy model. Default is `"en_core_web_sm"`.
+        parse : :class:`bool`
+            Whether the model does dependency parsing. Default is `False`.
+            Set this to `True` if your tailor perturbation requires noun chunks.
+        use_white_space_tokenizer : :class:`bool`
+            Whether to use a white space tokenizer instead of spacy's tokenizer.
+            Default is `False`.
+            Set this to `True` when you have gold data which is pre-tokenized,
+            but spacy's tokenization doesn't match the gold.
+
+        Returns
+        -------
+        :class:`SpacyModelType`
+            The spacy model.
+
+        """
+        spacy_model = get_spacy_model(
+            spacy_model_name,
+            parse=parse,
+            updated_tokenizer=use_white_space_tokenizer,
+            **spacy_kwargs,
+        )
         if use_white_space_tokenizer:
             spacy_model.tokenizer = _WhitespaceSpacyTokenizer(spacy_model.vocab)
         return spacy_model
@@ -50,7 +84,11 @@ class GetSpacyModel(Step):
 @Step.register("process-with-spacy")
 class ProcessWithSpacy(Step):
     """
-    TODO: Docs
+    This step applies the spacy model to the provided list of sentences.
+
+    .. tip::
+
+        Registered as a :class:`~tango.step.Step` under the name "process-with-spacy".
     """
 
     DETERMINISTIC = True
@@ -61,9 +99,24 @@ class ProcessWithSpacy(Step):
         self,
         sentences: Iterable[str],
         spacy_model: SpacyModelType,
-    ) -> Iterable[SpacyDoc]:
+    ) -> List[SpacyDoc]:
+        """
+        Returns the list of spacy docs for all `sentences`.
 
-        outputs: Iterable[SpacyDoc] = []
+        Parameters
+        ----------
+        sentences : :class:`Iterable[str]`,
+            The list of sentences to process.
+        spacy_model : :class:`SpacyModelType`
+            The spacy model to use for processing the strings.
+
+        Returns
+        -------
+        :class: `List[SpacyDoc]`
+            The spacy docs for all strings.
+        """
+
+        outputs: List[SpacyDoc] = []
         for string in sentences:
             spacy_doc = spacy_model(string)
             outputs.append(spacy_doc)
