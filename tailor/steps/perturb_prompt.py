@@ -2,7 +2,6 @@ from munch import Munch
 from typing import Any, Dict, List, Optional, NamedTuple, Union
 from tango.step import Step
 
-# from tailor.steps.generate_prompts_by_tags import PromptObject
 from tailor.steps.get_srl_tags import ProcessedSentence
 from tailor.common.perturb_function import PerturbFunction, PerturbStringFunction
 from tailor.common.perturbation_criteria import (
@@ -14,7 +13,6 @@ from tailor.common.perturbation_criteria import (
 
 from tailor.common.latest_utils import (
     gen_prompts_by_tags,
-    get_unique_prompts,
     gen_prompt_by_perturb_str,
     is_equal_headers,
     is_equal_prompts,
@@ -59,9 +57,14 @@ def get_unique_prompt_objects(prompts: List[PromptObject]):
 
 
 @Step.register("perturb-prompt-with-str")
-class PerturbPromptWithFunction(Step):
+class PerturbPromptWithString(Step):
     """
-    TODO: Docs
+    This step generates prompts for perturbing the processed (spacy tokens and srl tags)
+    sentences.
+
+    .. tip::
+
+        Registered as a :class:`~tango.step.Step` under the name "perturb-prompt-with-str".
 
     Note: When using config, FromParams will try to resolve `perturb_str_func`
     to a registered `PerturbStringFunction` class first. If it doesn't find a
@@ -75,11 +78,34 @@ class PerturbPromptWithFunction(Step):
     def run(
         self,
         processed_sentences: List[ProcessedSentence],
-        intermediate_prompt_kwargs: Dict[str, Any],
         perturb_str_func: Union[PerturbStringFunction, str],
+        intermediate_prompt_kwargs: Optional[Dict[str, Any]] = None,
         criteria_func: PerturbationCriteria = AllVerbs(),
         args_to_blank_condition: ArgsToBlankCondition = UniqueTags(),
-    ) -> List[List[str]]:
+    ) -> List[List[PromptObject]]:
+        """
+        Returns the list of prompts for perturbing every verb in every sentence.
+
+        Parameters
+        ----------
+        processed_sentences : :class:`List[ProcessedSentence]`,
+            The list of processed sentences. See output of :class:`GetSRLTags`.
+        perturb_str_func : `Union[:class:PerturbationStringFunction, str]
+            The perturbation to apply.
+        intermediate_prompt_kwargs : `Dict[str, Any]`, optional
+            Keyword arguments for generating intermediate prompts.
+        criteria_func : :class:`PerturbationCriteria`, optional
+            The criteria for choosing the verbs in the sentence for the perturbation.
+            Default is :class:`AllVerbs`.
+        args_to_blank_condition : :class:`ArgsToBlankCondition`, optional
+            Default is :class:`UniqueTags`.
+
+        Returns
+        -------
+        :class: `List[List[PromptObject]]`
+            The list of prompts for perturbing every verb in every sentence.
+        """
+        intermediate_prompt_kwargs = intermediate_prompt_kwargs or {}
         all_prompts = []
         for processed in processed_sentences:
             sentence_prompts = []
@@ -119,9 +145,14 @@ class PerturbPromptWithFunction(Step):
 
 
 @Step.register("perturb-prompt-with-function")
-class PerturbPrompt(Step):
+class PerturbPromptWithFunction(Step):
     """
-    TODO
+    This step generates prompts for perturbing the processed (spacy tokens and srl tags)
+    sentences.
+
+    .. tip::
+
+        Registered as a :class:`~tango.step.Step` under the name "perturb-prompt-with-function".
     """
 
     DETERMINISTIC = True
@@ -130,12 +161,35 @@ class PerturbPrompt(Step):
     def run(
         self,
         processed_sentences: List[ProcessedSentence],
-        intermediate_prompt_kwargs: Dict[str, Any],
         perturb_fn: PerturbFunction,
+        intermediate_prompt_kwargs: Optional[Dict[str, Any]] = None,
         criteria_func: PerturbationCriteria = AllVerbs(),
         args_to_blank_condition: ArgsToBlankCondition = UniqueTags(),
         **perturb_fn_kwargs,
     ) -> List[List[str]]:
+        """
+        Returns the list of prompts for perturbing every verb in every sentence.
+
+        Parameters
+        ----------
+        processed_sentences : :class:`List[ProcessedSentence]`,
+            The list of processed sentences. See output of :class:`GetSRLTags`.
+        perturb_fn : :class:`PerturbFunction`
+            The perturbation to apply.
+        intermediate_prompt_kwargs : `Dict[str, Any]`, optional
+            Keyword arguments for generating intermediate prompts.
+        criteria_func : :class:`PerturbationCriteria`, optional
+            The criteria for choosing the verbs in the sentence for the perturbation.
+            Default is :class:`AllVerbs`.
+        args_to_blank_condition : :class:`ArgsToBlankCondition`, optional
+            Default is :class:`UniqueTags`.
+
+        Returns
+        -------
+        :class: `List[List[PromptObject]]`
+            The list of prompts for perturbing every verb in every sentence.
+        """
+        intermediate_prompt_kwargs = intermediate_prompt_kwargs or {}
         all_prompts = []
         for processed in processed_sentences:
             sentence_prompts = []
@@ -153,6 +207,6 @@ class PerturbPrompt(Step):
                 prompt = perturb_fn(processed.spacy_doc, tags_prompt, tags)
                 if prompt is not None:
                     sentence_prompts.append(prompt)
-            sentence_prompts = get_unique_prompts(sentence_prompts)
+            sentence_prompts = get_unique_prompt_objects(sentence_prompts)
             all_prompts.append(sentence_prompts)
         return all_prompts

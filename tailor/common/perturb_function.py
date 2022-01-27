@@ -16,7 +16,7 @@ class ChangeVoice(PerturbStringFunction):
     def __call__(self, prompt_meta, *args, **kwargs) -> str:
 
         vtense = prompt_meta.vtense
-        target_voice = "active" if prompt_meta.vvoice is "passive" else "passive"
+        target_voice = "active" if prompt_meta.vvoice == "passive" else "passive"
 
         perturb_str = (
             f"CONTEXT(DELETE_TEXT),VERB(CHANGE_TENSE({vtense}),CHANGE_VOICE({target_voice}))"
