@@ -2,7 +2,7 @@ from munch import Munch
 from typing import Any, Dict, List, Optional, NamedTuple, Union
 from tango.step import Step
 
-from tailor.steps.get_srl_tags import ProcessedSentence
+from tailor.common.abstractions import ProcessedSentence, PromptObject
 from tailor.common.perturb_function import PerturbFunction, PerturbStringFunction, Perturbation
 from tailor.common.perturbation_criteria import (
     PerturbationCriteria,
@@ -26,17 +26,6 @@ Sometimes you want something like: do something to question based on context in 
 So, another type of step for such cases where you take 2 processed sentences, and
 determine which one is A and B, respectively.
 """
-
-
-class PromptObject(NamedTuple):
-    """
-    TODO
-    """
-
-    prompt: Optional[str] = None
-    answer: Optional[str] = None
-    meta: Optional[Munch] = None  # TODO: use a PromptMeta abstraction.
-    name: Optional[str] = None
 
 
 def _munch_to_prompt_object(prompt_munch: Munch, name: Optional[str] = None):

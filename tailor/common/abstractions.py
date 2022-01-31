@@ -1,76 +1,119 @@
 from enum import Enum
-from typing import List, NamedTuple, Optional
+from typing import Dict, List, NamedTuple, Optional
 from munch import Munch
 
 from tailor.common.util import SpacyDoc
 
-
-class Specificities(Enum):
-    COMPLETE: str = "complete"
-    PARTIAL: str = "partial"
-    SPARSE: str = "sparse"
-
-
-class VerbVoice(Enum):
-    ACTIVE: str = "active"
-    PASSIVE: str = "passive"
-
-
-class VerbTense(Enum):
-    PRESENT: str = "present"
-    FUTURE: str = "future"
-    PAST: str = "past"
-
-
-class NonCoreArgs(NamedTuple):
-    tlemma: str
-    tlemma_type: Optional[str]  # TODO: confirm
-    raw_tag: str
-    tag: str  # TODO: add checks for correctness
-    blank_idx: List[int]  # TODO: should this be Tuple[int, int]?
-
-
-class PromptMeta(NamedTuple):
-
-    noncore_args: List[NonCoreArgs]
-
-    blank_indexes: List[List[int]]  # TODO:  are indexes always lists of 2? should they be a tuple?
-
-    answers: List[str]
-
-    agent: str
-
-    patient: str
-
-    frameset_id: str
-
-    vvoice: VerbVoice  # ACTIVE/PASSIVE
-
-    vtense: VerbTense  # PRESENT/FUTURE/PAST
-
-    vlemma: str
-
-    doc: SpacyDoc
-
-
-class Prompt(NamedTuple):  # TODO: add more functionality?
-
-    prompt: str
-
-    meta: PromptMeta
-
-    answer: str  # TODO: what's this?
-
-
-class CriteriaForPerturbation:
+class ProcessedSentence(NamedTuple):
     """
-    TODO: add details
-    A lot of the perturbation strategies might have criteria that must be met
-    for the perturbation to be applied, and these criteria are task-specific,
-    so we’ll want the user to supply them. A given sentence will have multiple
-    prompts (one for each predicate), and we often only want to apply the perturbations
-    for specific predicates and if some argument(s) contain some linguistic phenomenon
-    (eg. prepositional phrases, a particular verb voice, etc.)
+    Abstraction for a sentence processed with spacy and srl tagger.
+
+    sentence : :class:`str`
+        The original sentence string.
+
+    spacy_doc : :class:`SpacyDoc`
+        The spacy doc for the sentence string.
+
+    verbs : :class:`List[Dict]`
+        The list of detected verbs in the sentence. Each verb `Dict`
+        contains all the tags for that verb.
     """
 
-    pass
+    sentence: str
+    spacy_doc: SpacyDoc
+    verbs: List[Dict]  # Dict: {"verb": str, "tags": List[str]}
+
+    def get_tags_list(self):
+        return [verb_dict["tags"] for verb_dict in self.verbs]
+
+class PromptObject(NamedTuple):
+    """
+    TODO
+    """
+
+    prompt: Optional[str] = None
+    answer: Optional[str] = None
+    meta: Optional[Munch] = None  # TODO: use a PromptMeta abstraction.
+    name: Optional[str] = None
+
+
+class GeneratedPrompt(NamedTuple):
+
+    """
+    The input string, repeated.
+    """
+    prompt_no_header: str
+
+    """
+    The natural language sentence.
+    """
+    sentence: str
+
+    """
+    The meta info of the control, see output to `extract_meta_from_prompt`
+    """
+    meta: Munch # TODO: PromptMeta abstraction.
+
+    """
+    The identified spans being changed, and the verb.
+        [{tag: 'VERB', star: 6, end: 7}, {tag: 'FILL1', start: 0, end: 1}]
+    """
+    annotations: List[Munch]
+
+    """
+    The tokenized words of sentence.
+    """
+    words: List[str]
+
+    """
+    The verb index.
+    """
+    vidx: int
+
+
+# class Specificities(Enum):
+#     COMPLETE: str = "complete"
+#     PARTIAL: str = "partial"
+#     SPARSE: str = "sparse"
+
+
+# class VerbVoice(Enum):
+#     ACTIVE: str = "active"
+#     PASSIVE: str = "passive"
+
+
+# class VerbTense(Enum):
+#     PRESENT: str = "present"
+#     FUTURE: str = "future"
+#     PAST: str = "past"
+
+
+# class NonCoreArgs(NamedTuple):
+#     tlemma: str
+#     tlemma_type: Optional[str]  # TODO: confirm
+#     raw_tag: str
+#     tag: str  # TODO: add checks for correctness
+#     blank_idx: List[int]  # TODO: should this be Tuple[int, int]?
+
+
+# class PromptMeta(NamedTuple):
+
+#     noncore_args: List[NonCoreArgs]
+
+#     blank_indexes: List[List[int]]  # TODO:  are indexes always lists of 2? should they be a tuple?
+
+#     answers: List[str]
+
+#     agent: str
+
+#     patient: str
+
+#     frameset_id: str
+
+#     vvoice: VerbVoice  # ACTIVE/PASSIVE
+
+#     vtense: VerbTense  # PRESENT/FUTURE/PAST
+
+#     vlemma: str
+
+#     doc: SpacyDoc

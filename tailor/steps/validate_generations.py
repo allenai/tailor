@@ -5,8 +5,7 @@ from tango.step import Step
 
 from allennlp.predictors import Predictor
 
-from tailor.steps.get_srl_tags import ProcessedSentence
-from tailor.steps.generate_from_prompts import GeneratedPromptDict
+from tailor.common.abstractions import ProcessedSentence, GeneratedPrompt
 
 from tailor.common.util import predict_batch_srl, get_srl_tagger, SpacyModelType
 from tailor.common.generate_utils import compute_edit_ops
@@ -27,7 +26,7 @@ class ValidateGenerations(Step):
     def run(
         self,
         processed_sentences: List[ProcessedSentence],
-        generated_prompt_dicts: List[List[GeneratedPromptDict]],
+        generated_prompt_dicts: List[List[GeneratedPrompt]],
         spacy_model: SpacyModelType,
         srl_tagger: Optional[Predictor] = None,
         perplex_thred: Optional[int] = None,
@@ -47,7 +46,7 @@ class ValidateGenerations(Step):
 
             validated_set = []
             for prompt_dict in prompt_dicts:
-                prompt_dict = prompt_dict.prompt_dict
+                prompt_dict = prompt_dict #.prompt_dict
 
                 generated = prompt_dict.sentence
                 if generated in validated_set or generated.lower() == orig_doc.text.lower():

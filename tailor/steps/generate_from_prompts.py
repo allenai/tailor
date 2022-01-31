@@ -4,20 +4,22 @@ from transformers.pipelines import Text2TextGenerationPipeline
 
 from tango.step import Step
 
-from tailor.steps.get_srl_tags import ProcessedSentence
-
 from tailor.common.latest_utils import parse_filled_prompt
 from tailor.common.util import SpacyModelType
 
-from tailor.steps.perturb_prompt import PromptObject
+from tailor.common.abstractions import ProcessedSentence, PromptObject, GeneratedPrompt
 
 from tailor.common.model_utils import generate_and_clean_batch, load_generator
 
-# Temporary wrapper to deal with Munch/Params issue.
-class GeneratedPromptDict(NamedTuple):
-
-    prompt_dict: Munch
-
+def _munch_to_generated_prompt(prompt_munch: Munch):
+    return GeneratedPrompt(
+        prompt_no_header=prompt_munch.prompt_no_header,
+        sentence=prompt_munch.sentence,
+        meta=prompt_munch.meta, 
+        annotations=prompt_munch.annotations,
+        words=prompt_munch.words,
+        vidx=prompt_munch.vidx,
+    )
 
 @Step.register("generate-from-prompts")
 class GenerateFromPrompts(Step):
@@ -32,7 +34,7 @@ class GenerateFromPrompts(Step):
         generator: Optional[Text2TextGenerationPipeline] = None,
         num_perturbations: int = 3,
         **generation_kwargs,
-    ) -> List[List[GeneratedPromptDict]]:
+    ) -> List[List[GeneratedPrompt]]:
 
         generator = generator or load_generator()
 
@@ -64,7 +66,7 @@ class GenerateFromPrompts(Step):
                         )
                     except:
                         continue
-                    prompt_dicts.append(GeneratedPromptDict(prompt_dict))
+                    prompt_dicts.append(_munch_to_generated_prompt(prompt_dict))
 
             all_sentences.append(prompt_dicts)
 

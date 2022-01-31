@@ -5,29 +5,7 @@ from tango.step import Step
 
 from tailor.common.util import get_srl_tagger, predict_batch_srl
 from tailor.steps.process_with_spacy import SpacyDoc
-
-
-class ProcessedSentence(NamedTuple):
-    """
-    Abstraction for a sentence processed with spacy and srl tagger.
-
-    sentence : :class:`str`
-        The original sentence string.
-
-    spacy_doc : :class:`SpacyDoc`
-        The spacy doc for the sentence string.
-
-    verbs : :class:`List[Dict]`
-        The list of detected verbs in the sentence. Each verb `Dict`
-        contains all the tags for that verb.
-    """
-
-    sentence: str
-    spacy_doc: SpacyDoc
-    verbs: List[Dict]  # Dict: {"verb": str, "tags": List[str]}
-
-    def get_tags_list(self):
-        return [verb_dict["tags"] for verb_dict in self.verbs]
+from tailor.common.abstractions import ProcessedSentence
 
 
 @Step.register("get-srl-tags")
