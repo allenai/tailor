@@ -2204,7 +2204,7 @@ def add_predictions_to_prompt_dict(generated_dict, predicted, frameset_path=DEFA
     """ ""
 
     # this part adds the prediction to the prompts
-    if not len(predicted["words"]) == len(generated_dict["words"]):
+    if not len(predicted["words"]) == len(generated_dict["sentence"].split(" ")):
         generated_dict.is_valid = False
         return
     vidx = generated_dict.vidx
@@ -2271,3 +2271,52 @@ def is_equal_headers(p1, p2):
         bool: Whether the two prompts have equal headers
     """
     return extract_header_from_prompt(p1)[0] == extract_header_from_prompt(p2)[0]
+
+
+def get_arg_span(meta, short_tag):
+    """Helper function to get doc span of a given arg
+    Args:
+        meta: Munch object
+        short_tag: readable tag of arg whose span we want
+    """
+    original_blank_idx = None
+    args = meta.core_args if short_tag in ["AGENT", "PATIENT"] else meta.noncore_args
+    original_blank_tuple = [arg.blank_idx for arg in args if arg.tag == short_tag]
+    try:
+        original_blank_idx = meta.blank_indexes.index(original_blank_tuple[0])
+    except:
+        original_blank_idx = None
+    # can only shorten an existing argument
+    if original_blank_idx is None:
+        return None
+
+    blank_idx = meta.blank_indexes[original_blank_idx]
+    return meta.doc[blank_idx[0] : blank_idx[1]]
+
+
+def capitalize_by_voice(verb_voice, agent_kw, patient_kw):
+    """Helper function to fix capitalizations of agent/patient keywords based on verb voice
+    This is to encourage generating full sentence without hallucinating context, since generator is case sensitive.
+    Only capitalizes/lowercases if kws are not None
+    Args:
+        verb_voice (str): active/passive
+        agent_kw (str, or None): agent keyword
+        patient_kw (str, or None): patient keyword
+    Returns:
+        agent_kw (str, or None): new agent keyword
+        patient_kw (str, or None): new patient keyword
+    """
+    if agent_kw is None and patient_kw is None:
+        warnings_message = "Trying to change capitalization of agent and patient keywords, but got None for both arguments"
+        warnings.warn(warnings_message)
+    if verb_voice == "passive":
+        if agent_kw is not None:
+            agent_kw = lowercase_keyword(agent_kw)
+        if patient_kw is not None:
+            patient_kw = uppercase_keyword(patient_kw)
+    else:
+        if agent_kw is not None:
+            agent_kw = uppercase_keyword(agent_kw)
+        if patient_kw is not None:
+            patient_kw = lowercase_keyword(patient_kw)
+    return agent_kw, patient_kw

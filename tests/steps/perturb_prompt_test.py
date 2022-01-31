@@ -26,7 +26,7 @@ class SamplePerturbFunction(PerturbFunction):
         if perturbed is None:
             return None
         if not is_equal_headers(perturbed.prompt, intermediate_prompt.prompt):
-            return _munch_to_prompt_object(perturbed)
+            return _munch_to_prompt_object(perturbed, name="sample")
 
 
 class TestPerturbPrompt(TailorTestCase):

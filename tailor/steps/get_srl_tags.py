@@ -3,7 +3,7 @@ from typing import Dict, List, NamedTuple, Optional
 from allennlp.predictors import Predictor
 from tango.step import Step
 
-from tailor.common.util import get_srl_tagger
+from tailor.common.util import get_srl_tagger, predict_batch_srl
 from tailor.steps.process_with_spacy import SpacyDoc
 
 
@@ -66,12 +66,14 @@ class GetSRLTags(Step):
         """
         srl_tagger = srl_tagger or get_srl_tagger()
         outputs = []
-        for spacy_doc in spacy_outputs:
-            sentence = " ".join([token.text for token in spacy_doc])
-            srl_prediction = srl_tagger.predict_json(
-                {"sentence": sentence}
-            )  # TODO: use batches for efficiency.
+        sentences = [" ".join([token.text for token in spacy_doc]) for spacy_doc in spacy_outputs]
+        srl_predictions = predict_batch_srl(sentences, srl_tagger)
 
-            outputs.append(ProcessedSentence(sentence, spacy_doc, srl_prediction["verbs"]))
+        assert len(srl_predictions) == len(sentences) == len(spacy_outputs)
+
+        for idx, srl_prediction in enumerate(srl_predictions):
+            outputs.append(
+                ProcessedSentence(sentences[idx], spacy_outputs[idx], srl_prediction["verbs"])
+            )
 
         return outputs

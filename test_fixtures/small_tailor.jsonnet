@@ -30,10 +30,16 @@ local perturb_func = "change_voice";
             "perturb_str_func": "CONTEXT(DELETE_TEXT),VERB(CHANGE_VOICE(passive))",
             //"perturb_str_func": "some_random_string",
         },
-        "generated_premises": {
+        "generated_premises_dicts": {
             "type": "generate-from-prompts",
             "prompts": {"type": "ref", "ref": "premise_perturbations"},
             "processed_sentences": {"type": "ref", "ref": "premises_srl"},
+            "spacy_model": {"type": "ref", "ref": "spacy_model"},
+        },
+        "generated_premises": {
+            "type": "validate-generations",
+            "processed_sentences": {"type": "ref", "ref": "premises_srl"},
+            "generated_prompt_dicts": {"type": "ref", "ref": "generated_premises_dicts"},
             "spacy_model": {"type": "ref", "ref": "spacy_model"},
         }
     }   

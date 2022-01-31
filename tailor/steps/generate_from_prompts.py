@@ -1,4 +1,7 @@
-from typing import Iterable, List, Optional
+from munch import Munch
+from typing import Iterable, List, Optional, NamedTuple
+from transformers.pipelines import Text2TextGenerationPipeline
+
 from tango.step import Step
 
 from tailor.steps.get_srl_tags import ProcessedSentence
@@ -10,13 +13,10 @@ from tailor.steps.perturb_prompt import PromptObject
 
 from tailor.common.model_utils import generate_and_clean_batch, load_generator
 
-# from tailor.common.generate_utils import compute_edit_ops, generate_and_clean_batch, load_generator
+# Temporary wrapper to deal with Munch/Params issue.
+class GeneratedPromptDict(NamedTuple):
 
-
-# class GeneratedPrompt(NamedTuple):
-
-#     generated: str
-#     clean_generated: Optional[str] = None
+    prompt_dict: Munch
 
 
 @Step.register("generate-from-prompts")
@@ -29,12 +29,12 @@ class GenerateFromPrompts(Step):
         processed_sentences: Iterable[ProcessedSentence],
         prompts: List[List[PromptObject]],
         spacy_model: SpacyModelType,
+        generator: Optional[Text2TextGenerationPipeline] = None,
         num_perturbations: int = 3,
-        perplex_thred: Optional[int] = None,
         **generation_kwargs,
-    ):
+    ) -> List[List[GeneratedPromptDict]]:
 
-        generator = load_generator()  # make it a step output?
+        generator = generator or load_generator()
 
         # TODO: make more efficient by flattening/unflattening and using batches for generation.
         all_sentences = []
@@ -51,7 +51,7 @@ class GenerateFromPrompts(Step):
                 **generation_kwargs,
             )
 
-            validated_set = []
+            prompt_dicts = []
             orig_doc = sentence.spacy_doc
 
             if generated_prompts:
@@ -64,24 +64,8 @@ class GenerateFromPrompts(Step):
                         )
                     except:
                         continue
-                    generated = prompt_dict.sentence
-                    if generated in validated_set or generated.lower() == orig_doc.text.lower():
-                        continue
-                    is_valid = True
-                    # # TODO:
-                    # generated_doc = spacy_model(generated)
-                    # if perplex_thred is not None:
-                    #     eop = compute_edit_ops(orig_doc, generated_doc)
-                    #     pp = self._compute_delta_perplexity(eop)
-                    #     is_valid = pp.pr_sent < perplex_thred and pp.pr_phrase < perplex_thred
-                    # if is_valid:
-                    #     predicted = self.srl_predict(generated_s)
-                    #     prompt_dict = add_predictions_to_prompt_dict(prompt_dict, predicted)
-                    #     is_valid = is_valid and is_followed_ctrl(prompt_dict, generated_doc, self.spacy_processor)
-                    if is_valid:
-                        validated_set.append(generated)
+                    prompt_dicts.append(GeneratedPromptDict(prompt_dict))
 
-            all_sentences.append(validated_set)
-            # all_sentences.append(generated)
+            all_sentences.append(prompt_dicts)
 
         return all_sentences

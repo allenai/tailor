@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional, NamedTuple, Union
 from tango.step import Step
 
 from tailor.steps.get_srl_tags import ProcessedSentence
-from tailor.common.perturb_function import PerturbFunction, PerturbStringFunction
+from tailor.common.perturb_function import PerturbFunction, PerturbStringFunction, Perturbation
 from tailor.common.perturbation_criteria import (
     PerturbationCriteria,
     AllVerbs,
@@ -36,11 +36,12 @@ class PromptObject(NamedTuple):
     prompt: Optional[str] = None
     answer: Optional[str] = None
     meta: Optional[Munch] = None  # TODO: use a PromptMeta abstraction.
+    name: Optional[str] = None
 
 
-def _munch_to_prompt_object(prompt_munch: Munch):
+def _munch_to_prompt_object(prompt_munch: Munch, name: Optional[str] = None):
     return PromptObject(
-        prompt=prompt_munch.prompt, answer=prompt_munch.answer, meta=prompt_munch.meta
+        prompt=prompt_munch.prompt, answer=prompt_munch.answer, meta=prompt_munch.meta, name=name
     )
 
 
@@ -121,24 +122,35 @@ class PerturbPromptWithString(Step):
                 )
 
                 if isinstance(perturb_str_func, PerturbStringFunction):
-                    perturb_str = perturb_str_func(tags_prompt.meta)
-                    # TODO: return an object with metadata info: which perturb func created the prompt.
+                    perturbations = perturb_str_func(tags_prompt.meta)
+                    if isinstance(perturbations, Perturbation):
+                        perturbations = [perturbations]
 
                 else:
                     validate_perturb_str(perturb_str_func)
-                    perturb_str = perturb_str_func
+                    perturbations = [
+                        Perturbation(
+                            perturb_str=perturb_str_func,
+                            perturb_meta=tags_prompt.meta,
+                            name=perturb_str_func,
+                        )
+                    ]
 
-                perturbed = gen_prompt_by_perturb_str(
-                    processed.spacy_doc, tags, perturb_str, tags_prompt.meta
-                )
+                for perturbation in perturbations:
+                    perturbed = gen_prompt_by_perturb_str(
+                        processed.spacy_doc,
+                        tags,
+                        perturbation.perturb_str,
+                        perturbation.perturb_meta,
+                    )
 
-                if is_equal_headers(perturbed.prompt, tags_prompt.prompt):
-                    prompt = None
-                else:
-                    prompt = _munch_to_prompt_object(perturbed)
+                    if is_equal_headers(perturbed.prompt, tags_prompt.prompt):
+                        prompt = None
+                    else:
+                        prompt = _munch_to_prompt_object(perturbed, perturbation.name)
 
-                if prompt is not None:
-                    sentence_prompts.append(prompt)
+                    if prompt is not None:
+                        sentence_prompts.append(prompt)
             sentence_prompts = get_unique_prompt_objects(sentence_prompts)
             all_prompts.append(sentence_prompts)
         return all_prompts

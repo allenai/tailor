@@ -79,3 +79,12 @@ def get_srl_tagger(model_path: str = DEFAULT_SRL_TAGGER):
     )
     predictor._tokenizer = SpacyTokenizer(pos_tags=True, split_on_spaces=True)
     return predictor
+
+
+def predict_batch_srl(examples, model, batch_size=128):
+    input_jsons = [{"sentence": e} for e in examples]
+    with torch.no_grad():
+        preds = []
+        for e in range(0, len(input_jsons), batch_size):
+            preds += model.predict_batch_json(input_jsons[e : e + batch_size])
+        return preds
