@@ -45,5 +45,7 @@ class GetSentences(Step):
             The specific text field as an iterable.
         """
 
-        # TODO: should check if the field is string.
+        assert len(dataset[key]) > 0 and isinstance(
+            dataset[key][0], str
+        ), f"The field '{key}' is not a text field; this may lead to errors downstream."
         return dataset[key][start_idx:end_idx]  # None works as expected.

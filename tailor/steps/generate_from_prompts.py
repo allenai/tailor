@@ -1,5 +1,5 @@
 from munch import Munch
-from typing import Any, Iterable, List, Optional
+from typing import Any, List, Optional
 from transformers.pipelines import Text2TextGenerationPipeline
 
 from tango.step import Step

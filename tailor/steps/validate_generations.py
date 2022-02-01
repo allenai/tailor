@@ -1,4 +1,5 @@
-from typing import List, Optional
+from munch import Munch
+from typing import List, Optional, Tuple
 import torch
 from tango.step import Step
 
@@ -17,6 +18,19 @@ from tailor.common.perplex_filter import (
 # from tailor.common.ctrl_filter import is_followed_ctrl
 # from tailor.common.latest_utils import add_predictions_to_prompt_dict
 
+from transformers.modeling_utils import PreTrainedModel
+from transformers.tokenization_utils import PreTrainedTokenizerBase
+
+
+@Step.register("load-perplexity-scorer")
+class LoadPerplexityScorer(Step):
+    DETERMINISTIC = True
+    CACHEABLE = False  # TODO
+
+    def run(self, model_name: str = "gpt2") -> Tuple[PreTrainedModel, PreTrainedTokenizerBase]:
+        perplex_scorer = load_perplex_scorer(is_cuda=torch.cuda.is_available())
+        return perplex_scorer.model, perplex_scorer.tokenizer
+
 
 @Step.register("validate-generations")
 class ValidateGenerations(Step):
@@ -30,11 +44,18 @@ class ValidateGenerations(Step):
         spacy_model: SpacyModelType,
         srl_tagger: Optional[Predictor] = None,
         perplex_thred: Optional[int] = None,
-    ):
+        perplex_scorer: Optional[Tuple[PreTrainedModel, PreTrainedTokenizerBase]] = None,
+    ) -> List[List[str]]:
 
         is_cuda = torch.cuda.is_available()
 
-        perplex_scorer = load_perplex_scorer(is_cuda=is_cuda)  # TODO: output of a step instead.
+        if perplex_scorer:
+            perplex_scorer = Munch(
+                model=perplex_scorer[0], tokenizer=perplex_scorer[1]
+            )  # backwards compatibility.
+        else:
+            perplex_scorer = load_perplex_scorer(is_cuda=is_cuda)
+
         # srl_tagger = get_srl_tagger()  # TODO
 
         all_sentences = []
