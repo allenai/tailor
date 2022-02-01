@@ -6,9 +6,9 @@ from tango.step import Step
 from tailor.common.abstractions import GeneratedPrompt
 
 # from tailor.common.utils import SpacyModelType  # , get_srl_tagger, predict_batch_srl
-from tailor.common.perplex_filter import load_perplex_scorer
+from tailor.common.filters.perplex_filter import load_perplex_scorer
 
-# from tailor.common.ctrl_filter import is_followed_ctrl
+# from tailor.common.filters.ctrl_filter import is_followed_ctrl
 # from tailor.common.utils.head_prompt_utils import add_predictions_to_prompt_dict_new
 
 from transformers.modeling_utils import PreTrainedModel

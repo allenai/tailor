@@ -13,7 +13,7 @@ from tailor.common.abstractions import ProcessedSentence, PromptObject, Generate
 from tailor.common.utils.model_utils import generate_and_clean_batch, load_generator
 
 from tailor.common.utils.generate_utils import compute_edit_ops
-from tailor.common.perplex_filter import (
+from tailor.common.filters.perplex_filter import (
     compute_delta_perplexity,
     load_perplex_scorer,
 )
