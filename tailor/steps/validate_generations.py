@@ -1,3 +1,4 @@
+from copy import deepcopy
 from munch import Munch
 from typing import List, Optional, Tuple
 import torch
@@ -11,12 +12,12 @@ from tailor.common.util import SpacyModelType  # , get_srl_tagger, predict_batch
 from tailor.common.generate_utils import compute_edit_ops
 from tailor.common.perplex_filter import (
     compute_delta_perplexity,
-    # compute_sent_perplexity,
+    compute_sent_perplexity,
     load_perplex_scorer,
 )
 
 # from tailor.common.ctrl_filter import is_followed_ctrl
-# from tailor.common.latest_utils import add_predictions_to_prompt_dict
+# from tailor.common.latest_utils import add_predictions_to_prompt_dict_new
 
 from transformers.modeling_utils import PreTrainedModel
 from transformers.tokenization_utils import PreTrainedTokenizerBase
@@ -37,52 +38,36 @@ class ValidateGenerations(Step):
     DETERMINISTIC = True
     CACHEABLE = True
 
+    VERSION = "05"
+
     def run(
         self,
-        processed_sentences: List[ProcessedSentence],
         generated_prompt_dicts: List[List[GeneratedPrompt]],
-        spacy_model: SpacyModelType,
-        srl_tagger: Optional[Predictor] = None,
-        perplex_thred: Optional[int] = None,
-        perplex_scorer: Optional[Tuple[PreTrainedModel, PreTrainedTokenizerBase]] = None,
+        perplex_thresh: Optional[int] = None,
     ) -> List[List[str]]:
-
-        is_cuda = torch.cuda.is_available()
-
-        if perplex_scorer:
-            perplex_scorer = Munch(
-                model=perplex_scorer[0], tokenizer=perplex_scorer[1]
-            )  # backwards compatibility.
-        else:
-            perplex_scorer = load_perplex_scorer(is_cuda=is_cuda)
 
         # srl_tagger = get_srl_tagger()  # TODO
 
         all_sentences = []
-        assert len(processed_sentences) == len(generated_prompt_dicts)
-        for idx, sentence in enumerate(processed_sentences):
-            prompt_dicts = generated_prompt_dicts[idx]
 
-            orig_doc = sentence.spacy_doc
-
+        for idx, sentence_prompts in enumerate(generated_prompt_dicts):
             validated_set = []
-            for prompt_dict in prompt_dicts:
-                prompt_dict = prompt_dict  # .prompt_dict
-
-                generated = prompt_dict.sentence
-                if generated in validated_set or generated.lower() == orig_doc.text.lower():
-                    continue
+            for prompt_dict in sentence_prompts:
                 is_valid = True
-                generated_doc = spacy_model(generated)
-                if perplex_thred is not None:
-                    eop = compute_edit_ops(orig_doc, generated_doc)
-                    pp = compute_delta_perplexity(eop, perplex_scorer, is_cuda=is_cuda)
-                    is_valid = pp.pr_sent < perplex_thred and pp.pr_phrase < perplex_thred
+                perplexity = prompt_dict.perplexities
+                if perplex_thresh is not None and perplexity is not None:
+                    is_valid = (
+                        perplexity.pr_sent < perplex_thresh
+                        and perplexity.pr_phrase < perplex_thresh
+                    )
+                # TODO (Alexis): Is this required?
                 # if is_valid:
                 #     predicted = predict_batch_srl([generated.strip()], srl_tagger)[0]
-                #     prompt_dict = add_predictions_to_prompt_dict(prompt_dict, predicted)
+                #     prompt_dict = add_predictions_to_prompt_dict_new(prompt_dict, predicted)
                 #     is_valid = is_valid and is_followed_ctrl(prompt_dict, generated_doc, spacy_model)
+
                 if is_valid:
-                    validated_set.append(generated)
+                    validated_set.append(prompt_dict.sentence)
+
             all_sentences.append(validated_set)
         return all_sentences

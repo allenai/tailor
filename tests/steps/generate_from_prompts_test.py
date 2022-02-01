@@ -201,6 +201,7 @@ class TestGenerateFromPrompts(TailorTestCase):
             processed_sentences=self.processed_sentences,
             prompts=self.prompts,
             spacy_model=self.nlp,
+            compute_perplexity=True,
         )
 
         assert len(result) == 2

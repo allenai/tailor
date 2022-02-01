@@ -10,6 +10,7 @@ from tailor.common.latest_utils import (
 def is_followed_ctrl(generated_dict, doc=None, nlp=None):
     verifies = compute_ctrl_stats_per_prompt(generated_dict, doc, nlp)
     if not verifies:
+        print("Compute ctrl stats failed!!")
         return False
     is_follow = True
     for v in verifies:

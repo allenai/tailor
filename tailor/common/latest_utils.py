@@ -2201,10 +2201,10 @@ def add_predictions_to_prompt_dict(generated_dict, predicted, frameset_path=DEFA
             }
     Returns:
         Munch: still the prompt dict, just with the pred info updated
-    """ ""
+    """
 
     # this part adds the prediction to the prompts
-    if not len(predicted["words"]) == len(generated_dict["sentence"].split(" ")):
+    if not len(predicted["words"]) == len(generated_dict.sentence.split(" ")):
         generated_dict.is_valid = False
         return
     vidx = generated_dict.vidx
@@ -2216,6 +2216,51 @@ def add_predictions_to_prompt_dict(generated_dict, predicted, frameset_path=DEFA
     pred_dict = {get_vindex_by_tags(v["tags"]): deepcopy(v["tags"]) for v in predicted["verbs"]}
     if vidx not in pred_dict:
         generated_dict.is_valid = False
+        return generated_dict
+    raw_tags = pred_dict[vidx]
+    for ann in generated_dict.annotations:
+        pred = get_tag_for_span(
+            raw_tags, frameset_id, ann.start, ann.end, vlemma=vlemma, frameset_path=frameset_path
+        )
+        if pred:
+            label = convert_tag2readable(vlemma, pred, frameset_id, frameset_path=frameset_path)
+            ann.pred = label if label else pred
+    return generated_dict
+
+
+def add_predictions_to_prompt_dict_new(
+    generated_dict, predicted, frameset_path=DEFAULT_FRAME_SET_PATH
+):
+    # TODO: update this function with new prompt format
+    """Add the pred dict info to the prompt dict parsed by `parse_filled_prompt`
+    Args:
+        generated_dict (Munch): Output of `parse_filled_prompt`
+        predicted (Dict): the predicted tags for the sentence
+            {
+                'verbs': [{'verb': str, "description": str, "tags": str[]},
+                "words": str[]
+            }
+    Returns:
+        Munch: still the prompt dict, just with the pred info updated
+    """
+
+    # this part adds the prediction to the prompts
+    if not len(predicted["words"]) == len(generated_dict.sentence.split(" ")):
+        print("Length mismatch!!")
+        generated_dict._replace(is_valid=False)
+        return
+    vidx = generated_dict.vidx
+    vlemma = generated_dict.meta.vlemma
+    try:
+        frameset_id = generated_dict.meta.frameset_id
+    except:
+        frameset_id = "01"
+    pred_dict = {get_vindex_by_tags(v["tags"]): deepcopy(v["tags"]) for v in predicted["verbs"]}
+    if vidx not in pred_dict:
+        print("Missing vidx!!")
+        print("vidx", vidx)
+        print("pred_dict", pred_dict)
+        generated_dict._replace(is_valid=False)
         return generated_dict
     raw_tags = pred_dict[vidx]
     for ann in generated_dict.annotations:

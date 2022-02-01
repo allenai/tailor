@@ -25,9 +25,7 @@ local premises = [
             "type": "perturb-prompt-with-str",
             "processed_sentences": {"type": "ref", "ref": "premises_srl"},
             "perturb_str_func": "change_voice",
-            /*"intermediate_prompt_kwargs": {
-                "nblanks": 10,
-            },*/
+            "description": "preserves_meaning",
         },
         "premise_perturbations_shorten_core": {
             "type": "perturb-prompt-with-str",
@@ -35,7 +33,8 @@ local premises = [
             "intermediate_prompt_kwargs": {
                 "nblanks": 10,
             },
-            "perturb_str_func": "shorten_core_argument"
+            "perturb_str_func": "shorten_core_argument",
+            "description": "preserves_meaning",
         },
         "premise_perturbations": {
             "type": "combine-all-prompts",
@@ -49,12 +48,14 @@ local premises = [
             "prompts": {"type": "ref", "ref": "premise_perturbations"},
             "processed_sentences": {"type": "ref", "ref": "premises_srl"},
             "spacy_model": {"type": "ref", "ref": "spacy_model"},
+            "compute_perplexity": true,
         },
         "generated_premises": {
             "type": "validate-generations",
-            "processed_sentences": {"type": "ref", "ref": "premises_srl"},
+            //"processed_sentences": {"type": "ref", "ref": "premises_srl"},
             "generated_prompt_dicts": {"type": "ref", "ref": "generated_premises_dicts"},
-            "spacy_model": {"type": "ref", "ref": "spacy_model"},
+            //"spacy_model": {"type": "ref", "ref": "spacy_model"},
+            "perplex_thresh": 10000, // simply to see all values.
         }
     }   
 }

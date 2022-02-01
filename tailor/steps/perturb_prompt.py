@@ -28,9 +28,15 @@ determine which one is A and B, respectively.
 """
 
 
-def _munch_to_prompt_object(prompt_munch: Munch, name: Optional[str] = None):
+def _munch_to_prompt_object(
+    prompt_munch: Munch, name: Optional[str] = None, description: Optional[str] = None
+):
     return PromptObject(
-        prompt=prompt_munch.prompt, answer=prompt_munch.answer, meta=prompt_munch.meta, name=name
+        prompt=prompt_munch.prompt,
+        answer=prompt_munch.answer,
+        meta=prompt_munch.meta,
+        name=name,
+        description=description,
     )
 
 
@@ -65,6 +71,8 @@ class PerturbPromptWithString(Step):
     DETERMINISTIC = True
     CACHEABLE = True
 
+    VERSION = "03"
+
     def run(
         self,
         processed_sentences: List[ProcessedSentence],
@@ -72,6 +80,7 @@ class PerturbPromptWithString(Step):
         intermediate_prompt_kwargs: Optional[Dict[str, Any]] = None,
         criteria_func: PerturbationCriteria = AllVerbs(),
         args_to_blank_condition: ArgsToBlankCondition = UniqueTags(),
+        **perturb_fn_kwargs,
     ) -> List[List[PromptObject]]:
         """
         Returns the list of prompts for perturbing every verb in every sentence.
@@ -111,7 +120,7 @@ class PerturbPromptWithString(Step):
                 )
 
                 if isinstance(perturb_str_func, PerturbStringFunction):
-                    perturbations = perturb_str_func(tags_prompt.meta)
+                    perturbations = perturb_str_func(tags_prompt.meta, **perturb_fn_kwargs)
                     if isinstance(perturbations, Perturbation):
                         perturbations = [perturbations]
 
@@ -136,7 +145,9 @@ class PerturbPromptWithString(Step):
                     if is_equal_headers(perturbed.prompt, tags_prompt.prompt):
                         prompt = None
                     else:
-                        prompt = _munch_to_prompt_object(perturbed, perturbation.name)
+                        prompt = _munch_to_prompt_object(
+                            perturbed, perturbation.name, perturbation.description
+                        )
 
                     if prompt is not None:
                         sentence_prompts.append(prompt)
@@ -205,7 +216,7 @@ class PerturbPromptWithFunction(Step):
                     **intermediate_prompt_kwargs,
                 )
 
-                prompt = perturb_fn(processed.spacy_doc, tags_prompt, tags)
+                prompt = perturb_fn(processed.spacy_doc, tags_prompt, tags, **perturb_fn_kwargs)
                 if prompt is not None:
                     sentence_prompts.append(prompt)
             sentence_prompts = get_unique_prompt_objects(sentence_prompts)

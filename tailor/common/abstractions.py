@@ -37,6 +37,7 @@ class PromptObject(NamedTuple):
     answer: Optional[str] = None
     meta: Optional[Munch] = None  # TODO: use a PromptMeta abstraction.
     name: Optional[str] = None
+    description: Optional[str] = None
 
 
 class GeneratedPrompt(NamedTuple):
@@ -48,7 +49,7 @@ class GeneratedPrompt(NamedTuple):
     prompt_no_header: str
 
     """
-    The natural language sentence.
+    The natural language sentence
     """
     sentence: str
 
@@ -64,19 +65,34 @@ class GeneratedPrompt(NamedTuple):
     annotations: List[Munch]
 
     """
-    The tokenized words of sentence.
+    The tokenized words of sentence
     """
     words: List[str]
 
     """
-    The verb index.
+    The verb index
     """
     vidx: int
 
     """
-    Name of the perturbation applied.
+    Name of the perturbation applied
     """
     name: Optional[str] = None
+
+    """
+    User-level description
+    """
+    description: Optional[str] = None
+
+    """
+    Is the generation valid
+    """
+    is_valid: Optional[bool] = None
+
+    """
+    Perplexities of generation
+    """
+    perplexities: Optional[Munch] = None
 
 
 # class Specificities(Enum):

@@ -16,8 +16,9 @@ from tailor.common.latest_utils import (
 class Perturbation(NamedTuple):
 
     perturb_str: str
-    perturb_meta: Optional[Munch] = (None,)
+    perturb_meta: Optional[Munch] = None
     name: Optional[str] = None
+    description: Optional[str] = None  # TODO: should this be a Munch for more flexibility?
 
 
 class PerturbFunction(Registrable):
@@ -26,13 +27,17 @@ class PerturbFunction(Registrable):
 
 
 class PerturbStringFunction(Registrable):
-    def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
+    def __call__(
+        self, prompt_meta, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:
         raise NotImplementedError
 
 
 @PerturbStringFunction.register("change_voice")
 class ChangeVoice(PerturbStringFunction):
-    def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
+    def __call__(
+        self, prompt_meta, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:
 
         vtense = prompt_meta.vtense
         target_voice = "active" if prompt_meta.vvoice == "passive" else "passive"
@@ -40,54 +45,93 @@ class ChangeVoice(PerturbStringFunction):
         perturb_str = (
             f"CONTEXT(DELETE_TEXT);VERB(CHANGE_TENSE({vtense}),CHANGE_VOICE({target_voice}))"
         )
-        return Perturbation(perturb_str=perturb_str, perturb_meta=prompt_meta, name="change_voice")
+        return Perturbation(
+            perturb_str=perturb_str,
+            perturb_meta=prompt_meta,
+            name="change_voice",
+            description=description,
+        )
 
 
 @PerturbStringFunction.register("change_tense")
 class ChangeTense(PerturbStringFunction):
-    def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
+    def __call__(
+        self, prompt_meta, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:
         perturb_str = "VERB(CHANGE_TENSE())"
-        return Perturbation(perturb_str=perturb_str, perturb_meta=prompt_meta, name="change_tense")
+        return Perturbation(
+            perturb_str=perturb_str,
+            perturb_meta=prompt_meta,
+            name="change_tense",
+            description=description,
+        )
 
 
 @PerturbStringFunction.register("change_lemma")
 class ChangeLemma(PerturbStringFunction):
-    def __call__(self, prompt_meta, lemma: str, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:  # type: ignore
+    def __call__(self, prompt_meta, lemma: str, *args, description=None, **kwargs) -> Union[Perturbation, List[Perturbation]]:  # type: ignore
         perturb_str = f"VERB(CHANGE_LEMMA({lemma}))"
-        return Perturbation(perturb_str=perturb_str, perturb_meta=prompt_meta, name="change_lemma")
+        return Perturbation(
+            perturb_str=perturb_str,
+            perturb_meta=prompt_meta,
+            name="change_lemma",
+            description=description,
+        )
 
 
 @PerturbStringFunction.register("delete_text")
 class DeleteText(PerturbStringFunction):
-    def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
+    def __call__(
+        self, prompt_meta, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:
         perturb_str = "CONTEXT(DELETE_TEXT)"
-        return Perturbation(perturb_str=perturb_str, perturb_meta=prompt_meta, name="delete_text")
+        return Perturbation(
+            perturb_str=perturb_str,
+            perturb_meta=prompt_meta,
+            name="delete_text",
+            description=description,
+        )
 
 
 @PerturbStringFunction.register("delete_punctuation")
 class DeletePunctuation(PerturbStringFunction):
-    def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
+    def __call__(
+        self, prompt_meta, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:
         perturb_str = "CONTEXT(DELETE_PUNCT)"
         return Perturbation(
-            perturb_str=perturb_str, perturb_meta=prompt_meta, name="delete_punctuation"
+            perturb_str=perturb_str,
+            perturb_meta=prompt_meta,
+            name="delete_punctuation",
+            description=description,
         )
 
 
 @PerturbStringFunction.register("swap_core_with_context")
 class SwapCoreWithContext(PerturbStringFunction):
-    def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
+    def __call__(
+        self, prompt_meta, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:
         perturb_str = "CORE(SWAP_CORE)"
         return Perturbation(
-            perturb_str=perturb_str, perturb_meta=prompt_meta, name="swap_core_with_context"
+            perturb_str=perturb_str,
+            perturb_meta=prompt_meta,
+            name="swap_core_with_context",
+            description=description,
         )
 
 
 @PerturbStringFunction.register("swap_core_without_context")
 class SwapCoreWithoutContext(PerturbStringFunction):
-    def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
+    def __call__(
+        self, prompt_meta, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:
         perturb_str = "CONTEXT(DELETE_TEXT);CORE(SWAP_CORE)"
         return Perturbation(
-            perturb_str=perturb_str, perturb_meta=prompt_meta, name="swap_core_without_context"
+            perturb_str=perturb_str,
+            perturb_meta=prompt_meta,
+            name="swap_core_without_context",
+            description=description,
         )
 
 
@@ -100,10 +144,11 @@ def replace_keyword_with_phenomenon(
     core_arg_to_change: str,
     other_argument: str,
     phenomenon_from_other_argument: str,
-    filter_keywords: Callable = _filter_keywords_default,  # change to registrable.
+    filter_keywords: Callable = _filter_keywords_default,  # TODO: change to registrable?.
     specificity: str = "complete",
     do_capitalize_by_voice: bool = True,
     perturb_name: Optional[str] = None,
+    description: Optional[str] = None,
 ):
     perturbations = []
     if other_argument:
@@ -141,7 +186,10 @@ def replace_keyword_with_phenomenon(
                 perturb_str = f"CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);CORE({core_arg_to_change}:CHANGE_CONTENT({keyword}),CHANGE_SPECIFICITY(complete))"
                 perturbations.append(
                     Perturbation(
-                        perturb_str=perturb_str, perturb_meta=prompt_meta, name=perturb_name
+                        perturb_str=perturb_str,
+                        perturb_meta=prompt_meta,
+                        name=perturb_name,
+                        description=description,
                     )
                 )
 
@@ -150,7 +198,9 @@ def replace_keyword_with_phenomenon(
 
 @PerturbStringFunction.register("shorten_core_argument")
 class ShortenCoreArgument(PerturbStringFunction):
-    def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
+    def __call__(
+        self, prompt_meta, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:
 
         perturbations: List[Perturbation] = []
 
@@ -170,6 +220,8 @@ class ShortenCoreArgument(PerturbStringFunction):
                 core_arg_to_change,
                 other_argument=core_arg_to_change,
                 phenomenon_from_other_argument="ROOT",
+                perturb_name="shorten_core_argument",
+                description=description,
             )
 
         return perturbations
