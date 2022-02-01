@@ -1,5 +1,5 @@
 from munch import Munch
-from typing import Any, Dict, List, Optional, NamedTuple, Union
+from typing import Any, Dict, List, Optional, Union
 from tango.step import Step
 
 from tailor.common.abstractions import ProcessedSentence, PromptObject

@@ -1,6 +1,4 @@
-import torch
 from tango.step import Step
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, pipeline
 from transformers.pipelines import Text2TextGenerationPipeline
 from tailor.common.model_utils import load_generator
 

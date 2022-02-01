@@ -1,4 +1,4 @@
-from typing import Dict, List, NamedTuple, Optional
+from typing import List, Optional
 
 from allennlp.predictors import Predictor
 from tango.step import Step

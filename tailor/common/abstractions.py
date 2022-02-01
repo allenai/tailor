@@ -4,6 +4,7 @@ from munch import Munch
 
 from tailor.common.util import SpacyDoc
 
+
 class ProcessedSentence(NamedTuple):
     """
     Abstraction for a sentence processed with spacy and srl tagger.
@@ -26,6 +27,7 @@ class ProcessedSentence(NamedTuple):
     def get_tags_list(self):
         return [verb_dict["tags"] for verb_dict in self.verbs]
 
+
 class PromptObject(NamedTuple):
     """
     TODO
@@ -42,6 +44,7 @@ class GeneratedPrompt(NamedTuple):
     """
     The input string, repeated.
     """
+
     prompt_no_header: str
 
     """
@@ -52,7 +55,7 @@ class GeneratedPrompt(NamedTuple):
     """
     The meta info of the control, see output to `extract_meta_from_prompt`
     """
-    meta: Munch # TODO: PromptMeta abstraction.
+    meta: Munch  # TODO: PromptMeta abstraction.
 
     """
     The identified spans being changed, and the verb.
@@ -69,6 +72,11 @@ class GeneratedPrompt(NamedTuple):
     The verb index.
     """
     vidx: int
+
+    """
+    Name of the perturbation applied.
+    """
+    name: Optional[str] = None
 
 
 # class Specificities(Enum):

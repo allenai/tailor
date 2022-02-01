@@ -1,5 +1,5 @@
 from munch import Munch
-from typing import Iterable, List, Optional, NamedTuple
+from typing import Iterable, List, Optional
 from transformers.pipelines import Text2TextGenerationPipeline
 
 from tango.step import Step
@@ -11,15 +11,18 @@ from tailor.common.abstractions import ProcessedSentence, PromptObject, Generate
 
 from tailor.common.model_utils import generate_and_clean_batch, load_generator
 
-def _munch_to_generated_prompt(prompt_munch: Munch):
+
+def _munch_to_generated_prompt(prompt_munch: Munch, name: Optional[str] = None):
     return GeneratedPrompt(
         prompt_no_header=prompt_munch.prompt_no_header,
         sentence=prompt_munch.sentence,
-        meta=prompt_munch.meta, 
+        meta=prompt_munch.meta,
         annotations=prompt_munch.annotations,
         words=prompt_munch.words,
         vidx=prompt_munch.vidx,
+        name=name,
     )
+
 
 @Step.register("generate-from-prompts")
 class GenerateFromPrompts(Step):
@@ -54,7 +57,7 @@ class GenerateFromPrompts(Step):
             )
 
             prompt_dicts = []
-            orig_doc = sentence.spacy_doc
+            # orig_doc = sentence.spacy_doc
 
             if generated_prompts:
                 merged = [val for sublist in generated_prompts for val in sublist]
@@ -65,8 +68,10 @@ class GenerateFromPrompts(Step):
                             raw_generated, nlp=spacy_model, is_compute_vidx=True
                         )
                     except:
+                        import traceback
+                        traceback.print_exc()
                         continue
-                    prompt_dicts.append(_munch_to_generated_prompt(prompt_dict))
+                    prompt_dicts.append(_munch_to_generated_prompt(prompt_dict, raw_generated))
 
             all_sentences.append(prompt_dicts)
 

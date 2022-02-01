@@ -1,4 +1,3 @@
-from munch import Munch
 from typing import List, Optional
 import torch
 from tango.step import Step
@@ -7,15 +6,15 @@ from allennlp.predictors import Predictor
 
 from tailor.common.abstractions import ProcessedSentence, GeneratedPrompt
 
-from tailor.common.util import predict_batch_srl, get_srl_tagger, SpacyModelType
+from tailor.common.util import SpacyModelType  # , get_srl_tagger, predict_batch_srl
 from tailor.common.generate_utils import compute_edit_ops
 from tailor.common.perplex_filter import (
     compute_delta_perplexity,
-    compute_sent_perplexity,
+    # compute_sent_perplexity,
     load_perplex_scorer,
 )
-from tailor.common.ctrl_filter import is_followed_ctrl
-from tailor.common.latest_utils import add_predictions_to_prompt_dict
+# from tailor.common.ctrl_filter import is_followed_ctrl
+# from tailor.common.latest_utils import add_predictions_to_prompt_dict
 
 
 @Step.register("validate-generations")
@@ -35,7 +34,7 @@ class ValidateGenerations(Step):
         is_cuda = torch.cuda.is_available()
 
         perplex_scorer = load_perplex_scorer(is_cuda=is_cuda)  # TODO: output of a step instead.
-        srl_tagger = get_srl_tagger()  # TODO
+        # srl_tagger = get_srl_tagger()  # TODO
 
         all_sentences = []
         assert len(processed_sentences) == len(generated_prompt_dicts)
@@ -46,7 +45,7 @@ class ValidateGenerations(Step):
 
             validated_set = []
             for prompt_dict in prompt_dicts:
-                prompt_dict = prompt_dict #.prompt_dict
+                prompt_dict = prompt_dict  # .prompt_dict
 
                 generated = prompt_dict.sentence
                 if generated in validated_set or generated.lower() == orig_doc.text.lower():

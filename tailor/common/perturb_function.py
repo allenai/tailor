@@ -163,7 +163,7 @@ class ShortenCoreArgument(PerturbStringFunction):
                 or core_arg_to_change == "PATIENT"
                 and core_idx.pidx is None
             ):
-                return None
+                return perturbations
 
             perturbations += replace_keyword_with_phenomenon(
                 prompt_meta,
