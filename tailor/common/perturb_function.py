@@ -38,7 +38,7 @@ class ChangeVoice(PerturbStringFunction):
         target_voice = "active" if prompt_meta.vvoice == "passive" else "passive"
 
         perturb_str = (
-            f"CONTEXT(DELETE_TEXT),VERB(CHANGE_TENSE({vtense}),CHANGE_VOICE({target_voice}))"
+            f"CONTEXT(DELETE_TEXT);VERB(CHANGE_TENSE({vtense}),CHANGE_VOICE({target_voice}))"
         )
         return Perturbation(perturb_str=perturb_str, perturb_meta=prompt_meta, name="change_voice")
 
@@ -85,7 +85,7 @@ class SwapCoreWithContext(PerturbStringFunction):
 @PerturbStringFunction.register("swap_core_without_context")
 class SwapCoreWithoutContext(PerturbStringFunction):
     def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
-        perturb_str = "CONTEXT(DELETE_TEXT),CORE(SWAP_CORE)"
+        perturb_str = "CONTEXT(DELETE_TEXT);CORE(SWAP_CORE)"
         return Perturbation(
             perturb_str=perturb_str, perturb_meta=prompt_meta, name="swap_core_without_context"
         )
@@ -138,7 +138,7 @@ def replace_keyword_with_phenomenon(
                         if agent is not None:
                             prompt_meta.core_args[core_idx.aidx].tlemma = agent
 
-                perturb_str = f"CONTEXT(DELETE_TEXT),NONCORE(ALL:DELETE),CORE({core_arg_to_change}:CHANGE_CONTENT({keyword}),CHANGE_SPECIFICITY(complete))"
+                perturb_str = f"CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);CORE({core_arg_to_change}:CHANGE_CONTENT({keyword}),CHANGE_SPECIFICITY(complete))"
                 perturbations.append(
                     Perturbation(
                         perturb_str=perturb_str, perturb_meta=prompt_meta, name=perturb_name

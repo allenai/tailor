@@ -25,6 +25,9 @@ local premises = [
             "type": "perturb-prompt-with-str",
             "processed_sentences": {"type": "ref", "ref": "premises_srl"},
             "perturb_str_func": "change_voice",
+            /*"intermediate_prompt_kwargs": {
+                "nblanks": 10,
+            },*/
         },
         "premise_perturbations_shorten_core": {
             "type": "perturb-prompt-with-str",

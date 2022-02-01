@@ -69,6 +69,7 @@ class GenerateFromPrompts(Step):
                         )
                     except:
                         import traceback
+
                         traceback.print_exc()
                         continue
                     prompt_dicts.append(_munch_to_generated_prompt(prompt_dict, raw_generated))

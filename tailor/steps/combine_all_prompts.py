@@ -10,7 +10,7 @@ class CombineAllPrompts(Step):
     DETERMINISTIC = True
     CACHEABLE = True
 
-    def run(self, list_of_prompts: List[List[List[PromptObject]]]):
+    def run(self, list_of_prompts: List[List[List[PromptObject]]]) -> List[List[PromptObject]]:
 
         num_sentences = [len(prompts) for prompts in list_of_prompts]
         assert len(set(num_sentences)) == 1  # All lists contain equal number of sentences.
