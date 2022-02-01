@@ -18,7 +18,7 @@ from tailor.common.utils.head_prompt_utils import (
     is_equal_prompts,
 )
 
-from tailor.common.perturbation_controls import validate_perturb_str
+from tailor.common.utils.perturbation_controls import validate_perturb_str
 
 """
 TODO: General case, you deal with one field: ie. just premise in nli.

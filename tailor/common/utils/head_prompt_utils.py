@@ -21,7 +21,7 @@ import string
 import warnings
 
 from tailor.common.utils.tag_utils import *
-from tailor.common.perturbation_controls import parse_change_type_meta
+from tailor.common.utils.perturbation_controls import parse_change_type_meta
 
 
 def format_warning(msg, *args, **kwargs):
