@@ -2240,27 +2240,6 @@ def get_unique_prompts(prompts):
     return prompt_set
 
 
-def is_equal_prompts(p1, p2):
-    """Helper function check for equality of two prompts
-    Insensitive to differences in space and punctuation in context
-    Useful for making sure that edited prompts are different
-    Args:
-        p1 (str): prompt
-        p2 (str): prompt
-    Returns:
-        bool: Whether the two prompts have equal prompts
-    """
-
-    def remove_punctuation(s):
-        return re.sub(r"[.!?,-]", "", s)
-
-    p1_head, p1_context = extract_header_from_prompt(p1)
-    p2_head, p2_context = extract_header_from_prompt(p2)
-    p1_context = remove_punctuation(p1_context).replace(" ", "").strip()
-    p2_context = remove_punctuation(p2_context).replace(" ", "").strip()
-    return p1_head.strip() == p2_head.strip() and p1_context.strip() == p2_context.strip()
-
-
 def is_equal_headers(p1, p2):
     """Helper function check for equality of headers between two prompts
     Useful for making sure that edited prompts are different

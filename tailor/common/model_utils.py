@@ -1,9 +1,6 @@
 import torch
 from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
-from tailor.common.latest_utils import *
-
-# class BadGenerationError(Exception):
-#     pass
+from tailor.common.latest_utils import fillin_prompt, BadGenerationError
 
 
 def load_generator(model_path="allenai/tailor"):
@@ -12,6 +9,7 @@ def load_generator(model_path="allenai/tailor"):
     else:
         cuda_device = -1
 
+    # TODO: use cached_path
     return pipeline(
         "text2text-generation",
         model=AutoModelForSeq2SeqLM.from_pretrained(model_path),
@@ -88,14 +86,10 @@ def generate_and_clean_batch(
                 generated = generator.tokenizer.decode(g["generated_token_ids"])
                 filled = fillin_prompt(prompt, generated, is_clean_prefix=is_clean_verb_prefix)
                 results.append(filled)
-            except BadGenerationError as e:
+            except BadGenerationError:
                 # results.append([])
                 # print(e)
                 continue
         preds_list_cleaned.append(list(set(results)))
     assert len(preds_list_cleaned) == len(prompts)
     return preds_list_cleaned
-
-
-def is_bad_generation(gen):
-    return "sanatate" in gen

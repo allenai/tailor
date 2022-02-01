@@ -152,7 +152,7 @@ def replace_keyword_with_phenomenon(
 class ShortenCoreArgument(PerturbStringFunction):
     def __call__(self, prompt_meta, *args, **kwargs) -> Union[Perturbation, List[Perturbation]]:
 
-        perturbations = []
+        perturbations: List[Perturbation] = []
 
         args_to_shorten = ["AGENT", "PATIENT"]
         for core_arg_to_change in args_to_shorten:

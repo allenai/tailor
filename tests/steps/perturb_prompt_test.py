@@ -16,7 +16,7 @@ class SamplePerturbFunction(PerturbFunction):
         vtense = intermediate_prompt.meta.vtense
         target_voice = "active" if intermediate_prompt.meta.vvoice == "passive" else "passive"
         perturb_str = (
-            f"CONTEXT(DELETE_TEXT),VERB(CHANGE_TENSE({vtense}),CHANGE_VOICE({target_voice}))"
+            f"CONTEXT(DELETE_TEXT);VERB(CHANGE_TENSE({vtense}),CHANGE_VOICE({target_voice}))"
         )
 
         perturbed = gen_prompt_by_perturb_str(
@@ -70,7 +70,7 @@ class TestPerturbPrompt(TailorTestCase):
         step = PerturbPromptWithString()
         result = step.run(
             processed_sentences=self.processed_sentences,
-            perturb_str_func="CONTEXT(DELETE_TEXT),VERB(CHANGE_VOICE(passive))",
+            perturb_str_func="CONTEXT(DELETE_TEXT);VERB(CHANGE_VOICE(passive))",
         )
 
         assert len(result) == 2

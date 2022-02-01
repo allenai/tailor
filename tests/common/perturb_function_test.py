@@ -61,7 +61,7 @@ class TestPerturbFunction(TailorTestCase):
         perturb_fn = ChangeVoice()
         perturb_str = perturb_fn(meta).perturb_str
 
-        assert perturb_str == "CONTEXT(DELETE_TEXT),VERB(CHANGE_TENSE(past),CHANGE_VOICE(passive))"
+        assert perturb_str == "CONTEXT(DELETE_TEXT);VERB(CHANGE_TENSE(past),CHANGE_VOICE(passive))"
 
     def test_change_tense(self):
         meta = copy.deepcopy(self.prompt_meta)
@@ -79,5 +79,5 @@ class TestPerturbFunction(TailorTestCase):
         assert len(perturbs) == 2  # agent/patient.
         assert (
             perturbs[0].perturb_str
-            == "CONTEXT(DELETE_TEXT),NONCORE(ALL:DELETE),CORE(AGENT:CHANGE_CONTENT(The doctor),CHANGE_SPECIFICITY(complete))"
+            == "CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);CORE(AGENT:CHANGE_CONTENT(The doctor),CHANGE_SPECIFICITY(complete))"
         )

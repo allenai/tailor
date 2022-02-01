@@ -15,7 +15,7 @@ class CombineAllPrompts(Step):
         num_sentences = [len(prompts) for prompts in list_of_prompts]
         assert len(set(num_sentences)) == 1  # All lists contain equal number of sentences.
 
-        combined_prompts = [[] for _ in range(len(list_of_prompts[0]))]
+        combined_prompts: List[List[PromptObject]] = [[] for _ in range(len(list_of_prompts[0]))]
 
         for prompts in list_of_prompts:
             for idx, sentence_prompts in enumerate(prompts):
