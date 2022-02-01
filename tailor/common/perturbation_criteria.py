@@ -1,7 +1,7 @@
 from typing import List
 from tango.common.registrable import Registrable
 
-from tailor.common.latest_utils import get_unique_tags
+from tailor.common.utils.head_prompt_utils import get_unique_tags
 
 
 class PerturbationCriteria(Registrable):

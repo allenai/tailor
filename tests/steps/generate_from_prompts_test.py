@@ -2,7 +2,7 @@ from munch import Munch
 from tailor.common.testing import TailorTestCase
 
 from tailor.common.abstractions import PromptObject, ProcessedSentence, GeneratedPrompt
-from tailor.common.util import get_spacy_model
+from tailor.common.utils import get_spacy_model
 from tailor.steps.generate_from_prompts import GenerateFromPrompts
 
 

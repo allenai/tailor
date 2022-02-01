@@ -1,8 +1,8 @@
-from enum import Enum
+# from enum import Enum
 from typing import Dict, List, NamedTuple, Optional
 from munch import Munch
 
-from tailor.common.util import SpacyDoc
+from tailor.common.utils import SpacyDoc
 
 
 class ProcessedSentence(NamedTuple):

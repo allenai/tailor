@@ -1,6 +1,6 @@
 import torch
 from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
-from tailor.common.latest_utils import fillin_prompt, BadGenerationError
+from tailor.common.utils.head_prompt_utils import fillin_prompt, BadGenerationError
 
 
 def load_generator(model_path="allenai/tailor"):

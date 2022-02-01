@@ -1,14 +1,12 @@
 from copy import deepcopy
-import itertools
 from munch import Munch
 from typing import Callable, List, NamedTuple, Optional, Union
 from tango.common.registrable import Registrable
-from tailor.common.latest_utils import (
+from tailor.common.utils.head_prompt_utils import (
     get_core_idxes_from_meta,
     capitalize_by_voice,
     get_keyword_candidates_for_span,
     parse_keyword_type,
-    convert_tag2readable,
     get_arg_span,
 )
 
@@ -69,7 +67,9 @@ class ChangeTense(PerturbStringFunction):
 
 @PerturbStringFunction.register("change_lemma")
 class ChangeLemma(PerturbStringFunction):
-    def __call__(self, prompt_meta, lemma: str, *args, description=None, **kwargs) -> Union[Perturbation, List[Perturbation]]:  # type: ignore
+    def __call__(
+        self, prompt_meta, lemma: str, *args, description=None, **kwargs
+    ) -> Union[Perturbation, List[Perturbation]]:  # type: ignore
         perturb_str = f"VERB(CHANGE_LEMMA({lemma}))"
         return Perturbation(
             perturb_str=perturb_str,
@@ -154,7 +154,7 @@ def replace_keyword_with_phenomenon(
     if other_argument:
         assert phenomenon_from_other_argument is not None
         arg_span = get_arg_span(prompt_meta, other_argument)
-        keyword_origin = other_argument  # May be required.
+        # keyword_origin = other_argument  # May be required.
         if arg_span is not None:
             keyword_type = parse_keyword_type(phenomenon_from_other_argument)
             keywords = get_keyword_candidates_for_span(arg_span, keyword_type)
@@ -183,7 +183,10 @@ def replace_keyword_with_phenomenon(
                         if agent is not None:
                             prompt_meta.core_args[core_idx.aidx].tlemma = agent
 
-                perturb_str = f"CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);CORE({core_arg_to_change}:CHANGE_CONTENT({keyword}),CHANGE_SPECIFICITY(complete))"
+                perturb_str = (
+                    "CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);"
+                    f"CORE({core_arg_to_change}:CHANGE_CONTENT({keyword}),CHANGE_SPECIFICITY(complete))"
+                )
                 perturbations.append(
                     Perturbation(
                         perturb_str=perturb_str,

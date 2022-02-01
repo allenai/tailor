@@ -3,7 +3,7 @@ from typing import List, Optional
 from allennlp.predictors import Predictor
 from tango.step import Step
 
-from tailor.common.util import get_srl_tagger, predict_batch_srl
+from tailor.common.utils import get_srl_tagger, predict_batch_srl
 from tailor.steps.process_with_spacy import SpacyDoc
 from tailor.common.abstractions import ProcessedSentence
 

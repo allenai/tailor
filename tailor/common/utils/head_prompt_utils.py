@@ -20,9 +20,8 @@ from nltk.corpus import stopwords
 import string
 import warnings
 
-# local imports
-from .tag_utils import *
-from .perturbation_controls import parse_change_type_meta
+from tailor.common.utils.tag_utils import *
+from tailor.common.perturbation_controls import parse_change_type_meta
 
 
 def format_warning(msg, *args, **kwargs):

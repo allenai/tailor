@@ -1,6 +1,6 @@
 import copy
 from munch import Munch
-from tailor.common.util import get_spacy_model
+from tailor.common.utils import get_spacy_model
 from tailor.common.testing import TailorTestCase
 from tailor.common.perturbation_criteria import UniqueTags
 from tailor.common.perturb_function import *

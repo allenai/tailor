@@ -2,8 +2,7 @@ import warnings
 import re
 from munch import Munch
 
-# local imports
-from .tag_utils import *
+from tailor.common.utils.tag_utils import *
 
 
 def format_warning(msg, *args, **kwargs):

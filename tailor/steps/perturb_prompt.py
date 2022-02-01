@@ -11,7 +11,7 @@ from tailor.common.perturbation_criteria import (
     UniqueTags,
 )
 
-from tailor.common.latest_utils import (
+from tailor.common.utils.head_prompt_utils import (
     gen_prompts_by_tags,
     gen_prompt_by_perturb_str,
     is_equal_headers,

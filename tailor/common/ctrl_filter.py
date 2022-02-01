@@ -1,5 +1,5 @@
 from munch import Munch
-from tailor.common.latest_utils import (
+from tailor.common.utils.head_prompt_utils import (
     get_verb_tense,
     get_verb_voice,
     get_keyword_specificity,

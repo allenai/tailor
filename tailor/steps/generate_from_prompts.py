@@ -5,17 +5,16 @@ from transformers.pipelines import Text2TextGenerationPipeline
 
 from tango.step import Step
 
-from tailor.common.latest_utils import parse_filled_prompt, BadGenerationError
-from tailor.common.util import SpacyModelType
+from tailor.common.utils.head_prompt_utils import parse_filled_prompt, BadGenerationError
+from tailor.common.utils import SpacyModelType
 
 from tailor.common.abstractions import ProcessedSentence, PromptObject, GeneratedPrompt
 
-from tailor.common.model_utils import generate_and_clean_batch, load_generator
+from tailor.common.utils.model_utils import generate_and_clean_batch, load_generator
 
-from tailor.common.generate_utils import compute_edit_ops
+from tailor.common.utils.generate_utils import compute_edit_ops
 from tailor.common.perplex_filter import (
     compute_delta_perplexity,
-    compute_sent_perplexity,
     load_perplex_scorer,
 )
 

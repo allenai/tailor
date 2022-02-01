@@ -1,6 +1,6 @@
 from tango.step import Step
 from transformers.pipelines import Text2TextGenerationPipeline
-from tailor.common.model_utils import load_generator
+from tailor.common.utils.model_utils import load_generator
 
 
 @Step.register("load-generator")

@@ -1,23 +1,15 @@
-from copy import deepcopy
-from munch import Munch
 from typing import List, Optional, Tuple
 import torch
 from tango.step import Step
 
-from allennlp.predictors import Predictor
 
-from tailor.common.abstractions import ProcessedSentence, GeneratedPrompt
+from tailor.common.abstractions import GeneratedPrompt
 
-from tailor.common.util import SpacyModelType  # , get_srl_tagger, predict_batch_srl
-from tailor.common.generate_utils import compute_edit_ops
-from tailor.common.perplex_filter import (
-    compute_delta_perplexity,
-    compute_sent_perplexity,
-    load_perplex_scorer,
-)
+# from tailor.common.utils import SpacyModelType  # , get_srl_tagger, predict_batch_srl
+from tailor.common.perplex_filter import load_perplex_scorer
 
 # from tailor.common.ctrl_filter import is_followed_ctrl
-# from tailor.common.latest_utils import add_predictions_to_prompt_dict_new
+# from tailor.common.utils.head_prompt_utils import add_predictions_to_prompt_dict_new
 
 from transformers.modeling_utils import PreTrainedModel
 from transformers.tokenization_utils import PreTrainedTokenizerBase

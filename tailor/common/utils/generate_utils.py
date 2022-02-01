@@ -1,15 +1,11 @@
 import difflib
 from munch import Munch
 
-import torch
-from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
-from tailor.common.latest_utils import *
-
 
 def _normalize_chunk(doc, start_idx, end_idx):
     # end idx is not included: [start, end)
     # the function is for normalizing the chunk so it does not start/end with punctuation
-    punctuation = "''\"!, -.:;<=>?\^_|~”’ "
+    punctuation = "''\"!, -.:;<=>?\^_|~”’ "  # noqa: W605
     if not doc:
         return None
     end_idx = min([len(doc), end_idx])
