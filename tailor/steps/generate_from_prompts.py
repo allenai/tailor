@@ -120,6 +120,7 @@ class GenerateFromPrompts(Step):
         assert len(all_generated_prompts) == len(processed_sentences)
         assert len(perturb_names) == len(processed_sentences)
 
+        # TODO: separate this into a different step?
         for idx, generated_prompts in enumerate(all_generated_prompts):
             prompt_dicts = []
             assert (
@@ -147,9 +148,11 @@ class GenerateFromPrompts(Step):
                         if generated.lower() == orig_doc.text.lower():
                             continue
                         if compute_perplexity:
-
                             generated_doc = spacy_model(generated)
                             eop = compute_edit_ops(orig_doc, generated_doc)
+                            if eop[0].op == "equal":
+                                continue
+
                             perplexities = compute_delta_perplexity(
                                 eop, perplex_scorer, is_cuda=is_cuda
                             )

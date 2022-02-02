@@ -1,9 +1,10 @@
 from tailor.common.testing import TailorTestCase
 from tailor.common.utils import get_spacy_model
 from tailor.common.utils.detect_perturbations import get_common_keywords_by_tag
-from tailor.common.abstractions import ProcessedSentence
+from tailor.common.abstractions import ProcessedSentence, PromptObject
 
-from tailor.steps.random_prompts import GenerateRandomPrompts
+from tailor.steps.random_prompts import GenerateRandomPrompts, GetCommonKeywordsByTag
+
 
 class TestRandomPrompts(TailorTestCase):
     def setup_method(self):
@@ -40,11 +41,15 @@ class TestRandomPrompts(TailorTestCase):
             )
 
         self.processed_sentences = processed
-        self.common_keywords = get_common_keywords_by_tag(nlp=nlp)
 
     def test_step(self):
-        step = GenerateRandomPrompts()
-        result = step.run(processed_sentences=self.processed_sentences, common_keywords_by_tag=self.common_keywords)
+        step = GetCommonKeywordsByTag()
+        common_keywords = step.run()
 
-        print(result)
-        assert False
+        step = GenerateRandomPrompts()
+        result = step.run(
+            processed_sentences=self.processed_sentences, common_keywords_by_tag=common_keywords
+        )
+
+        assert len(result) == 2
+        assert isinstance(result[0][0], PromptObject)

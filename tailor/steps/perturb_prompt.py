@@ -142,6 +142,9 @@ class PerturbPromptWithString(Step):
                         perturbation.perturb_meta,
                     )
 
+                    if perturbed is None:
+                        continue
+
                     if is_equal_headers(perturbed.prompt, tags_prompt.prompt):
                         prompt = None
                     else:

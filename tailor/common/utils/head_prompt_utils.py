@@ -1986,6 +1986,8 @@ def gen_prompt_by_perturb_meta(
         warnings.warn(
             "Warning. Perturbed prompt is same as base prompt. This should not be happening."
         )
+        return None
+
     new_prompt = Munch(
         prompt=new_prompt, perturb_meta=perturb_meta, meta=new_meta, answer=new_answer
     )
