@@ -102,6 +102,8 @@ class GenerateFromPrompts(Step):
 
             if len(batch_prompts) >= generation_batch_size or idx == len(processed_sentences) - 1:
                 prompt_list = [p.prompt for p in batch_prompts]  # list of str prompts
+
+                # TODO (Alexis): The generations don't seem to be super clean. Is this expected?
                 batch_generated_prompts = generate_and_clean_batch(
                     prompts=prompt_list,
                     generator=generator,

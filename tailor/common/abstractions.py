@@ -40,6 +40,18 @@ class PromptObject(NamedTuple):
     description: Optional[str] = None
 
 
+def _munch_to_prompt_object(
+    prompt_munch: Munch, name: Optional[str] = None, description: Optional[str] = None
+):
+    return PromptObject(
+        prompt=prompt_munch.prompt,
+        answer=prompt_munch.answer,
+        meta=prompt_munch.meta,
+        name=name,
+        description=description,
+    )
+
+
 class GeneratedPrompt(NamedTuple):
 
     """

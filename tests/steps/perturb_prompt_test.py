@@ -12,7 +12,7 @@ from tailor.steps.perturb_prompt import (
 
 
 class SamplePerturbFunction(PerturbFunction):
-    def __call__(self, spacy_doc, intermediate_prompt, tags, *args, **kwargs):
+    def __call__(self, spacy_doc, intermediate_prompt, tags, args_to_blank, *args, **kwargs):
         vtense = intermediate_prompt.meta.vtense
         target_voice = "active" if intermediate_prompt.meta.vvoice == "passive" else "passive"
         perturb_str = (
@@ -27,6 +27,27 @@ class SamplePerturbFunction(PerturbFunction):
             return None
         if not is_equal_headers(perturbed.prompt, intermediate_prompt.prompt):
             return _munch_to_prompt_object(perturbed, name="sample")
+
+
+class SamplePerturbFunctionReturningMultiplePrompts(PerturbFunction):
+    def __call__(self, spacy_doc, intermediate_prompt, tags, args_to_blank, *args, **kwargs):
+        perturbs = []
+        vtense = intermediate_prompt.meta.vtense
+        target_voice = "active" if intermediate_prompt.meta.vvoice == "passive" else "passive"
+
+        for change in [f"CHANGE_TENSE({vtense})", f"CHANGE_VOICE({target_voice})"]:
+            perturb_str = f"CONTEXT(DELETE_TEXT);VERB({change})"
+
+            perturbed = gen_prompt_by_perturb_str(
+                spacy_doc, tags, perturb_str, intermediate_prompt.meta
+            )
+
+            if perturbed is None:
+                continue
+            if not is_equal_headers(perturbed.prompt, intermediate_prompt.prompt):
+                perturbs.append(_munch_to_prompt_object(perturbed, name="sample2"))
+
+        return perturbs
 
 
 class TestPerturbPrompt(TailorTestCase):
@@ -92,6 +113,16 @@ class TestPerturbPrompt(TailorTestCase):
         result = step.run(
             processed_sentences=self.processed_sentences,
             perturb_fn=SamplePerturbFunction(),
+        )
+
+        assert len(result) == 2
+        assert isinstance(result[0][0], PromptObject)
+
+    def test_with_function_returning_multiple_perturbs(self):
+        step = PerturbPromptWithFunction()
+        result = step.run(
+            processed_sentences=self.processed_sentences,
+            perturb_fn=SamplePerturbFunctionReturningMultiplePrompts(),
         )
 
         assert len(result) == 2

@@ -1,4 +1,4 @@
-from typing import Iterable, Optional
+from typing import Any, Dict, Iterable, List, Optional
 from tango.step import Step
 import datasets
 
@@ -18,7 +18,7 @@ class GetSentences(Step):
 
     def run(
         self,
-        dataset: datasets.Dataset,
+        dataset: Union[datasets.Dataset, Dict[str, List[Any]]],
         key: str,
         start_idx: Optional[int] = None,
         end_idx: Optional[int] = None,

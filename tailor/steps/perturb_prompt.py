@@ -2,7 +2,7 @@ from munch import Munch
 from typing import Any, Dict, List, Optional, Union
 from tango.step import Step
 
-from tailor.common.abstractions import ProcessedSentence, PromptObject
+from tailor.common.abstractions import ProcessedSentence, PromptObject, _munch_to_prompt_object
 from tailor.common.perturb_function import PerturbFunction, PerturbStringFunction, Perturbation
 from tailor.common.perturbation_criteria import (
     PerturbationCriteria,
@@ -26,18 +26,6 @@ Sometimes you want something like: do something to question based on context in 
 So, another type of step for such cases where you take 2 processed sentences, and
 determine which one is A and B, respectively.
 """
-
-
-def _munch_to_prompt_object(
-    prompt_munch: Munch, name: Optional[str] = None, description: Optional[str] = None
-):
-    return PromptObject(
-        prompt=prompt_munch.prompt,
-        answer=prompt_munch.answer,
-        meta=prompt_munch.meta,
-        name=name,
-        description=description,
-    )
 
 
 def get_unique_prompt_objects(prompts: List[PromptObject]):
@@ -219,9 +207,14 @@ class PerturbPromptWithFunction(Step):
                     **intermediate_prompt_kwargs,
                 )
 
-                prompt = perturb_fn(processed.spacy_doc, tags_prompt, tags, **perturb_fn_kwargs)
+                prompt = perturb_fn(
+                    processed.spacy_doc, tags_prompt, tags, args_to_blank, **perturb_fn_kwargs
+                )
                 if prompt is not None:
-                    sentence_prompts.append(prompt)
+                    if isinstance(prompt, List):
+                        sentence_prompts += prompt
+                    else:
+                        sentence_prompts.append(prompt)
             sentence_prompts = get_unique_prompt_objects(sentence_prompts)
             all_prompts.append(sentence_prompts)
         return all_prompts
