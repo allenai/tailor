@@ -97,6 +97,7 @@ jobs:
           test -d .venv || virtualenv -p $(which python) --copies --reset-app-data .venv
           . .venv/bin/activate
           pip install -r requirements.txt -r dev-requirements.txt
+          make download-extras
 
       - name: Show environment info
         run: |
