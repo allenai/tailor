@@ -1,5 +1,5 @@
-import pytest
 import datasets
+
 from tailor.common.testing import TailorTestCase
 from tailor.steps.convert_dataset_to_dict import ConvertDatasetToDict, ConvertDictToDataset
 
@@ -19,6 +19,8 @@ class TestConvertDatasetDict(TailorTestCase):
     def test_convert_dict_to_dataset(self):
         step = ConvertDictToDataset()
         result = step.run(data_dict=self.data_dict)
+
+        assert isinstance(result, datasets.Dataset)
 
     def test_start_end_idx(self):
         step = ConvertDatasetToDict()

@@ -1,23 +1,21 @@
-from munch import Munch
 from typing import Any, Dict, List, Optional, Union
+
 from tango.step import Step
 
 from tailor.common.abstractions import ProcessedSentence, PromptObject, _munch_to_prompt_object
-from tailor.common.perturb_function import PerturbFunction, PerturbStringFunction, Perturbation
+from tailor.common.perturb_function import Perturbation, PerturbFunction, PerturbStringFunction
 from tailor.common.perturbation_criteria import (
-    PerturbationCriteria,
     AllVerbs,
     ArgsToBlankCondition,
+    PerturbationCriteria,
     UniqueTags,
 )
-
 from tailor.common.utils.head_prompt_utils import (
-    gen_prompts_by_tags,
     gen_prompt_by_perturb_str,
+    gen_prompts_by_tags,
     is_equal_headers,
     is_equal_prompts,
 )
-
 from tailor.common.utils.perturbation_controls import validate_perturb_str
 
 """
@@ -169,7 +167,7 @@ class PerturbPromptWithFunction(Step):
         criteria_func: PerturbationCriteria = AllVerbs(),
         args_to_blank_condition: ArgsToBlankCondition = UniqueTags(),
         **perturb_fn_kwargs,
-    ) -> List[List[str]]:
+    ) -> List[List[PromptObject]]:
         """
         Returns the list of prompts for perturbing every verb in every sentence.
 

@@ -1,6 +1,7 @@
-from typing import Any, Dict, Iterable, List, Optional
-from tango.step import Step
+from typing import Any, Dict, Iterable, List, Optional, Union
+
 import datasets
+from tango.step import Step
 
 
 @Step.register("get-sentences")

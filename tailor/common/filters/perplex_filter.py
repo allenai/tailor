@@ -1,10 +1,10 @@
 import math
+from copy import deepcopy
+
 import numpy as np
+import torch
 from munch import Munch
 from transformers import GPT2LMHeadModel, GPT2TokenizerFast
-
-import torch
-from copy import deepcopy
 
 #########################################################################
 ### compute perplexity

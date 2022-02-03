@@ -1,16 +1,14 @@
 import logging
 from typing import Dict, Tuple
 
+import cached_path
+import spacy
+import torch
 from allennlp.data.tokenizers import SpacyTokenizer
 from allennlp.predictors import Predictor
-import cached_path
-
-import spacy
 from spacy.cli.download import download as spacy_download
 from spacy.language import Language as SpacyModelType
 from spacy.tokens.doc import Doc as SpacyDoc  # noqa: F401
-
-import torch
 
 logger = logging.getLogger(__name__)
 

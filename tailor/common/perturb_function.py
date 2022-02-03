@@ -1,14 +1,19 @@
 from copy import deepcopy
-from munch import Munch
 from typing import Callable, List, NamedTuple, Optional, Union
+
+from munch import Munch
 from tango.common.registrable import Registrable
+
+from tailor.common.abstractions import PromptObject
 from tailor.common.utils.head_prompt_utils import (
-    get_core_idxes_from_meta,
     capitalize_by_voice,
+    get_arg_span,
+    get_core_idxes_from_meta,
     get_keyword_candidates_for_span,
     parse_keyword_type,
-    get_arg_span,
 )
+
+from tailor.common.utils import SpacyDoc
 
 
 class Perturbation(NamedTuple):
@@ -16,11 +21,21 @@ class Perturbation(NamedTuple):
     perturb_str: str
     perturb_meta: Optional[Munch] = None
     name: Optional[str] = None
-    description: Optional[str] = None  # TODO: should this be a Munch for more flexibility?
+
+    # This is for generalizing things like "preserves_meaning"
+    description: Optional[str] = None  # TODO (Alexis): should this be a Munch for more flexibility?
 
 
 class PerturbFunction(Registrable):
-    def __call__(self, *args, **kwargs):  # TODO: maybe fix args?
+    def __call__(
+        self,
+        spacy_doc: SpacyDoc,
+        intermediate_prompt: PromptObject,
+        tags: List[List[str]],
+        args_to_blank: List[List[str]],
+        *args,
+        **kwargs,
+    ) -> Union[PromptObject, List[PromptObject]]:
         raise NotImplementedError
 
 
@@ -67,9 +82,9 @@ class ChangeTense(PerturbStringFunction):
 
 @PerturbStringFunction.register("change_lemma")
 class ChangeLemma(PerturbStringFunction):
-    def __call__(
+    def __call__(  # type: ignore
         self, prompt_meta, lemma: str, *args, description=None, **kwargs
-    ) -> Union[Perturbation, List[Perturbation]]:  # type: ignore
+    ) -> Union[Perturbation, List[Perturbation]]:
         perturb_str = f"VERB(CHANGE_LEMMA({lemma}))"
         return Perturbation(
             perturb_str=perturb_str,

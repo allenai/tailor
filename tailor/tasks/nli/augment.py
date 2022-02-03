@@ -1,5 +1,6 @@
 import random
-from typing import Any, Dict, List, Optional
+from typing import Dict, List
+
 from tango.step import Step
 
 from tailor.common.abstractions import GeneratedPrompt

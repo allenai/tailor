@@ -1,13 +1,15 @@
 import json
 import os
 from typing import Dict, List, Optional, Union
+
 from tango.step import Step
+
 from tailor.common.abstractions import ProcessedSentence, PromptObject
 from tailor.common.utils import SpacyModelType
 from tailor.common.utils.detect_perturbations import (
-    get_common_keywords_by_tag,
-    detect_perturbations,
     DEFAULT_COMMON_KEYWORDS_PATH,
+    detect_perturbations,
+    get_common_keywords_by_tag,
 )
 
 PathOrStr = Union[os.PathLike, str]

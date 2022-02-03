@@ -1,11 +1,11 @@
+from tailor.common.abstractions import ProcessedSentence
+from tailor.common.perturb_function import ChangeVoice, PerturbFunction
 from tailor.common.testing import TailorTestCase
 from tailor.common.utils import get_spacy_model
 from tailor.common.utils.head_prompt_utils import gen_prompt_by_perturb_str, is_equal_headers
-from tailor.common.abstractions import ProcessedSentence
-from tailor.common.perturb_function import ChangeVoice, PerturbFunction
 from tailor.steps.perturb_prompt import (
-    PerturbPromptWithString,
     PerturbPromptWithFunction,
+    PerturbPromptWithString,
     PromptObject,
     _munch_to_prompt_object,
 )

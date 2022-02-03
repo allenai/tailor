@@ -1,9 +1,10 @@
 from munch import Munch
+
 from tailor.common.utils.head_prompt_utils import (
+    RANDOM_TAG,
+    get_keyword_specificity,
     get_verb_tense,
     get_verb_voice,
-    get_keyword_specificity,
-    RANDOM_TAG,
 )
 
 

@@ -1,15 +1,16 @@
-import warnings
 import re
+import warnings
+
 from munch import Munch
 
-from tailor.common.utils.tag_utils import *
+from tailor.common.utils.tag_utils import get_argm_values
 
 
 def format_warning(msg, *args, **kwargs):
     return str(msg) + "\n"
 
 
-warnings.formatwarning = format_warning
+warnings.formatwarning = format_warning  # type: ignore
 
 ######################################################################
 # define perturbation controls
@@ -71,7 +72,8 @@ def parse_change_context(change_type_str):
                     })
 
     idx_changes is a dict mapping original indices to new indices for blank tokens
-        if idx_changes is not supplied and is_change_idx, will randomly shuffle empty (?) blank indices at perturbation
+        if idx_changes is not supplied and is_change_idx, will randomly shuffle
+        empty (?) blank indices at perturbation
     Args:
         change_type_str (str): the meta ctrl code.
 
@@ -92,10 +94,11 @@ def parse_change_context(change_type_str):
         ):
             warnings_message = (
                 f"Context change wrapper ({CONTEXT}) not found in supplied perturb string "
-                + f"({change_type_str}) but found parts of {[CHANGE_IDX, DELETE_TEXT, DELETE_PUNCT]} in string. "
+                + f"({change_type_str}) but found parts of "
+                + f"{[CHANGE_IDX, DELETE_TEXT, DELETE_PUNCT]} in string. "
                 + f"Did you mean to wrap these changes in context wrapper {CONTEXT}? "
                 + "\n"
-                + f"Default parsing behavior: Returning no context changes. "
+                + "Default parsing behavior: Returning no context changes. "
             )
             warnings.warn(warnings_message)
 
@@ -176,10 +179,11 @@ def parse_change_verb(change_type_str):
         ):
             warnings_message = (
                 f"Verb change wrapper ({VERB}) not found in supplied perturb string "
-                + f"({change_type_str}) but found parts of {[CHANGE_LEMMA, CHANGE_TENSE, CHANGE_VOICE]} in string. "
+                + f"({change_type_str}) but found parts of "
+                + f"{[CHANGE_LEMMA, CHANGE_TENSE, CHANGE_VOICE]} in string. "
                 + f"Did you mean to wrap these changes in verb wrapper {VERB}? "
                 + "\n"
-                + f"Default parsing behavior: Returning no verb changes. "
+                + "Default parsing behavior: Returning no verb changes. "
             )
             warnings.warn(warnings_message)
 
@@ -345,7 +349,7 @@ def parse_change_noncore(change_type_str):
                 + f"({change_type_str}) but found specific tags in string. "
                 + f"Did you mean to wrap these changes in noncore wrapper {NONCORE}? "
                 + "\n"
-                + f"Default parsing behavior: Returning no noncore changes. "
+                + "Default parsing behavior: Returning no noncore changes. "
             )
             warnings.warn(warnings_message)
     else:
@@ -468,7 +472,7 @@ def parse_change_core(change_type_str):
                 + f"({change_type_str}) but found AGENT/PATIENT in string. "
                 + f"Did you mean to wrap these changes in core wrapper {CORE}? "
                 + "\n"
-                + f"Default parsing behavior: Returning no core changes. "
+                + "Default parsing behavior: Returning no core changes. "
             )
             warnings.warn(warnings_message)
         return Munch(

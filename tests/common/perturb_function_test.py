@@ -1,9 +1,10 @@
 import copy
+
 from munch import Munch
-from tailor.common.utils import get_spacy_model
+
+from tailor.common.perturb_function import ChangeTense, ChangeVoice, ShortenCoreArgument
 from tailor.common.testing import TailorTestCase
-from tailor.common.perturbation_criteria import UniqueTags
-from tailor.common.perturb_function import *
+from tailor.common.utils import get_spacy_model
 
 
 class TestPerturbFunction(TailorTestCase):
@@ -77,7 +78,7 @@ class TestPerturbFunction(TailorTestCase):
         perturbs = perturb_fn(meta)
 
         assert len(perturbs) == 2  # agent/patient.
-        assert (
-            perturbs[0].perturb_str
-            == "CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);CORE(AGENT:CHANGE_CONTENT(The doctor),CHANGE_SPECIFICITY(complete))"
+        assert perturbs[0].perturb_str == (
+            "CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);"
+            "CORE(AGENT:CHANGE_CONTENT(The doctor),CHANGE_SPECIFICITY(complete))"
         )

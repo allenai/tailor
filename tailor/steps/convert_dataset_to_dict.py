@@ -1,4 +1,5 @@
 from typing import Any, Dict, List, Optional
+
 import datasets
 from tango.step import Step
 
@@ -19,7 +20,7 @@ class ConvertDatasetToDict(Step):
         end_idx: Optional[int] = None,
     ) -> Dict[str, List[Any]]:
 
-        keys = dataset.features
+        # keys = dataset.features
         data_dict = dataset[start_idx:end_idx]
         return data_dict
 

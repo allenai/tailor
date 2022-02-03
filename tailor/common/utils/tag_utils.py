@@ -1,8 +1,8 @@
 """
 Helpers for identifying tags from span, and making them readable
 """
-import os
 import difflib
+import os
 from typing import Dict, List
 
 DEFAULT_FRAME_SET_PATH = os.path.abspath(

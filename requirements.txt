@@ -1,4 +1,4 @@
-ai2-tango>=0.4.0
+ai2-tango[all]>=0.4.0
 spacy
-allennlp==2.9.0
 allennlp-models==2.9.0
+stanford-openie==1.0.3

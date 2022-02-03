@@ -1,8 +1,6 @@
+from tailor.common.abstractions import ProcessedSentence, PromptObject
 from tailor.common.testing import TailorTestCase
 from tailor.common.utils import get_spacy_model
-from tailor.common.utils.detect_perturbations import get_common_keywords_by_tag
-from tailor.common.abstractions import ProcessedSentence, PromptObject
-
 from tailor.steps.random_prompts import GenerateRandomPrompts, GetCommonKeywordsByTag
 
 

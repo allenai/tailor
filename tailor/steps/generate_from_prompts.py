@@ -1,25 +1,18 @@
+from typing import Any, List, Optional, Tuple
+
 import torch
 from munch import Munch
-from typing import Any, List, Optional, Tuple
-from transformers.pipelines import Text2TextGenerationPipeline
-
 from tango.step import Step
-
-from tailor.common.utils.head_prompt_utils import parse_filled_prompt, BadGenerationError
-from tailor.common.utils import SpacyModelType
-
-from tailor.common.abstractions import ProcessedSentence, PromptObject, GeneratedPrompt
-
-from tailor.common.utils.model_utils import generate_and_clean_batch, load_generator
-
-from tailor.common.utils.generate_utils import compute_edit_ops
-from tailor.common.filters.perplex_filter import (
-    compute_delta_perplexity,
-    load_perplex_scorer,
-)
-
 from transformers.modeling_utils import PreTrainedModel
+from transformers.pipelines import Text2TextGenerationPipeline
 from transformers.tokenization_utils import PreTrainedTokenizerBase
+
+from tailor.common.abstractions import GeneratedPrompt, ProcessedSentence, PromptObject
+from tailor.common.filters.perplex_filter import compute_delta_perplexity, load_perplex_scorer
+from tailor.common.utils import SpacyModelType
+from tailor.common.utils.generate_utils import compute_edit_ops
+from tailor.common.utils.head_prompt_utils import BadGenerationError, parse_filled_prompt
+from tailor.common.utils.model_utils import generate_and_clean_batch, load_generator
 
 
 def _munch_to_generated_prompt(

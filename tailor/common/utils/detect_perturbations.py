@@ -1,25 +1,25 @@
+import json
 import os
 from collections import Counter
-
-import json
-from munch import Munch
 from copy import deepcopy
+
+from munch import Munch
+from tqdm import tqdm
+
 from tailor.common.utils.head_prompt_utils import (
-    get_vindex_by_tags,
     clean_prefix_for_one_tag,
-    gen_prompts_by_tags,
     convert_tag2readable,
     gen_prompt_by_perturb_meta,
+    gen_prompts_by_tags,
+    get_keyword_candidates_for_span,
+    get_unique_tags,
+    get_vindex_by_tags,
     is_equal_prompts,
     parse_change_type_meta,
-    parse_keyword_type,
-    get_keyword_candidates_for_span,
     parse_filled_prompt,
-    get_unique_tags,
+    parse_keyword_type,
 )
-
 from tailor.common.utils.tag_utils import DEFAULT_FRAME_SET_PATH
-from tqdm import tqdm
 
 # DEFAULT_DATASET_PATH = "../../label-contrast-generation/label_contrast/srl/data/orig/train.json"
 
@@ -38,7 +38,7 @@ def parse_base_props(prop, nlp, frameset_path):
             prop["description"], nlp=nlp, is_most_likely_tag=False, is_include_raw_tag=True
         )
         vlemma, frameset_id = prop["lemma"], prop["frameset_id"]
-    except Exception as e:
+    except Exception:
         return {}
     if "annotations" not in train_dict:
         return train_dict
@@ -87,7 +87,7 @@ def get_common_keywords_by_tag(
                 class_labels.update(set([ann.tag for ann in train_dict.annotations]))
                 train_dicts.append(train_dict)
                 vlemmas.append(prop["lemma"])
-            except Exception as e:
+            except Exception:
                 continue
     all_s = set([s.sentence for s in train_dicts])
     processed_s = list(nlp.pipe(all_s))
@@ -218,31 +218,31 @@ def detect_perturbations(
         perturb_strs = []
         if candidate.span_type == "core":
             perturb_strs = [
-                (f"swap_core", "CORE(SWAP_CORE)", "NOUN_CHUNKS,RANDOM_SUBTREES"),
+                ("swap_core", "CORE(SWAP_CORE)", "NOUN_CHUNKS,RANDOM_SUBTREES"),
                 (
-                    f"change_content",
+                    "change_content",
                     f"CORE({tag}:CHANGE_CONTENT)",
                     "NOUN_CHUNKS,PREFIX,CONNECT,ROOT",
                 ),
-                (f"change_spec", f"NONCORE({tag}:CHANGE_SPECIFICITY(sparse))", "EXACT,UNCASED"),
+                ("change_spec", f"NONCORE({tag}:CHANGE_SPECIFICITY(sparse))", "EXACT,UNCASED"),
             ]
         elif candidate.span_type == "noncore":
             perturb_strs = [
-                (f"move", "CONTEXT(CHANGE_IDX(0:-1))", "EXACT,UNCASED"),
-                (f"move", "CONTEXT(CHANGE_IDX(-1:0))", "EXACT,UNCASED"),
+                ("move", "CONTEXT(CHANGE_IDX(0:-1))", "EXACT,UNCASED"),
+                ("move", "CONTEXT(CHANGE_IDX(-1:0))", "EXACT,UNCASED"),
                 (
-                    f"change_content",
+                    "change_content",
                     f"NONCORE({tag}:CHANGE_CONTENT)",
                     "NOUN_CHUNKS,PREFIX,CONNECT,ROOT",
                 ),
-                (f"change_spec", f"NONCORE({tag}:CHANGE_SPECIFICITY(sparse))", "EXACT,UNCASED"),
-                (f"change_tag", f"NONCORE({tag}:CHANGE_TAG)", "NOUN_CHUNKS,PREFIX,CONNECT,ROOT"),
+                ("change_spec", f"NONCORE({tag}:CHANGE_SPECIFICITY(sparse))", "EXACT,UNCASED"),
+                ("change_tag", f"NONCORE({tag}:CHANGE_TAG)", "NOUN_CHUNKS,PREFIX,CONNECT,ROOT"),
             ]
         elif candidate.span_type == "verb":
             perturb_strs = [
-                (f"change_tense", f"VERB(CHANGE_TENSE)", "EXACT,UNCASED"),
-                (f"change_voice", f"VERB(CHANGE_VOICE)", "NOUN_CHUNKS,RANDOM_SUBTREES"),
-                (f"change_content", f"VERB(CHANGE_VLEMMA)", "EXACT,UNCASED"),
+                ("change_tense", "VERB(CHANGE_TENSE)", "EXACT,UNCASED"),
+                ("change_voice", "VERB(CHANGE_VOICE)", "NOUN_CHUNKS,RANDOM_SUBTREES"),
+                ("change_content", "VERB(CHANGE_VLEMMA)", "EXACT,UNCASED"),
             ]
         for name, perturb_str, keyword_str in perturb_strs:
             if candidate.start == 0 and "front" in name:

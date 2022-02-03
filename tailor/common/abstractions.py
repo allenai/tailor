@@ -1,5 +1,6 @@
 # from enum import Enum
 from typing import Dict, List, NamedTuple, Optional
+
 from munch import Munch
 
 from tailor.common.utils import SpacyDoc
@@ -24,7 +25,7 @@ class ProcessedSentence(NamedTuple):
     spacy_doc: SpacyDoc
     verbs: List[Dict]  # Dict: {"verb": str, "tags": List[str]}
 
-    def get_tags_list(self):
+    def get_tags_list(self) -> List[List[str]]:
         return [verb_dict["tags"] for verb_dict in self.verbs]
 
 

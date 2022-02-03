@@ -3,32 +3,32 @@ general design doc can be seen in:
 https://docs.google.com/document/d/1HbhO9EAFlXpYA3_rSdrXlBHCz4aynWNUTm63dlQDAlc/edit?usp=sharing
 """
 
-import xml.etree.ElementTree as ET
-import string
-from copy import deepcopy
-import numpy as np
-from collections import Counter
-from tqdm import tqdm
+import itertools
 import os
 import re
-import itertools
-import more_itertools as mit
-from munch import Munch
-from openie import StanfordOpenIE
-from random import *
-from nltk.corpus import stopwords
 import string
 import warnings
+import xml.etree.ElementTree as ET
+from collections import Counter
+from copy import deepcopy
+from random import *
 
-from tailor.common.utils.tag_utils import *
+import more_itertools as mit
+import numpy as np
+from munch import Munch
+from nltk.corpus import stopwords
+from openie import StanfordOpenIE
+from tqdm import tqdm
+
 from tailor.common.utils.perturbation_controls import parse_change_type_meta
+from tailor.common.utils.tag_utils import *
 
 
 def format_warning(msg, *args, **kwargs):
     return str(msg) + "\n"
 
 
-warnings.formatwarning = format_warning
+warnings.formatwarning = format_warning  # type: ignore
 
 
 def is_equal_prompts(p1, p2):

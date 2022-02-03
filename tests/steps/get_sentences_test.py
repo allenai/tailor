@@ -1,5 +1,6 @@
-import pytest
 import datasets
+import pytest
+
 from tailor.common.testing import TailorTestCase
 from tailor.steps.get_sentences import GetSentences
 
@@ -14,7 +15,7 @@ class TestGetSentences(TailorTestCase):
         step = GetSentences()
         result = step.run(dataset=self.dataset, key="premise")
 
-        assert len(result) == len(dataset) == 100
+        assert len(result) == len(self.dataset) == 100
         assert isinstance(result, list)
         assert isinstance(result[0], str)
 
@@ -22,7 +23,7 @@ class TestGetSentences(TailorTestCase):
         step = GetSentences()
         result = step.run(dataset=self.dataset.to_dict(), key="premise")
 
-        assert len(result) == len(dataset) == 100
+        assert len(result) == len(self.dataset) == 100
         assert isinstance(result, list)
         assert isinstance(result[0], str)
 

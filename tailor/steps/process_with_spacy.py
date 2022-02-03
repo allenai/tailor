@@ -2,7 +2,7 @@ from typing import Iterable, List
 
 from tango.step import Step
 
-from tailor.common.utils import get_spacy_model, SpacyDoc, SpacyModelType
+from tailor.common.utils import SpacyDoc, SpacyModelType, get_spacy_model
 
 
 class _WhitespaceSpacyTokenizer:

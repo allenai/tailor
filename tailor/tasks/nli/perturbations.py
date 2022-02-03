@@ -1,24 +1,33 @@
+from typing import List
 import itertools
 from copy import deepcopy
-from tailor.common.abstractions import _munch_to_prompt_object, PromptObject
+
+from tailor.common.utils import SpacyDoc
+from tailor.common.abstractions import PromptObject, _munch_to_prompt_object
+from tailor.common.perturb_function import PerturbFunction
 from tailor.common.utils.head_prompt_utils import (
+    capitalize_by_voice,
     convert_tag2readable,
-    get_keyword_candidates_for_span,
-    parse_keyword_type,
+    gen_prompt_by_perturb_str,
     get_arg_span,
     get_core_idxes_from_meta,
-    capitalize_by_voice,
-    gen_prompt_by_perturb_str,
+    get_keyword_candidates_for_span,
     is_equal_headers,
+    parse_keyword_type,
 )
-from tailor.common.perturb_function import PerturbFunction
-
-# from tailor.steps.per
 
 
 @PerturbFunction.register("replace-core-with-subsequence")
 class ReplaceCoreWithSubsequence(PerturbFunction):
-    def __call__(self, spacy_doc, intermediate_prompt, tags, args_to_blank, *args, **kwargs):
+    def __call__(
+        self,
+        spacy_doc: SpacyDoc,
+        intermediate_prompt: PromptObject,
+        tags: List[List[str]],
+        args_to_blank: List[List[str]],
+        *args,
+        **kwargs,
+    ):
 
         new_prompts = []
         prompt = deepcopy(intermediate_prompt)
@@ -72,8 +81,9 @@ class ReplaceCoreWithSubsequence(PerturbFunction):
             # TODO: do we want to delete context here?
             # change both agent/patient keywords
             perturb_str = (
-                f"CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);CORE(AGENT:CHANGE_CONTENT({agent_keyword}),CHANGE_SPECIFICITY(complete)"
-                + f"PATIENT:CHANGE_CONTENT({patient_keyword}),CHANGE_SPECIFICITY(complete))"
+                "CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);"
+                f"CORE(AGENT:CHANGE_CONTENT({agent_keyword}),CHANGE_SPECIFICITY(complete)"
+                f"PATIENT:CHANGE_CONTENT({patient_keyword}),CHANGE_SPECIFICITY(complete))"
             )
             perturbed = gen_prompt_by_perturb_str(spacy_doc, tags, perturb_str, prompt.meta)
 

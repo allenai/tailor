@@ -2,10 +2,10 @@ import pytest
 
 from tailor.common.testing import TailorTestCase
 from tailor.steps.process_with_spacy import (
-    ProcessWithSpacy,
     GetSpacyModel,
-    SpacyModelType,
+    ProcessWithSpacy,
     SpacyDoc,
+    SpacyModelType,
     get_spacy_model,
 )
 

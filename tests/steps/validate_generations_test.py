@@ -1,8 +1,7 @@
 from munch import Munch
-from tailor.common.testing import TailorTestCase
 
-from tailor.common.abstractions import ProcessedSentence, GeneratedPrompt
-from tailor.common.utils import get_spacy_model
+from tailor.common.abstractions import GeneratedPrompt
+from tailor.common.testing import TailorTestCase
 from tailor.steps.validate_generations import ValidateGenerations
 
 

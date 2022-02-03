@@ -1,7 +1,9 @@
 from typing import List, Optional, Tuple
+
 import torch
 from tango.step import Step
-
+from transformers.modeling_utils import PreTrainedModel
+from transformers.tokenization_utils import PreTrainedTokenizerBase
 
 from tailor.common.abstractions import GeneratedPrompt
 
@@ -10,9 +12,6 @@ from tailor.common.filters.perplex_filter import load_perplex_scorer
 
 # from tailor.common.filters.ctrl_filter import is_followed_ctrl
 # from tailor.common.utils.head_prompt_utils import add_predictions_to_prompt_dict_new
-
-from transformers.modeling_utils import PreTrainedModel
-from transformers.tokenization_utils import PreTrainedTokenizerBase
 
 
 @Step.register("load-perplexity-scorer")
