@@ -1,4 +1,4 @@
-NLTK_DOWNLOAD_CMD = python -c 'import nltk; [nltk.download(p) for p in ("stopwords")]'
+NLTK_DOWNLOAD_CMD = python -c 'import nltk; [nltk.download(p) for p in ["stopwords"]]'
 
 .PHONY : docs
 docs :
