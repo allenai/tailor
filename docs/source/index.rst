@@ -25,6 +25,7 @@ Contents
    :caption: API Reference
 
    api/steps
+   api/helper_steps
 
 .. toctree::
    :hidden:

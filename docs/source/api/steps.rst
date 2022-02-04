@@ -1,38 +1,27 @@
 Tailor Steps
 ============
 
+These are the core steps for a Tailor pipeline.
+
 .. automodule:: tailor.steps
 
 Reference
 ---------
 
-Get Sentences step
+Process With Spacy
 ~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: tailor.steps.get_sentences.GetSentences
-   :members:
-
-
-Get Spacy Model step
-~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: tailor.steps.process_with_spacy.GetSpacyModel
-   :members:
-
-Process With Spacy step
-~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: tailor.steps.process_with_spacy.ProcessWithSpacy
    :members:
 
-Get SRL Tags step
-~~~~~~~~~~~~~~~~~
+Get SRL Tags
+~~~~~~~~~~~~
 
 .. autoclass:: tailor.steps.get_srl_tags.GetSRLTags
    :members:
 
-Combine All Prompts step
-~~~~~~~~~~~~~~~~~~~~~~~~
+Combine All Prompts
+~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: tailor.steps.combine_all_prompts.CombineAllPrompts
    :members:
