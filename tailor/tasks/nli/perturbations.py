@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 import itertools
 from copy import deepcopy
 
@@ -31,13 +31,16 @@ class ReplaceCoreWithSubsequence(PerturbFunction):
 
         new_prompts = []
         prompt = deepcopy(intermediate_prompt)
-        new_keywords_by_arg = {"AGENT": set(), "PATIENT": set()}
+        new_keywords_by_arg: Dict[str, set] = {"AGENT": set(), "PATIENT": set()}
         keyword_origins = {}
         # for each core arg, sample replacement args and store in new_keywords_by_arg
         for arg_to_replace in ["AGENT", "PATIENT"]:
-            args_to_consider = [
-                convert_tag2readable(prompt.meta.vlemma, t, None) for t in args_to_blank
-            ]
+            if prompt.meta is not None:
+                args_to_consider = [
+                    convert_tag2readable(prompt.meta.vlemma, t, None) for t in args_to_blank
+                ]
+            else:
+                args_to_consider = []
             args_to_consider = [t for t in args_to_consider if t not in ["VERB"]]
             for arg in args_to_consider:
                 arg_span = get_arg_span(prompt.meta, arg)
@@ -70,14 +73,16 @@ class ReplaceCoreWithSubsequence(PerturbFunction):
             if core_idx.pidx is None or core_idx.aidx is None:
                 continue
             if (
-                agent_keyword == prompt.meta.core_args[core_idx.aidx].tlemma
+                prompt.meta is not None
+                and agent_keyword == prompt.meta.core_args[core_idx.aidx].tlemma
                 and patient_keyword == prompt.meta.core_args[core_idx.pidx].tlemma
             ):
                 continue
-            # fix cases of keywords to encourage generating full sentence
-            agent_keyword, patient_keyword = capitalize_by_voice(
-                prompt.meta.vvoice, agent_keyword, patient_keyword
-            )
+            if prompt.meta is not None:
+                # fix cases of keywords to encourage generating full sentence
+                agent_keyword, patient_keyword = capitalize_by_voice(
+                    prompt.meta.vvoice, agent_keyword, patient_keyword
+                )
             # TODO: do we want to delete context here?
             # change both agent/patient keywords
             perturb_str = (

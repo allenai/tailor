@@ -7,7 +7,7 @@ from munch import Munch
 from transformers import GPT2LMHeadModel, GPT2TokenizerFast
 
 #########################################################################
-### compute perplexity
+# compute perplexity
 #########################################################################
 
 
@@ -122,6 +122,7 @@ def filter_by_sent_perplexity(sentences, perplex_scorer, thred=20, is_cuda=True)
     )
     idxes = np.where(np.array(scores) <= thred)[0]
     filtered = [sentences[i] for i in idxes]
+    return filtered
 
 
 def compute_phrase_perplexity(
@@ -152,7 +153,7 @@ def compute_phrase_perplexity(
         else:
             prefix_len = 0
         phrase_len = len(tokenizer(phrase)["input_ids"])
-        prefix_idx, phrase_idx = [0, prefix_len], [prefix_len, prefix_len + phrase_len]
+        _, phrase_idx = [0, prefix_len], [prefix_len, prefix_len + phrase_len]
 
         log_probs = log_probs_all[phrase_idx[0] : phrase_idx[1]]
         # print(sentence.split(phrase)[0].strip(), perplex_scorer.tokenizer(sentence.split(phrase)[0].strip()))

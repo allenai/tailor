@@ -168,7 +168,9 @@
 
 #         # if self.is_change_vlemma:
 #         #     new_vlemma = self.target_vlemma or \
-#         #         else sample_common_keyword(common_keywords_by_tag, "VERB", Specificities.COMPLETE, new_meta.vlemma)
+#         #         else sample_common_keyword(
+# 		  #				common_keywords_by_tag, "VERB", Specificities.COMPLETE, new_meta.vlemm
+#         #         )
 #         #     new_meta.vlemma = new_vlemma
 
 
@@ -222,7 +224,8 @@
 #                     })
 
 #     idx_changes is a dict mapping original indices to new indices for blank tokens
-#         if idx_changes is not supplied and is_change_idx, will randomly shuffle empty (?) blank indices at perturbation
+#         if idx_changes is not supplied and is_change_idx,
+# 		  will randomly shuffle empty (?) blank indices at perturbation
 #     Args:
 #         control_code_str (str): the meta ctrl code.
 
@@ -243,7 +246,8 @@
 #         ):
 #             warnings_message = (
 #                 f"Context change wrapper ({CONTROL_CODES.CONTEXT}) not found in supplied perturb string "
-#                 + f"({control_code_str}) but found parts of {[CONTROL_CODES.CHANGE_IDX, CONTROL_CODES.DELETE_TEXT, CONTROL_CODES.DELETE_PUNCT]} in string. "
+#                 + f"({control_code_str}) but found parts of "
+# 				  + f"{[CONTROL_CODES.CHANGE_IDX, CONTROL_CODES.DELETE_TEXT, CONTROL_CODES.DELETE_PUNCT]} in string. "
 #                 + f"Did you mean to wrap these changes in context wrapper {CONTROL_CODES.CONTEXT}? "
 #                 + "\n"
 #                 + f"Default parsing behavior: Returning no context changes. "
@@ -324,7 +328,8 @@
 #         ):
 #             warnings_message = (
 #                 f"Verb change wrapper ({CONTROL_CODES.VERB}) not found in supplied perturb string "
-#                 + f"({control_code_str}) but found parts of {[CONTROL_CODES.CHANGE_LEMMA, CONTROL_CODES.CHANGE_TENSE, CONTROL_CODES.CHANGE_VOICE]} in string. "
+#                 + f"({control_code_str}) but found parts of"
+# 				  + f{[CONTROL_CODES.CHANGE_LEMMA, CONTROL_CODES.CHANGE_TENSE, CONTROL_CODES.CHANGE_VOICE]} in string. "
 #                 + f"Did you mean to wrap these changes in verb wrapper {CONTROL_CODES.VERB}? "
 #                 + "\n"
 #                 + f"Default parsing behavior: Returning no verb changes. "

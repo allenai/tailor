@@ -16,7 +16,7 @@ class AugmentNLI(Step):
         max_augment_per_instance: int = 2,
     ) -> Dict[str, List[str]]:
 
-        new_data = {"premise": [], "hypothesis": [], "label": []}
+        new_data: Dict[str, List[str]] = {"premise": [], "hypothesis": [], "label": []}
         # TODO: add sanity checks.
         assert len(dataset[perturbed_field]) == len(generated_prompt_dicts)
 
