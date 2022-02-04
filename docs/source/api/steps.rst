@@ -26,7 +26,13 @@ Process With Spacy step
    :members:
 
 Get SRL Tags step
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 .. autoclass:: tailor.steps.get_srl_tags.GetSRLTags
+   :members:
+
+Combine All Prompts step
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: tailor.steps.combine_all_prompts.CombineAllPrompts
    :members:
