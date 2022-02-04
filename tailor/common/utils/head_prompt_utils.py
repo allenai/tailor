@@ -11,17 +11,23 @@ import warnings
 import xml.etree.ElementTree as ET
 from collections import Counter
 from copy import deepcopy
-from random import *
+from random import random
 
 import more_itertools as mit
 import numpy as np
 from munch import Munch
 from nltk.corpus import stopwords
 from openie import StanfordOpenIE
-from tqdm import tqdm
 
 from tailor.common.utils.perturbation_controls import parse_change_type_meta
-from tailor.common.utils.tag_utils import *
+from tailor.common.utils.tag_utils import (
+    DEFAULT_FRAME_SET_PATH,
+    TAG2READABLE_MAPPING,
+    get_argm_and_core_values,
+    ADDITIONAL_CASES,
+    READABLE2TAG_MAPPING,
+    find_most_likely_tag,
+)
 
 
 def format_warning(msg, *args, **kwargs):
@@ -97,7 +103,8 @@ def convert_tag2readable(
         for _, role_dict in role_dicts.items():
             if clean_tag in role_dict:
                 return role_dict[clean_tag]
-    # happens bc prop banks has changed since ontonotes was created? i.e. leave.01 no longer exists; instead, it is leave.11
+    # happens bc prop banks has changed since ontonotes was created?
+    # i.e. leave.01 no longer exists; instead, it is leave.11
     return None
 
 
@@ -159,8 +166,7 @@ def get_possible_tags_by_vlemma(vlemma, frameset_path=DEFAULT_FRAME_SET_PATH):
     try:
         tree = ET.parse(os.path.join(frameset_path, f"{vlemma}.xml"))
         root = tree.getroot()
-    except IOError as e:
-        #        print(e)
+    except IOError:
         return None
     #        raise ValueError(f"Cannot find the verb: {vlemma}")
     for roleset in root.findall("predicate/roleset"):
@@ -172,7 +178,7 @@ def get_possible_tags_by_vlemma(vlemma, frameset_path=DEFAULT_FRAME_SET_PATH):
             #                continue
             arg = f"ARG{role.attrib['n']}"
             desc = role.attrib["descr"].split(" ")[0].split(",")[0].split(",")[0]
-            func = role.attrib["f"].split(" ")[0]
+            # func = role.attrib["f"].split(" ")[0]
             #            if func == "ppt":
             #                role_dict[arg] = "PATIENT"
             #            elif func == "pag":
@@ -210,7 +216,7 @@ def flatten_fillins(doc, indxes, appearances, is_return_text=False):
         [type]: [description]
     """
     text_arr = []
-    prev = 0
+    # prev = 0
     tok_idxes_to_blank = set()
     for (start, end) in indxes:
         # if equal, then empty blank
@@ -266,7 +272,11 @@ def clean_prefix_for_one_tag(tag):
 
 
 def extract_header_from_prompt(prompt):
-    header = re.search(r"\[[^\]]+\]", prompt).group(0)
+    header = re.search(r"\[[^\]]+\]", prompt)
+    if header:
+        header = header.group(0)
+    else:
+        raise RuntimeError("Header not found in prompt!")  # TODO: more specific error?
     non_header = prompt.replace(header, "")
     return header, non_header
 
@@ -291,7 +301,8 @@ def extract_meta_from_prompt(prompt, return_header=False):
         }
     """
 
-    # TODO: is this function robust? No way of getting some meta information from the prompt (like non core args specific info)
+    # TODO: is this function robust? No way of getting some meta information
+    # from the prompt (like non core args specific info)
     # TODO: what's the frameset?
     meta = Munch()
     # find matches in header (don't want to match generated text)
@@ -405,13 +416,16 @@ def get_verb_voice(verb):
 
 
 def get_verb_tense(verb, doc):
-    # TODO: this is hacky; refine--maybe work directly with the Penn Treebank tags in the original conll data
-    # TODO: is current future tense detection robust? i.e. only returns future if "will" or "shall" is auxiliary modal for verb
+    # TODO: this is hacky; refine--maybe work directly with the Penn Treebank tags
+    # in the original conll data
+    # TODO: is current future tense detection robust? i.e. only returns future if
+    # "will" or "shall" is auxiliary modal for verb
     # TODO: is "shall" returned as a modal--confirm
     """Helper function to heuristically get verb tense of verb
         - If there are auxiliary modal verbs and modal is "will", return "future"
             TODO: is this robust?
-        - If not and first auxiliary verb is "be", return tense (don't want tense of "have" auxiliary, bc this is past tense)
+        - If not and first auxiliary verb is "be", return tense
+          (don't want tense of "have" auxiliary, bc this is past tense)
             TODO: is this robust?
         - If not then, get tense of main verb
     Need to include modals in aux indices since can influence tense:
@@ -432,7 +446,8 @@ def get_verb_tense(verb, doc):
         if doc[idx].text in ["will", "shall"]:
             return "future"
     # non modal auxiliary indices; need to check separately bc don't want tense of modal "would"
-    # TODO: is this robust? (if helper verb is "be" aka "was going" -> past then return tense of helper verb)
+    # TODO: is this robust?
+    # (if helper verb is "be" aka "was going" -> past then return tense of helper verb)
     aux_indices = [
         c.i for c in verb_children if "aux" in c.dep_ and c.pos_ == "AUX" and c.tag_ != "MD"
     ]
@@ -470,10 +485,13 @@ def get_keyword_candidates_for_span(span, keyword_type):
             is_include_openie (bool, optional): whether to get openie extracted text. Defaults to True.
             is_include_connect (bool, optional): whether to include the starting ADP. Defaults to True.
             is_include_noun_chunks (bool, optional): whether to include noun chunks. Defaults to True.
-            is_include_random_subtrees (bool, optional): whether to include random subtrees. Defaults to True.
-            is_include_exact (bool, optional): whether to include exact text as keyword. Defaults to True.
+            is_include_random_subtrees (bool, optional): whether to include random subtrees.
+                Defaults to True.
+            is_include_exact (bool, optional): whether to include exact text as keyword.
+                Defaults to True.
             is_include_prefix (bool, optional): whether to include the first n tokens of the argument,
-                where n is randomly selected. Defaults to True. Useful for dependency-parsing perturbations,
+                where n is randomly selected. Defaults to True.
+                Useful for dependency-parsing perturbations,
                 i.e. [PATIENT: some talks with commanders and officials] keyword is "some talks with"
     Returns:
         set(tuple(str, str)): A set of possible candidates in the form of tuples:
@@ -487,7 +505,8 @@ def get_keyword_candidates_for_span(span, keyword_type):
     doc = span.doc
     candidate_set = set()
 
-    # TODO: sometimes adding text, sometimes adding lemma: should work for training, but make more principled
+    # TODO: sometimes adding text, sometimes adding lemma: should work for training,
+    # but make more principled
     if len(span) == 0:
         print(span, span.doc)
         return candidate_set
@@ -506,7 +525,11 @@ def get_keyword_candidates_for_span(span, keyword_type):
             start = min(max(span.start, r.left_edge.i), span.end - 1)
             end = max(min(span.end, r.right_edge.i + 1), span.start)
             curr_subtree = doc[start:end]
-            #            if end > start and end-start < 5 and not all([t.is_punct or t.is_stop for t in curr_subtree]):
+            # if (
+            #     end > start
+            #     and end-start < 5
+            #     and not all([t.is_punct or t.is_stop for t in curr_subtree]):
+            # )
             if (
                 end > start
                 and len(curr_subtree) < len(span)
@@ -688,7 +711,8 @@ def extract_exist_blanks(
             curr_tag = clean_prefix_for_one_tag(tag)
         elif tag.startswith(f"I-{curr_tag}"):
             curr_idxes[1] = idx + 1
-    # happens when last token ends in B-; need to add separately (bc args updated after first occurrence in above code)
+    # happens when last token ends in B-; need to add separately
+    # (bc args updated after first occurrence in above code)
     if curr_tag != "":
         # assert raw_tags[-1].startswith("B-")
         if raw_tags[-1].startswith("B-"):
@@ -796,7 +820,7 @@ def get_possible_blank_idxes(verb):
         List[int]: all possible indexes for inserting blanks
     """
     indexes = set()
-    doc = verb.doc
+    # doc = verb.doc
     indexes.add(verb.i)
     for t in verb.children:
         if t.is_punct:
@@ -900,7 +924,8 @@ def gen_prompt_and_answer_strings(
         doc (Doc): original doc sentence
         blank_indexes ([int, int][]): blanks
         answers (str[]): List of groundtruth fillins corresponding to blank_indexes
-        return_sequence (bool): Whether to return the whole output sequence as the target (vs. blanking structure)
+        return_sequence (bool): Whether to return the whole output sequence as the target
+        (vs. blanking structure)
     Returns:
         [str, str]: the prompt with blanks, and the corresponding answer
     """
@@ -965,7 +990,8 @@ def gen_random_prompt(
         args_to_blank = np.random.choice(args_to_blank, num_blank_args, replace=False)
     else:
         num_blank_args = len(args_to_blank)
-    # always blank verb; TODO: verb included in header even if not blanked--do we want this behavior?
+    # always blank verb;
+    # TODO: verb included in header even if not blanked--do we want this behavior?
     if "V" not in args_to_blank:
         args_to_blank = np.append(args_to_blank, "V")
     prompts = gen_prompts_by_tags(
@@ -1057,11 +1083,29 @@ def gen_prompts_by_tags(
         If type is "all", will be a list of the dict; otherwise, one dict in
         the following format:
         Dict[str, str]: {
-            prompt: [VERB+active: serve | AGENT: Jews | PATIENT: * | TEMPORAL: day] <extra_id_0> For this hope <extra_id_1> <extra_id_2> <extra_id_3> <extra_id_4> God <extra_id_5> <extra_id_6> .
-            answer: <extra_id_0>  <extra_id_1> [AGENT: the Jews] <extra_id_2>  <extra_id_3> [VERB: serve] <extra_id_4>  <extra_id_5> [TEMPORAL: day and night] <extra_id_6>  <extra_id_7>
-            meta: Munch object with keys noncore_args, blank_indexes, answers, patient, agent, frameset_id, vvoice, vlemma, doc
+            prompt: [VERB+active: serve | AGENT: Jews | PATIENT: * | TEMPORAL: day]
+                    <extra_id_0> For this hope <extra_id_1> <extra_id_2> <extra_id_3>
+                    <extra_id_4> God <extra_id_5> <extra_id_6> .
+            answer: <extra_id_0>  <extra_id_1> [AGENT: the Jews] <extra_id_2>  <extra_id_3>
+                    [VERB: serve] <extra_id_4>  <extra_id_5> [TEMPORAL: day and night]
+                    <extra_id_6>  <extra_id_7>
+            meta: Munch object with keys noncore_args, blank_indexes, answers, patient,
+                  agent, frameset_id, vvoice, vlemma, doc
                 example:
-                Munch({'noncore_args': [Munch({'tlemma': 'day', 'raw_tag': 'ARGM-TMP', 'tag': 'TEMPORAL', 'blank_idx': [7, 10]})], 'blank_indexes': [[3, 5], [6, 6], [5, 6], [7, 10], [7, 7], [10, 10], [3, 3]], 'agent': 'Jews', 'patient': '*', 'answers': ['[AGENT: the Jews]', '', '[VERB: serve]', '[TEMPORAL: day and night]', '', '', ''], 'vvoice': 'active', 'vlemma': 'serve', 'doc': For this hope the Jews serve God day and night . , 'raw_tags': ['B-ARGM-PRP', 'I-ARGM-PRP', 'I-ARGM-PRP', 'B-ARG0', 'I-ARG0', 'B-V', 'B-ARG2', 'B-ARGM-TMP', 'I-ARGM-TMP', 'I-ARGM-TMP', 'O'], 'frameset_id': '01'})
+                Munch(
+                    {
+                        'noncore_args': [
+                            Munch({'tlemma': 'day', 'raw_tag': 'ARGM-TMP', 'tag': 'TEMPORAL',
+                            'blank_idx': [7, 10]})],
+                        'blank_indexes': [[3, 5], [6, 6], [5, 6], [7, 10], [7, 7], [10, 10], [3, 3]],
+                        'agent': 'Jews', 'patient': '*',
+                        'answers': ['[AGENT: the Jews]', '', '[VERB: serve]',
+                            '[TEMPORAL: day and night]', '', '', ''],
+                        'vvoice': 'active', 'vlemma': 'serve',
+                        'doc': For this hope the Jews serve God day and night . ,
+                        'raw_tags': ['B-ARGM-PRP', 'I-ARGM-PRP', 'I-ARGM-PRP', 'B-ARG0',
+                            'I-ARG0', 'B-V', 'B-ARG2', 'B-ARGM-TMP', 'I-ARGM-TMP', 'I-ARGM-TMP', 'O'],
+                        'frameset_id': '01'})
         }
     """
     vidx = get_vindex_by_tags(raw_tags)
@@ -1102,7 +1146,7 @@ def gen_prompts_by_tags(
         nblanks = np.random.choice(MAX_NUM_BLANKS, 1)[0]
     # make sure enough blanks for args to blank
     nblanks = max(nblanks, len(args_to_blank))
-    words, temp_raw_tags = [d.text for d in doc], deepcopy(raw_tags)
+    _, temp_raw_tags = [d.text for d in doc], deepcopy(raw_tags)
 
     keywords, blank_indexes, answers, ordered_tags, ordered_short_tags = extract_exist_blanks(
         doc,
@@ -1142,7 +1186,8 @@ def gen_prompts_by_tags(
     )
 
     metas = []
-    # unique_tlemmas is list of tuples representing all possible combinations of keywords, same order as tags
+    # unique_tlemmas is list of tuples representing all possible combinations of keywords,
+    # same order as tags
     agent_idx = ordered_short_tags.index("AGENT") if "AGENT" in ordered_short_tags else None
     patient_idx = ordered_short_tags.index("PATIENT") if "PATIENT" in ordered_short_tags else None
     agent_raw_tag = ordered_tags[agent_idx] if agent_idx is not None else None
@@ -1288,7 +1333,8 @@ def fix_pronoun_form(keyword, target="subj"):
 
 
 def unpassivize_keyword(keyword):
-    """Helper function to change keyword agent for passive to *not*, i.e. remove "by" or "By" from start of keyword"""
+    """Helper function to change keyword agent for passive to *not*,
+    i.e. remove "by" or "By" from start of keyword"""
     if keyword.startswith("by ") or keyword.startswith("By "):
         is_upper = keyword.startswith("By")
         keyword = fix_pronoun_form(keyword, target="subj")
@@ -1299,7 +1345,8 @@ def unpassivize_keyword(keyword):
 
 
 def passivize_keyword(keyword):
-    """Helper function to change keyword agent for passive to *not*, i.e. remove "by" or "By" from start of keyword"""
+    """Helper function to change keyword agent for passive to *not*,
+    i.e. remove "by" or "By" from start of keyword"""
     # TODO: this will improperly uppercase if keyword is named entity--fix
     try:
         if keyword and (not keyword.startswith("by ") and not keyword.startswith("By ")):
@@ -1376,7 +1423,7 @@ def gen_prompt_by_replace_header(orig_prompt, target_meta, frameset_path=DEFAULT
         }[]
     """
     new_header = gen_header_by_meta(target_meta)
-    new_prompt = re.sub("\[[^\]]+\]", new_header, orig_prompt, 1)
+    new_prompt = re.sub("\[[^\]]+\]", new_header, orig_prompt, 1)  # noqa:W605
 
     # delete, since this meta info is not true for new prompt
     del target_meta.blank_indexes
@@ -1568,9 +1615,9 @@ def gen_prompt_by_perturb_meta(
     if vidx is None:
         return None
     vlemma = base_meta.vlemma
-    generated_prompts = {}
+    # generated_prompts = {}
     # TODO: get rid of the is_core arg (can change vform for both core and noncore)
-    new_metas = []
+    # new_metas = []
 
     context_changes = perturb_meta.context_changes
     core_changes = perturb_meta.core_changes
@@ -1699,7 +1746,8 @@ def gen_prompt_by_perturb_meta(
                 else:
                     assert common_keywords_by_tag is not None, (
                         "If target keywords/content not supplied "
-                        + f"and change {core_tag} content, need to provide common_keywords_by_tag, but got None"
+                        + f"and change {core_tag} content,"
+                        + "need to provide common_keywords_by_tag, but got None"
                     )
                     # if content is RANDOM_TAG/*, cannot look-up by keyword type
                     keyword_type = (
@@ -1772,7 +1820,8 @@ def gen_prompt_by_perturb_meta(
             arg_idx = [idx for idx, tag in enumerate(new_noncore_args) if tag.tag == orig_arg]
 
             # if arg does not already exist, introduce it
-            # TODO: do we always want this behavior? some way of specifying in parse code whether to override nonexistent arg?
+            # TODO: do we always want this behavior?
+            # some way of specifying in parse code whether to override nonexistent arg?
             if not arg_idx:
                 arg_idx = None
                 blank_idx = None
@@ -1825,8 +1874,10 @@ def gen_prompt_by_perturb_meta(
 
             if arg_change_type.is_change_content:
                 if arg_change_type.target_content is None:
-                    # if original tlemma is RANDOM_TAG, then corresponding tlemma_type is None; need to create new tlemma_type
-                    # TODO: does this work when is_change_content AND is_change_content_type being used together? maybe redundant choosing of new target_tlemma_type?
+                    # if original tlemma is RANDOM_TAG, then corresponding tlemma_type is None;
+                    # need to create new tlemma_type
+                    # TODO: does this work when is_change_content AND is_change_content_type
+                    # being used together? maybe redundant choosing of new target_tlemma_type?
                     if target_tlemma_type is None:
                         cand_tlemma_types = ["sparse", "partial", "complete"]
                         # TODO fix hacky: because negation spans are so short, NEGATION/SPARSE is empty
@@ -1835,7 +1886,8 @@ def gen_prompt_by_perturb_meta(
                         target_tlemma_type = np.random.choice(cand_tlemma_types, 1)[0]
                     assert common_keywords_by_tag is not None, (
                         "If target keywords/content is not supplied "
-                        + "and change noncore arg content, need to provide common_keywords_by_tag, but got None"
+                        + "and change noncore arg content, need to provide common_keywords_by_tag,"
+                        + "but got None"
                     )
 
                     tlemma = sample_common_keyword(
@@ -1856,7 +1908,8 @@ def gen_prompt_by_perturb_meta(
             )
 
             # add or modify existing meta non core info based on whether tag already exists
-            # TODO: think more about how to encode answers; they do not match up to prompt as is, cannot be used for UL training
+            # TODO: think more about how to encode answers; they do not match up to prompt as is,
+            # cannot be used for UL training
             if arg_idx is not None and new_noncore_args[arg_idx].blank_idx is not None:
                 new_noncore_args[arg_idx] = new_arg_info
                 # update answers and noncore args for UL training (need corresponding 'neg' answers)
@@ -1888,7 +1941,8 @@ def gen_prompt_by_perturb_meta(
             new_meta.noncore_args = new_noncore_args
             new_meta.answers = new_answers
 
-    # need to change when: vform changed and agent type originally complete, agent/patient keywords are swapped with complete tag, etc.
+    # need to change when: vform changed and agent type originally complete,
+    # agent/patient keywords are swapped with complete tag, etc.
     # based on verb voice (after changing vform), remove/add "by" from agent/patient keywords
     # (need to edit both agent/patient because some perturbation functions naively swap
     # TODO: make more robust
@@ -1972,10 +2026,11 @@ def gen_prompt_by_perturb_meta(
             if word.startswith("<extra_id_"):
                 new_words.append(word)
                 continue
-            # TODO: make more robust; now, if is_delete_text, delete all words that are not in string punctuation
+            # TODO: make more robust; now, if is_delete_text, delete all words that are
+            # not in string punctuation
             if context_changes.is_delete_punct and word in string.punctuation:
                 continue
-            if context_changes.is_delete_text and not word in string.punctuation:
+            if context_changes.is_delete_text and word not in string.punctuation:
                 continue
             new_words.append(word)
         new_nonheader = " ".join(new_words)
@@ -2007,7 +2062,7 @@ def clean_prefixes_in_filled_prompt(filled_prompt):
     try:
         header, _ = extract_header_from_prompt(filled_prompt)
         filled_prompt = filled_prompt.replace(header, "").strip()
-    except:
+    except RuntimeError:
         pass
     regex = re.compile(r"\[FILL[0-9] \| (?P<fillin>[^\]]*)\]")
     filled_prompt = regex.sub(r"\1", filled_prompt)
@@ -2086,13 +2141,16 @@ def parse_filled_prompt(
         return {}
     try:
         meta, header = extract_meta_from_prompt(prompt, return_header=True)
-    except Exception as e:
+    except Exception:
         # redirect caught exception to BadGenerationError
         raise BadGenerationError(f"Bad generation: {prompt}") from None
     if header:
         # remove the header
         prompt = prompt.replace(header, "").strip()
-    else:  # TODO: hacky, if extract_meta_from_prompt returns None, None, it's because header is not part of prompt (i.e. when generator outputs whole sequence so filled prompt does not contain header)
+    else:
+        # TODO: hacky, if extract_meta_from_prompt returns None, None,
+        # it's because header is not part of prompt
+        # (i.e. when generator outputs whole sequence so filled prompt does not contain header)
         prompt = prompt
     words = []
     annotations = []
@@ -2128,7 +2186,7 @@ def parse_filled_prompt(
     prev_end = 0
     tags = sorted(tags, key=lambda t: t.start(0))
     for m in tags:
-        raw_tag, punct, fillin = m.group("tag"), m.group("punct"), m.group("fillin")
+        raw_tag, _, fillin = m.group("tag"), m.group("punct"), m.group("fillin")
         curr_words = []
         prev = prompt[prev_end : m.start(0)]
         tag = find_most_likely_tag(raw_tag, gold_tags) if is_most_likely_tag else raw_tag
@@ -2212,7 +2270,7 @@ def add_predictions_to_prompt_dict(generated_dict, predicted, frameset_path=DEFA
     vlemma = generated_dict.meta.vlemma
     try:
         frameset_id = generated_dict.meta.frameset_id
-    except:
+    except AttributeError:
         frameset_id = "01"
     pred_dict = {get_vindex_by_tags(v["tags"]): deepcopy(v["tags"]) for v in predicted["verbs"]}
     if vidx not in pred_dict:
@@ -2254,7 +2312,7 @@ def add_predictions_to_prompt_dict_new(
     vlemma = generated_dict.meta.vlemma
     try:
         frameset_id = generated_dict.meta.frameset_id
-    except:
+    except AttributeError:
         frameset_id = "01"
     pred_dict = {get_vindex_by_tags(v["tags"]): deepcopy(v["tags"]) for v in predicted["verbs"]}
     if vidx not in pred_dict:
@@ -2309,7 +2367,7 @@ def get_arg_span(meta, short_tag):
     original_blank_tuple = [arg.blank_idx for arg in args if arg.tag == short_tag]
     try:
         original_blank_idx = meta.blank_indexes.index(original_blank_tuple[0])
-    except:
+    except ValueError:
         original_blank_idx = None
     # can only shorten an existing argument
     if original_blank_idx is None:
@@ -2321,7 +2379,8 @@ def get_arg_span(meta, short_tag):
 
 def capitalize_by_voice(verb_voice, agent_kw, patient_kw):
     """Helper function to fix capitalizations of agent/patient keywords based on verb voice
-    This is to encourage generating full sentence without hallucinating context, since generator is case sensitive.
+    This is to encourage generating full sentence without hallucinating context,
+    since generator is case sensitive.
     Only capitalizes/lowercases if kws are not None
     Args:
         verb_voice (str): active/passive
@@ -2332,7 +2391,10 @@ def capitalize_by_voice(verb_voice, agent_kw, patient_kw):
         patient_kw (str, or None): new patient keyword
     """
     if agent_kw is None and patient_kw is None:
-        warnings_message = "Trying to change capitalization of agent and patient keywords, but got None for both arguments"
+        warnings_message = (
+            "Trying to change capitalization of agent and patient keywords, "
+            "but got None for both arguments"
+        )
         warnings.warn(warnings_message)
     if verb_voice == "passive":
         if agent_kw is not None:
