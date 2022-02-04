@@ -20,6 +20,24 @@ Get SRL Tags
 .. autoclass:: tailor.steps.get_srl_tags.GetSRLTags
    :members:
 
+Perturb Prompt With String
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: tailor.steps.perturb_prompt.PerturbPromptWithString
+   :members:
+
+Perturb Prompt With Function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: tailor.steps.perturb_prompt.PerturbPromptWithFunction
+   :members:
+
+Generate Random Prompts
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: tailor.steps.generate_random_prompts.GenerateRandomPrompts
+   :members:
+
 Combine All Prompts
 ~~~~~~~~~~~~~~~~~~~
 

@@ -15,8 +15,19 @@ from tailor.common.utils.detect_perturbations import (
 PathOrStr = Union[os.PathLike, str]
 
 
+def _load_default_common_keywords(
+    common_keywords_json: PathOrStr = DEFAULT_COMMON_KEYWORDS_PATH,
+) -> Dict[str, Dict]:
+    with open(common_keywords_json, "r") as file_ref:
+        common_keywords = json.load(file_ref)
+    return common_keywords
+
+
 @Step.register("get-common-keywords-by-tag")
 class GetCommonKeywordsByTag(Step):
+    """
+    TODO (Alexis): Give a sense of what the common keywords mean here.
+    """
     DETERMINISTIC = True
     CACHEABLE = False  # It's pretty fast
 
@@ -30,14 +41,21 @@ class GetCommonKeywordsByTag(Step):
         if data_path is not None:
             return get_common_keywords_by_tag(nlp=spacy_model, **kwargs)
 
-        with open(common_keywords_json, "r") as file_ref:
-            common_keywords = json.load(file_ref)
+        common_keywords = _load_default_common_keywords(common_keywords_json)
 
         return common_keywords
 
 
 @Step.register("generate-random-prompts")
 class GenerateRandomPrompts(Step):
+    """
+    This step generates random prompts for perturbing the processed (spacy tokens and srl tags)
+    sentences.
+
+    .. tip::
+
+        Registered as a :class:`~tango.step.Step` under the name "generate-random-prompts".
+    """
 
     DETERMINISTIC = False
     CACHEABLE = True
@@ -45,8 +63,18 @@ class GenerateRandomPrompts(Step):
     def run(
         self,
         processed_sentences: List[ProcessedSentence],
-        common_keywords_by_tag: Dict[str, Dict],
+        common_keywords_by_tag: Optional[Dict[str, Dict]] = None,
     ):
+        """
+        Parameters
+        ----------
+
+        processed_sentences : :class:`List[ProcessedSentence]`
+            The list of processed sentences. See output of :class:`GetSRLTags`.
+        common_keywords_by_tag : :class:`Dict[str, Dict]`
+            See output of :class:`GetCommonKeywordsByTag`.
+        """
+        common_keywords_by_tag = common_keywords_by_tag or _load_default_common_keywords()
         all_prompts = []
         for sentence in processed_sentences:
             candidates = detect_perturbations(
