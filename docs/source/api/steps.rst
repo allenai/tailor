@@ -35,7 +35,7 @@ Perturb Prompt With Function
 Generate Random Prompts
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: tailor.steps.generate_random_prompts.GenerateRandomPrompts
+.. autoclass:: tailor.steps.random_prompts.GenerateRandomPrompts
    :members:
 
 Combine All Prompts

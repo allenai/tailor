@@ -25,6 +25,7 @@ Contents
    :caption: API Reference
 
    api/steps
+   api/perturbations
    api/helper_steps
 
 .. toctree::
