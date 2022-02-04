@@ -4,7 +4,7 @@ from tailor.common.testing import TailorTestCase
 from tailor.steps import LoadTailorGenerator
 
 
-class TestSquad(TailorTestCase):
+class TestLoadGenerator(TailorTestCase):
     def test_load_generator(self):
         step = LoadTailorGenerator()
         result = step.run()
