@@ -1,10 +1,10 @@
-from typing import List, Dict
 import itertools
 from copy import deepcopy
+from typing import Dict, List
 
-from tailor.common.utils import SpacyDoc
 from tailor.common.abstractions import PromptObject, _munch_to_prompt_object
 from tailor.common.perturb_function import PerturbFunction
+from tailor.common.utils import SpacyDoc
 from tailor.common.utils.head_prompt_utils import (
     capitalize_by_voice,
     convert_tag2readable,

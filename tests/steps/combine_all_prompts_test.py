@@ -1,8 +1,9 @@
 import pytest
 from munch import Munch
+
+from tailor.common.abstractions import ProcessedSentence, PromptObject
 from tailor.common.testing import TailorTestCase
 from tailor.common.utils import get_spacy_model
-from tailor.common.abstractions import ProcessedSentence, PromptObject
 from tailor.steps.combine_all_prompts import CombineAllPrompts
 
 

@@ -21,12 +21,12 @@ from openie import StanfordOpenIE
 
 from tailor.common.utils.perturbation_controls import parse_change_type_meta
 from tailor.common.utils.tag_utils import (
-    DEFAULT_FRAME_SET_PATH,
-    TAG2READABLE_MAPPING,
-    get_argm_and_core_values,
     ADDITIONAL_CASES,
+    DEFAULT_FRAME_SET_PATH,
     READABLE2TAG_MAPPING,
+    TAG2READABLE_MAPPING,
     find_most_likely_tag,
+    get_argm_and_core_values,
 )
 
 

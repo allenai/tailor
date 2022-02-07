@@ -5,6 +5,7 @@ from munch import Munch
 from tango.common.registrable import Registrable
 
 from tailor.common.abstractions import PromptObject
+from tailor.common.utils import SpacyDoc
 from tailor.common.utils.head_prompt_utils import (
     capitalize_by_voice,
     get_arg_span,
@@ -12,8 +13,6 @@ from tailor.common.utils.head_prompt_utils import (
     get_keyword_candidates_for_span,
     parse_keyword_type,
 )
-
-from tailor.common.utils import SpacyDoc
 
 
 class Perturbation(NamedTuple):

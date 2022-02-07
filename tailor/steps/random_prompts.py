@@ -28,6 +28,7 @@ class GetCommonKeywordsByTag(Step):
     """
     TODO (Alexis): Give a sense of what the common keywords mean here.
     """
+
     DETERMINISTIC = True
     CACHEABLE = False  # It's pretty fast
 
