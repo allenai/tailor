@@ -31,7 +31,7 @@ class ProcessedSentence(NamedTuple):
 
 class PromptObject(NamedTuple):
     """
-    TODO
+    Abstraction for a prompt object.
     """
 
     prompt: Optional[str] = None
