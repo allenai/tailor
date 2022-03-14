@@ -45,7 +45,7 @@ pip install -e .
 ## Using Tailor: walkthrough cases
 
 - See the [tutorial notebook](https://github.com/allenai/tailor/blob/main/examples/Tutorial%2001%20-%20Tailor%20basic%20wrapper.ipynb) for a detailed walkthrough of the API.
-- See the documents in the [main Python file](https://github.com/allenai/tailor/blob/main/examples/Tutorial%2001%20-%20Tailor%20basic%20wrapper.ipynb) for more explanations.
+- See the documents in the [main Python file](https://github.com/allenai/tailor/blob/main/tailor/tailor_wrapper.py) for more explanations.
 - See [Tutorial 02](https://github.com/allenai/tailor/blob/main/examples/Tutorial%2002%20-%20Using%20Tailor%20default%20perturb.%20func%20with%20NLI.ipynb) to learn how to use the default perturbation function on NLI data.
 - See [Tutorial 03](https://github.com/allenai/tailor/blob/main/examples/Tutorial%2003%20-%20Defining%20customized%20perturb.%20func%20for%20MATRES.ipynb) to learn how to define a customized perturbation function for MATRES data.
 
