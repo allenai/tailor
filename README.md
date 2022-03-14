@@ -1,7 +1,5 @@
 # Tailor
 
-This is the codebase for the [Tailor](https://api.semanticscholar.org/CorpusID:235898904) library.
-
 This repository contains code for compositional perturbations as described in the following paper:
 
 > [Tailor: Generating and Perturbing Text with Semantic Controls](https://arxiv.org/abs/2107.07150)  
