@@ -1,3 +1,21 @@
+Metadata-Version: 2.1
+Name: tailor-nlp
+Version: 0.1.0
+Summary: UNKNOWN
+Home-page: https://github.com/allenai/tailor
+Author: Allen Institute for Artificial Intelligence
+Author-email: contact@allenai.org
+License: Apache
+Platform: UNKNOWN
+Classifier: Intended Audience :: Science/Research
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.6.1
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # AI2 Tailor
 
 This is the codebase for the [Tailor](https://api.semanticscholar.org/CorpusID:235898904) library.
@@ -27,12 +45,6 @@ Bibtex for citations:
 ```
 
 ## Installation
-
-From Pypi:
-
-```bash
-pip install tailor_nlp
-```
 
 From source:
 
@@ -123,3 +135,5 @@ tl.perturb_with_context(
 # return: ['In the operation room , the doctor will comfort the athlete.',
 # "In the operation room , the doctor 's will comfort the athlete."]
 ```
+
+

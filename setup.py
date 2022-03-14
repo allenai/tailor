@@ -29,7 +29,7 @@ with open("tailor/version.py", "r") as version_file:
     exec(version_file.read(), VERSION)
 
 setup(
-    name="tailor",
+    name="tailor_nlp",
     version=VERSION["VERSION"],
     description="",
     long_description=open("README.md").read(),
