@@ -87,7 +87,10 @@ class GenerateRandomPrompts(Step):
             )
 
             candidates = [
-                PromptObject(prompt=prompt_munch.prompt, name=prompt_munch.constraint_type)
+                PromptObject(
+                    prompt=prompt_munch.prompt,
+                    description=prompt_munch.description,
+                    name=prompt_munch.name)
                 for prompt_munch in candidates
             ]
 

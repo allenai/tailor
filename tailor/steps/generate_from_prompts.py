@@ -44,7 +44,7 @@ def _unflatten(flattened_list: List[Any], original_lengths: List[int]):
     return unflattened
 
 
-@Step.register("generate-from-prompts")
+# @Step.register("generate-from-prompts")
 class GenerateFromPrompts(Step):
     DETERMINISTIC = True
     CACHEABLE = True
@@ -121,7 +121,6 @@ class GenerateFromPrompts(Step):
             assert (
                 len(generated_prompts) == sentence_lengths[idx] == len(perturb_names[idx])
             )  # Sanity check
-
             for pdx, perturb in enumerate(generated_prompts):
                 perturb_name = perturb_names[idx][pdx]
                 perturb_desc = perturb_descriptions[idx][pdx]
@@ -145,9 +144,8 @@ class GenerateFromPrompts(Step):
                         if compute_perplexity:
                             generated_doc = spacy_model(generated)
                             eop = compute_edit_ops(orig_doc, generated_doc)
-                            if eop[0].op == "equal":
+                            if all([op.op == "equal" for op in eop]):
                                 continue
-
                             perplexities = compute_delta_perplexity(
                                 eop, perplex_scorer, is_cuda=is_cuda
                             )

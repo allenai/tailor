@@ -54,7 +54,7 @@ def get_common_keywords_by_tag(
     keyword_str="NOUN_CHUNKS,PREFIX,CONNECT,ROOT",
     nlp=None,
     frameset_path=DEFAULT_FRAME_SET_PATH,
-    max_count=100,
+    max_count=None,
 ):
     """Counts all keyword candidates that have a type specified by keyword_str
         Used for UL training for keyword following
@@ -106,7 +106,7 @@ def get_common_keywords_by_tag(
                 if ann.tag == label:
                     keyword_meta = parse_keyword_type(keyword_str)
                     keywords = get_keyword_candidates_for_span(
-                        doc[ann.start : ann.end], keyword_meta
+                        doc[ann.start: ann.end], keyword_meta
                     )
                     temp_dict = {k: [] for k in keyword_types}
                     for keyword_type, keyword in keywords:
@@ -202,59 +202,103 @@ def identify_tags_for_span(doc, predicted, start=None, end=None):
     return possible_tags
 
 
+DEFAULT_UNSET_CONTENT = "UNSET_CONTENT"
+DEFAULT_UNSET_TAG = "UNSET_TAG"
+DEFAULT_UNSET_TENSE = "UNSET_TENSE"
+
+
 def detect_perturbations(
-    doc, start, end, predicted, frameset_path=DEFAULT_FRAME_SET_PATH, common_keywords_by_tag=None
+    doc, start, end, predicted,
+    frameset_path=DEFAULT_FRAME_SET_PATH,
+    to_content=DEFAULT_UNSET_CONTENT,
+    to_semantic_role=DEFAULT_UNSET_TAG,
+    to_tense=DEFAULT_UNSET_TAG,
+    common_keywords_by_tag=None
 ):
+    to_content = to_content or DEFAULT_UNSET_CONTENT
+    to_semantic_role = to_semantic_role or DEFAULT_UNSET_TAG
+    to_tense = to_tense or DEFAULT_UNSET_TAG
     candidates = identify_tags_for_span(doc, predicted, start, end)
     output = []
+    involved_perturbations = []
+
     for candidate in candidates:
+        span_text = doc[candidate.start: candidate.end].text
         if candidate.span_type is None:
             continue
         unique_tags = get_unique_tags(candidate.raw_tags)
 
+        args_to_blank = [candidate.span_raw_tag]
+        if "V" not in args_to_blank:
+            args_to_blank.append("V")
+        # get a basic prompt meta.
+        orig_prompt = gen_prompts_by_tags(
+            doc,
+            None,
+            candidate.raw_tags,
+            return_prompt_type="concrete",
+            nblanks=1,
+            args_to_blank=args_to_blank,
+            frameset_path=frameset_path,
+        )
+        prompt_meta = orig_prompt.meta
+
         tag = convert_tag2readable(
             candidate.vlemma, candidate.span_raw_tag, None, frameset_path=frameset_path
         )
+
         perturb_strs = []
+
         if candidate.span_type == "core":
             perturb_strs = [
-                ("swap_core", "CORE(SWAP_CORE)", "NOUN_CHUNKS,RANDOM_SUBTREES"),
+                ("swap_core", "CORE(SWAP_CORE)", "EXACT,UNCASED"),
+                (
+                    "swap_core_without_context",
+                    "CONTEXT(DELETE_TEXT);CORE(SWAP_CORE)",
+                    "EXACT,UNCASED"
+                ),
                 (
                     "change_content",
-                    f"CORE({tag}:CHANGE_CONTENT)",
+                    f"CORE({tag}:CHANGE_CONTENT({to_content}))",
                     "NOUN_CHUNKS,PREFIX,CONNECT,ROOT",
                 ),
-                ("change_spec", f"NONCORE({tag}:CHANGE_SPECIFICITY(sparse))", "EXACT,UNCASED"),
             ]
         elif candidate.span_type == "noncore":
             perturb_strs = [
-                ("move", "CONTEXT(CHANGE_IDX(0:-1))", "EXACT,UNCASED"),
-                ("move", "CONTEXT(CHANGE_IDX(-1:0))", "EXACT,UNCASED"),
+                ("move_front", "CONTEXT(CHANGE_IDX(0:-1))", "EXACT,UNCASED",),
+                ("move_back", "CONTEXT(CHANGE_IDX(-1:0))", "EXACT,UNCASED"),
                 (
                     "change_content",
-                    f"NONCORE({tag}:CHANGE_CONTENT)",
+                    f"NONCORE({tag}:CHANGE_CONTENT({to_content}))",
                     "NOUN_CHUNKS,PREFIX,CONNECT,ROOT",
                 ),
-                ("change_spec", f"NONCORE({tag}:CHANGE_SPECIFICITY(sparse))", "EXACT,UNCASED"),
-                ("change_tag", f"NONCORE({tag}:CHANGE_TAG)", "NOUN_CHUNKS,PREFIX,CONNECT,ROOT"),
+                ("remove_details", f"NONCORE({tag}:CHANGE_SPECIFICITY(partial))", "NOUN_CHUNKS"),
+                ("add_details", f"NONCORE({tag}:CHANGE_SPECIFICITY(sparse))", "EXACT,UNCASED"),
+                ("change_role", f"NONCORE({tag}:CHANGE_TAG({to_semantic_role}))",
+                 "NOUN_CHUNKS,PREFIX"),
             ]
         elif candidate.span_type == "verb":
+            vtense = prompt_meta.vtense
+            target_voice = "active" if prompt_meta.vvoice == "passive" else "passive"
             perturb_strs = [
-                ("change_tense", "VERB(CHANGE_TENSE)", "EXACT,UNCASED"),
-                ("change_voice", "VERB(CHANGE_VOICE)", "NOUN_CHUNKS,RANDOM_SUBTREES"),
-                ("change_content", "VERB(CHANGE_VLEMMA)", "EXACT,UNCASED"),
+                ("change_tense", f"VERB(CHANGE_TENSE({to_tense}))", "EXACT,UNCASED"),
+                ("change_voice",
+                    f"CONTEXT(DELETE_TEXT);VERB(CHANGE_TENSE({vtense}),CHANGE_VOICE({target_voice}))",
+                    "NOUN_CHUNKS,RANDOM_SUBTREES"),
+                ("change_content", f"VERB(CHANGE_VLEMMA({to_content}))", "EXACT,UNCASED"),
             ]
+        perturb_strs.append(("delete_text", "CONTEXT(DELETE_TEXT)", "EXACT,UNCASED"))
+        perturb_strs.append(("delete_punctuation", "CONTEXT(DELETE_PUNCT)", "EXACT,UNCASED"))
+
         for name, perturb_str, keyword_str in perturb_strs:
             if candidate.start == 0 and "front" in name:
                 continue
             if candidate.end == len(doc) and "back" in name:
                 continue
             # if the span is already too long, skip
-            if candidate.end - candidate.start > 5 and "spec" in name:
-                continue
-            args_to_blank = [candidate.span_raw_tag]
-            if "V" not in args_to_blank:
-                args_to_blank.append("V")
+            # if candidate.end - candidate.start > 5 and "detail" in name:
+            #    continue
+
             if name == "swap_core" or name == "change_voice":
                 args_to_blank = [f for f in ["ARG0", "ARG1", "V"] if f in unique_tags]
             orig_prompt = gen_prompts_by_tags(
@@ -268,7 +312,8 @@ def detect_perturbations(
                 frameset_path=frameset_path,
             )
             # core_idx = get_core_idxes_from_meta(case.meta)
-
+            for unset in [DEFAULT_UNSET_CONTENT, DEFAULT_UNSET_TAG, DEFAULT_UNSET_TENSE]:
+                perturb_str = perturb_str.replace(f"({unset})", "")
             perturb_meta = parse_change_type_meta(perturb_str)
             perturbed = gen_prompt_by_perturb_meta(
                 doc,
@@ -283,6 +328,11 @@ def detect_perturbations(
             # print("| ORIG: ", orig_prompt.prompt)
             # print("| EDIT: ", perturbed.prompt)
             # print()
-            if not is_equal_prompts(perturbed.prompt, orig_prompt.prompt):
-                output.append(Munch(constraint_type=name, prompt=perturbed.prompt))
+            involved_perturbations.append(orig_prompt.prompt)
+            if not any([is_equal_prompts(perturbed.prompt, p) for p in involved_perturbations]):
+                involved_perturbations.append(perturbed.prompt)
+                output.append(Munch(
+                    name=name,
+                    description=f"[{name}] [{tag}: {span_text}]",
+                    prompt=perturbed.prompt))
     return output

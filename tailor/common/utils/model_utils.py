@@ -23,7 +23,8 @@ def load_generator(model_path="allenai/tailor"):
 def generate_batch(
     examples,
     generator,
-    temperature=1,
+    temperature=0.75,
+    top_k=50,
     num_beams=None,
     n=3,
     top_p=0.9,
@@ -36,11 +37,12 @@ def generate_batch(
     with torch.no_grad():
         for e in range(0, len(examples), batch_size):
             preds_list += generator(
-                examples[e : e + batch_size],
+                examples[e: e + batch_size],
                 temperature=temperature,
                 return_tensors=True,
                 num_beams=num_beams,
                 top_p=top_p,
+                top_k=top_k,
                 max_length=max_length,
                 early_stopping=None if num_beams is None else True,
                 do_sample=num_beams is None and do_sample,
@@ -82,14 +84,14 @@ def generate_and_clean_batch(
     for idx in range(0, len(preds_list), n):
         results = []
         prompt = prompts[int(idx / n)]
-        for g in preds_list[idx : idx + n]:
+        for g in preds_list[idx: idx + n]:
             try:
                 generated = generator.tokenizer.decode(g["generated_token_ids"])
                 filled = fillin_prompt(prompt, generated, is_clean_prefix=is_clean_verb_prefix)
                 results.append(filled)
-            except BadGenerationError:
+            except BadGenerationError as e:
+
                 # results.append([])
-                # print(e)
                 continue
         preds_list_cleaned.append(list(set(results)))
     assert len(preds_list_cleaned) == len(prompts)
