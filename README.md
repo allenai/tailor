@@ -1,4 +1,4 @@
-# AI2 Tailor
+# Tailor
 
 This is the codebase for the [Tailor](https://api.semanticscholar.org/CorpusID:235898904) library.
 
