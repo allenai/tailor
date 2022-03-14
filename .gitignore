@@ -3,6 +3,7 @@
 .eggs/
 .mypy_cache
 tailor.egg-info/
+tailor_nlp.egg-info/
 build/
 dist/
 pip-wheel-metadata/
