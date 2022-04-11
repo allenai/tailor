@@ -1,5 +1,7 @@
 # Tailor-generated contrast sets for UD English dependency parsing. 
 
+## Data
+
 `noun2verb.csv` and `verb2noun.csv` contain perturbations changing prepositional phrase attachment types (noun/verb) for each instance in the original contrast sets created by [Gardner et al., 2021](https://arxiv.org/pdf/2004.02709.pdf). 
 
 Each contrast set file contains the following fields:
@@ -17,3 +19,6 @@ Each contrast set file contains the following fields:
 - ``tailor_perturbed_prompt``: Prompt used to source perturbed generation from Tailor
 
 **Note**:  In calculating top-k validity (k=10), we source k generations for each original instance (to which the perturbation strategies apply). However, we only annotate a subset of these k generations efficiency purposes: We stop when we find one valid perturbation for an instance.
+
+## Analysis
+`parsing_analysis.ipynb' contains code for computing top-k validity and lexical diversity of the Tailor-generated contrast sets for UD English.
