@@ -21,4 +21,4 @@ Each contrast set file contains the following fields:
 **Note**:  In calculating top-k validity (k=10), we source k generations for each original instance (to which the perturbation strategies apply). However, we only annotate a subset of these k generations efficiency purposes: We stop when we find one valid perturbation for an instance.
 
 ## Analysis
-`parsing_analysis.ipynb' contains code for computing top-k validity and lexical diversity of the Tailor-generated contrast sets for UD English.
+`parsing_analysis.ipynb` contains code for computing top-k validity and lexical diversity of the Tailor-generated contrast sets for UD English.
