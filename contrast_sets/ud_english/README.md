@@ -13,5 +13,3 @@ Each contrast set file contains the following fields:
   * `--`: skipped due to a failure of perturbation strategy (i.e. Tailor produced no outputs)
   * `skip`: Skipped since a valid Tailor-generated perturbation for the same instance was already found
 - ``tailor_perturbed_prompt``: Prompt used to source perturbed generation from Tailor
-
-Note: 
