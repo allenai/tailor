@@ -35,7 +35,7 @@ pip install tailor_nlp
 From source:
 
 ```bash
-git clone git@github.com:allenai/tailor.git
+git clone https://github.com/allenai/tailor.git
 cd tailor
 pip install -e .
 ```
