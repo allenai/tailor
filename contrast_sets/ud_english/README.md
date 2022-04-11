@@ -18,7 +18,7 @@ We use Tailor to recreate the UD English contrast sets created by [Gardner et al
   * `skip`: Skipped since a valid Tailor-generated perturbation for the same instance was already found
 - ``tailor_perturbed_prompt``: Prompt used to source perturbed generation from Tailor
 
-**Note**:  In calculating top-k validity (k=10), we source k generations for each original instance (to which the perturbation strategies apply). However, we only annotate a subset of these k generations efficiency purposes: We stop when we find one valid perturbation for an instance.
+**Note**:  In calculating top-k validity (k=10), we source k generations for each original instance. However, we only annotate a subset of these k generations efficiency purposes: We stop when we find one valid perturbation for an instance.
 
 For more information, see Section 5 of the [paper](https://arxiv.org/pdf/2107.07150v2.pdf).
 
