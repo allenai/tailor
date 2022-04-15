@@ -30,4 +30,4 @@ Sphinx==4.2.0
 furo==2021.10.9
 
 # Lets Sphinx parse markdown files in addition to rst.
-myst-parser==0.15.2
+myst-parser==0.17.1
