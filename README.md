@@ -35,7 +35,7 @@ pip install tailor_nlp
 From source:
 
 ```bash
-git clone git@github.com:allenai/tailor.git
+git clone https://github.com/allenai/tailor.git
 cd tailor
 pip install -e .
 ```
@@ -122,3 +122,4 @@ tl.perturb_with_context(
 # return: ['In the operation room , the doctor will comfort the athlete.',
 # "In the operation room , the doctor 's will comfort the athlete."]
 ```
+

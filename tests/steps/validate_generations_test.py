@@ -14,6 +14,7 @@ class TestValidateGenerations(TailorTestCase):
                 GeneratedPrompt(
                     prompt_no_header="- [PATIENT: the patient] is [VERB: comforted], [AGENT : by the doctor]",
                     sentence="- the patient is comforted , by the doctor",
+                    clean_sentence="the patient is comforted, by the doctor",
                     meta=None,
                     annotations=None,
                     words=None,
@@ -26,6 +27,7 @@ class TestValidateGenerations(TailorTestCase):
                 GeneratedPrompt(
                     prompt_no_header="Having's [VERB: comforted] - [PATIENT: the patient] [AGENT : by the doctor]",
                     sentence="Having 's comforted - the patient by the doctor",
+                    clean_sentence="Having's comforted-the patient by the doctor",
                     meta=None,
                     annotations=None,
                     words=None,
@@ -38,6 +40,7 @@ class TestValidateGenerations(TailorTestCase):
                 GeneratedPrompt(
                     prompt_no_header="- [PATIENT: the patient] was [VERB: comforted] [AGENT; by the doctor].",
                     sentence="- the patient was comforted by the doctor .",
+                    clean_sentence="the patient was comforted by the doctor.",
                     meta=None,
                     annotations=None,
                     words=None,
@@ -52,6 +55,7 @@ class TestValidateGenerations(TailorTestCase):
                 GeneratedPrompt(
                     prompt_no_header="- [PATIENT: the book]'s [VERB: picked] [AGENT : by the girl]",
                     sentence="- the book 's picked by the girl",
+                    sentence="the book's picked by the girl",
                     meta=None,
                     annotations=None,
                     words=None,
