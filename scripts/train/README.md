@@ -58,39 +58,48 @@
     #### More information about the Propbank formalism:
     The Propbank is [here](http://verbs.colorado.edu/propbank/framesets-english-aliases/).
     (described in [this paper](https://arxiv.org/pdf/2101.05779.pdf))
+    
     A. Numbered arguments (A0-A5, AA): Arguments defining verb-specific roles. Their semantics depends on the verb and the verb usage in a sentence, or verb sense. The most frequent roles are A0 and A1. Commonly, 
-        - `A0`: agent, 
-        - `A1`: corresponds to the patient or theme of the proposition
+    - `A0`: agent, 
+    - `A1`: corresponds to the patient or theme of the proposition
+    
     B. Adjuncts (AM-): General arguments that any verb may take optionally, 13 types in total: 
-        - `AM-ADV`: general-purpose; 
-        - `AM-CAU`: cause; 
-        - `AM-DIR`: direction; 
-        - `AM-DIS`: discourse marker; 
-        - `AM-EXT`: extent; 
-        - `AM-LOC`: location; 
-        - `AM-MNR`: manner; 
-        - `AM-MOD`: modal verb; 
-        - `AM-NEG`: negation marker; 
-        - `AM-PNC`: purpose; 
-        - `AM-PRD`: predication; 
-        - `AM-REC`: reciprocal; 
-        - `AM-TMP`: temporal.
+        
+    - `AM-ADV`: general-purpose; 
+    - `AM-CAU`: cause; 
+    - `AM-DIR`: direction; 
+    - `AM-DIS`: discourse marker; 
+    - `AM-EXT`: extent; 
+    - `AM-LOC`: location; 
+    - `AM-MNR`: manner; 
+    - `AM-MOD`: modal verb; 
+    - `AM-NEG`: negation marker; 
+    - `AM-PNC`: purpose; 
+    - `AM-PRD`: predication; 
+    - `AM-REC`: reciprocal; 
+    - `AM-TMP`: temporal.
+    
     C. References (R-): Arguments representing arguments realized in other parts of the sentence. The role of a reference is the same as the role of the referenced argument. The label is an R-tag prefixed to the label of the referent, e.g., R-A1.
 
-## Format the Data
+## Format the Data for Tailor
 
    Create inputs for the Tailor generator. For details about input formats, see Section 2.2 of [our paper](https://arxiv.org/pdf/2107.07150.pdf).
-
-    
-    cd label_contrast/ud_en
-    python data_process.py 
-        --step prompt
-        # where to output the prompt data folder; default to ./label_contrast/ud_en/data/prompts
-        --prompt_outdir ./data/prompts/
-    
+   
+   Run the following command to produce inputs for <b>unlikehood training</b>. In the output files, the rows with "reward=-1" correspond to negative prompts).
+   
+   ```sh
+   python data_process.py --step input --prompt_identifier unlikelihood --use_unlikelihood
+   ```      
+  
+   Or for standard MLE training:
+   
+   ```
+    python data_process.py --step input --prompt_identifier mle
+   ```
     
 ## Train the model
 
-    chmod +x finetune_t5_sherry.sh
-    ./finetune_t5_sherry.sh
+   ```
+   bash finetune_ul.sh
+   ```
 
