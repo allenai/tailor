@@ -518,8 +518,12 @@ def write_prompt_files(prompt_groups, dpath, is_pickle=True):
     dev_list = list(np.concatenate(devs))
     logger.info("Is writing csv training and dev files...")
     columns = ["prompt", "answer", "reward", "weight"]
-    pd.DataFrame(train_list)[columns].to_csv(f"{dpath}/train.csv", index=False)
-    pd.DataFrame(dev_list)[columns].to_csv(f"{dpath}/dev.csv", index=False)
+    train_file = os.path.join(dpath, "train.csv")
+    dev_file = os.path.join(dpath, "train.csv")
+    pd.DataFrame(train_list)[columns].to_csv(train_file, index=False)
+    pd.DataFrame(dev_list)[columns].to_csv(dev_file, index=False)
+    logger.info(f" | Wrote train to: {train_file}")
+    logger.info(f" | Wrote dev to: {dev_file}")
     logger.info("Is pickling the results...")
     if is_pickle:
         with open(f"{dpath}/train.pkl", "wb") as f:
