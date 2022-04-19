@@ -124,9 +124,22 @@ class DeletePunctuation(PerturbStringFunction):
 @PerturbStringFunction.register("swap_core_with_context")
 class SwapCoreWithContext(PerturbStringFunction):
     def __call__(
-        self, prompt_meta, *args, description=None, **kwargs
+        self, prompt_meta, *args, description=None, **kwargs,
     ) -> Union[Perturbation, List[Perturbation]]:
         perturb_str = "CORE(SWAP_CORE)"
+      
+        # Capitalize the keywords by voice to improve generation quality 
+        core_idx = get_core_idxes_from_meta(prompt_meta)
+        if (core_idx.pidx is not None and core_idx.aidx is not None): 
+            # give in opposite order because want to reverse the capitalization logic:
+            # i.e., patient becomes new agent, so uppercase current patient (rather than agent) if verb voice is active 
+            patient, agent = capitalize_by_voice(
+                                prompt_meta.vvoice, 
+                                prompt_meta.core_args[core_idx.pidx].tlemma,
+                                prompt_meta.core_args[core_idx.aidx].tlemma) 
+            prompt_meta.core_args[core_idx.pidx].tlemma = patient
+            prompt_meta.core_args[core_idx.aidx].tlemma = agent 
+
         return Perturbation(
             perturb_str=perturb_str,
             perturb_meta=prompt_meta,
@@ -141,6 +154,19 @@ class SwapCoreWithoutContext(PerturbStringFunction):
         self, prompt_meta, *args, description=None, **kwargs
     ) -> Union[Perturbation, List[Perturbation]]:
         perturb_str = "CONTEXT(DELETE_TEXT);CORE(SWAP_CORE)"
+        
+        # Capitalize the keywords by voice to improve generation quality 
+        core_idx = get_core_idxes_from_meta(prompt_meta)
+        if (core_idx.pidx is not None and core_idx.aidx is not None): 
+            # give in opposite order because want to reverse the capitalization logic:
+            # i.e., patient becomes new agent, so uppercase current patient (rather than agent) if verb voice is active 
+            patient, agent = capitalize_by_voice(
+                                prompt_meta.vvoice, 
+                                prompt_meta.core_args[core_idx.pidx].tlemma,
+                                prompt_meta.core_args[core_idx.aidx].tlemma) 
+            prompt_meta.core_args[core_idx.pidx].tlemma = patient
+            prompt_meta.core_args[core_idx.aidx].tlemma = agent 
+       
         return Perturbation(
             perturb_str=perturb_str,
             perturb_meta=prompt_meta,
@@ -176,26 +202,25 @@ def replace_keyword_with_phenomenon(
             keywords = filter_keywords(keywords)
             prompt_meta = deepcopy(prompt_meta)
             for keyword in keywords:
-                if do_capitalize_by_voice:
-                    core_idx = get_core_idxes_from_meta(prompt_meta)
-                    agent = (
-                        None
-                        if core_idx.aidx is None
-                        else prompt_meta.core_args[core_idx.aidx].tlemma
-                    )
-                    patient = (
-                        None
-                        if core_idx.pidx is None
-                        else prompt_meta.core_args[core_idx.pidx].tlemma
-                    )
-                    if core_arg_to_change == "AGENT":
-                        keyword, patient = capitalize_by_voice(prompt_meta.vvoice, keyword, patient)
-                        if patient is not None:
-                            prompt_meta.core_args[core_idx.pidx].tlemma = patient
-                    elif core_arg_to_change == "PATIENT":
-                        agent, keyword = capitalize_by_voice(prompt_meta.vvoice, agent, keyword)
-                        if agent is not None:
-                            prompt_meta.core_args[core_idx.aidx].tlemma = agent
+                core_idx = get_core_idxes_from_meta(prompt_meta)
+                agent = (
+                    None
+                    if core_idx.aidx is None
+                    else prompt_meta.core_args[core_idx.aidx].tlemma
+                )
+                patient = (
+                    None
+                    if core_idx.pidx is None
+                    else prompt_meta.core_args[core_idx.pidx].tlemma
+                )
+                if core_arg_to_change == "AGENT":
+                    keyword, patient = capitalize_by_voice(prompt_meta.vvoice, keyword, patient)
+                    if patient is not None:
+                        prompt_meta.core_args[core_idx.pidx].tlemma = patient
+                elif core_arg_to_change == "PATIENT":
+                    agent, keyword = capitalize_by_voice(prompt_meta.vvoice, agent, keyword)
+                    if agent is not None:
+                        prompt_meta.core_args[core_idx.aidx].tlemma = agent
 
                 perturb_str = (
                     "CONTEXT(DELETE_TEXT);NONCORE(ALL:DELETE);"

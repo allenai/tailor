@@ -1,6 +1,7 @@
 from typing import Any, List, Optional, Tuple
 
 import torch
+from tqdm import tqdm
 from munch import Munch
 from tango.step import Step
 from transformers.modeling_utils import PreTrainedModel
@@ -24,6 +25,7 @@ def _munch_to_generated_prompt(
     return GeneratedPrompt(
         prompt_no_header=prompt_munch.prompt_no_header,
         sentence=prompt_munch.sentence,
+        clean_sentence=prompt_munch.clean_sentence,
         meta=prompt_munch.meta,
         annotations=prompt_munch.annotations,
         words=prompt_munch.words,
@@ -58,7 +60,7 @@ class GenerateFromPrompts(Step):
         spacy_model: SpacyModelType,
         generator: Optional[Text2TextGenerationPipeline] = None,
         generation_batch_size: int = 256,
-        num_perturbations: int = 3,
+        num_perturbations: int = 1,
         compute_perplexity: bool = False,
         perplex_scorer: Optional[Tuple[PreTrainedModel, PreTrainedTokenizerBase]] = None,
         **generation_kwargs,
@@ -85,7 +87,7 @@ class GenerateFromPrompts(Step):
         perturb_descriptions = []
 
         all_prompts_flattened = []
-        for idx, sentence in enumerate(processed_sentences):  # TODO: add tqdm
+        for idx, sentence in enumerate(processed_sentences): # TODO: add tqdm 
             batch_prompts += prompts[idx]
             sentence_lengths.append(len(prompts[idx]))  # number of prompts per sentence.
             perturb_names.append(
@@ -96,7 +98,6 @@ class GenerateFromPrompts(Step):
             if len(batch_prompts) >= generation_batch_size or idx == len(processed_sentences) - 1:
                 prompt_list = [p.prompt for p in batch_prompts]  # list of str prompts
 
-                # TODO (Alexis): The generations don't seem to be super clean. Is this expected?
                 batch_generated_prompts = generate_and_clean_batch(
                     prompts=prompt_list,
                     generator=generator,
@@ -149,6 +150,8 @@ class GenerateFromPrompts(Step):
                             perplexities = compute_delta_perplexity(
                                 eop, perplex_scorer, is_cuda=is_cuda
                             )
+                        else:
+                            perplexities = None
 
                         prompt_dicts.append(
                             _munch_to_generated_prompt(

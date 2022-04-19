@@ -1,6 +1,6 @@
 import torch
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, pipeline
-
+from tqdm import tqdm
 from tailor.common.utils.head_prompt_utils import BadGenerationError, fillin_prompt
 
 
@@ -30,12 +30,12 @@ def generate_batch(
     top_p=0.9,
     do_sample=True,
     batch_size=128,
-    max_length=200,
+    max_length=100,
     **kwargs
 ):
     preds_list = []
     with torch.no_grad():
-        for e in range(0, len(examples), batch_size):
+        for e in tqdm(range(0, len(examples), batch_size)):
             preds_list += generator(
                 examples[e: e + batch_size],
                 temperature=temperature,
@@ -66,6 +66,8 @@ def generate_and_clean_batch(
     max_length=200,
     **kwargs
 ):
+    """ Sources generations for given prompts and calls  
+    """
     preds_list = generate_batch(
         prompts,
         generator,
@@ -81,7 +83,7 @@ def generate_and_clean_batch(
         **kwargs
     )
     preds_list_cleaned = []
-    for idx in range(0, len(preds_list), n):
+    for idx in tqdm(range(0, len(preds_list), n)):
         results = []
         prompt = prompts[int(idx / n)]
         for g in preds_list[idx: idx + n]:
@@ -90,7 +92,6 @@ def generate_and_clean_batch(
                 filled = fillin_prompt(prompt, generated, is_clean_prefix=is_clean_verb_prefix)
                 results.append(filled)
             except BadGenerationError as e:
-
                 # results.append([])
                 continue
         preds_list_cleaned.append(list(set(results)))

@@ -1,4 +1,5 @@
 import difflib
+import re
 
 from munch import Munch
 
@@ -151,3 +152,14 @@ def match_idx_in_eops(source_idx, ops, source_str="from", allow_overflow=False):
                 target_idx = ops[-1][tidx_end] - 1
             break
     return target_idx
+
+
+def clean_punct(gen):
+    """ Heuristically clean clean whitespaces 
+    before punctuation in generations"""
+    
+    gen = re.sub(r'\s+([,?.!:\-"])', r'\1', gen)
+    gen = re.sub(r"\s+(['])", r'\1', gen)
+    gen = re.sub(r"([-])\s+", r'\1', gen)
+    gen = gen.lstrip('!-:,.? ')
+    return gen

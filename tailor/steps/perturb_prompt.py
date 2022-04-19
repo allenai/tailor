@@ -105,6 +105,9 @@ class PerturbPromptWithString(Step):
                     **intermediate_prompt_kwargs,
                 )
 
+                if tags_prompt is None:
+                    continue
+
                 if isinstance(perturb_str_func, PerturbStringFunction):
                     perturbations = perturb_str_func(tags_prompt.meta, **perturb_fn_kwargs)
                     if isinstance(perturbations, Perturbation):
@@ -204,6 +207,9 @@ class PerturbPromptWithFunction(Step):
                     return_prompt_type="concrete",
                     **intermediate_prompt_kwargs,
                 )
+
+                if tags_prompt is None:
+                    continue
 
                 prompt = perturb_fn(
                     processed.spacy_doc, tags_prompt, tags, args_to_blank, **perturb_fn_kwargs

@@ -20,6 +20,7 @@ from nltk.corpus import stopwords
 from openie import StanfordOpenIE
 
 from tailor.common.utils.perturbation_controls import parse_change_type_meta
+from tailor.common.utils.generate_utils import clean_punct 
 from tailor.common.utils.tag_utils import (
     ADDITIONAL_CASES,
     DEFAULT_FRAME_SET_PATH,
@@ -2237,9 +2238,13 @@ def parse_filled_prompt(
     # if re.match(exp, sentence): sentence = None
     if sentence is None or len(annotations) == 0:
         raise BadGenerationError(f"Bad generation: {prompt}")
+
+    clean_sentence = clean_punct(sentence)
+
     return Munch(
         prompt_no_header=prompt,
         sentence=sentence,
+        clean_sentence = clean_sentence,
         meta=meta,
         words=words,
         vidx=vidx,
@@ -2367,7 +2372,7 @@ def get_arg_span(meta, short_tag):
     original_blank_tuple = [arg.blank_idx for arg in args if arg.tag == short_tag]
     try:
         original_blank_idx = meta.blank_indexes.index(original_blank_tuple[0])
-    except ValueError:
+    except (ValueError, IndexError):
         original_blank_idx = None
     # can only shorten an existing argument
     if original_blank_idx is None:

@@ -65,6 +65,11 @@ class GeneratedPrompt(NamedTuple):
     The natural language sentence
     """
     sentence: str
+    
+    """
+    The natural language sentence with cleaned whitespaces before punctuation
+    """
+    clean_sentence: str
 
     """
     The meta info of the control, see output to `extract_meta_from_prompt`
