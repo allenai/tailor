@@ -1,4 +1,5 @@
 from typing import Any, Dict, List, Optional, Union
+from tqdm import tqdm
 
 from tango.step import Step
 
@@ -92,7 +93,7 @@ class PerturbPromptWithString(Step):
         """
         intermediate_prompt_kwargs = intermediate_prompt_kwargs or {}
         all_prompts = []
-        for processed in processed_sentences:
+        for processed in tqdm(processed_sentences):
             sentence_prompts = []
             for tags in criteria_func(processed):
                 args_to_blank = args_to_blank_condition(tags)
@@ -195,7 +196,7 @@ class PerturbPromptWithFunction(Step):
         """
         intermediate_prompt_kwargs = intermediate_prompt_kwargs or {}
         all_prompts = []
-        for processed in processed_sentences:
+        for processed in tqdm(processed_sentences):
             sentence_prompts = []
             for tags in criteria_func(processed):
                 args_to_blank = args_to_blank_condition(tags)

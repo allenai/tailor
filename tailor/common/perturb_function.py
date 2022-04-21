@@ -51,11 +51,10 @@ class ChangeVoice(PerturbStringFunction):
         self, prompt_meta, *args, description=None, **kwargs
     ) -> Union[Perturbation, List[Perturbation]]:
 
-        vtense = prompt_meta.vtense
         target_voice = "active" if prompt_meta.vvoice == "passive" else "passive"
 
         perturb_str = (
-            f"CONTEXT(DELETE_TEXT);VERB(CHANGE_TENSE({vtense}),CHANGE_VOICE({target_voice}))"
+            f"CONTEXT(DELETE_TEXT);VERB(CHANGE_VOICE({target_voice}))"
         )
         return Perturbation(
             perturb_str=perturb_str,

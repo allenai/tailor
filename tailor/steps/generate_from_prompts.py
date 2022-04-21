@@ -134,7 +134,7 @@ class GenerateFromPrompts(Step):
                         except BadGenerationError:
                             import traceback
 
-                            traceback.print_exc()
+                            #traceback.print_exc()
                             # TODO: add info that there was a bad generation.
                             continue
 
