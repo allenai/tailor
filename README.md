@@ -40,6 +40,12 @@ cd tailor
 pip install -e .
 ```
 
+## Recreating Tailor
+See [link](https://github.com/allenai/tailor/tree/main/scripts/train) for information on how to format Ontonotes 5.0 and train the Tailor generator.
+
+## Tailor-Generated Contrast Sets
+See [link](https://github.com/allenai/tailor/new/main/contrast_sets) for the data. (More information in Section 5 of the paper.)
+
 ## Using Tailor: walkthrough cases
 
 - See the [tutorial notebook](https://github.com/allenai/tailor/blob/main/examples/Tutorial%2001%20-%20Tailor%20basic%20wrapper.ipynb) for a detailed walkthrough of the API.
@@ -122,4 +128,3 @@ tl.perturb_with_context(
 # return: ['In the operation room , the doctor will comfort the athlete.',
 # "In the operation room , the doctor 's will comfort the athlete."]
 ```
-
