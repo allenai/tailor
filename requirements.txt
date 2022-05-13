@@ -2,7 +2,7 @@ ai2-tango[datasets]>=0.4.0
 spacy<=3.1.4
 allennlp-models==2.9.0
 stanford-openie==1.0.3
-transformers<=4.4.2
+transformers<4.19.1
 datasets==1.15.1
 munch==2.5.0
 checklist
