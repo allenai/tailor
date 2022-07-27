@@ -44,7 +44,10 @@ pip install -e .
 See [link](https://github.com/allenai/tailor/tree/main/scripts/train) for information on how to format Ontonotes 5.0 and train the Tailor generator.
 
 ## Tailor-Generated Contrast Sets
-See [link](https://github.com/allenai/tailor/new/main/contrast_sets) for the data. (More information in Section 5 of the paper.)
+See [link](https://github.com/allenai/tailor/tree/main/contrast_sets) for the data. (More information in Section 5 of the paper.)
+
+## Tailor-Generated Augmented Examples for NLI
+See [link](https://github.com/allenai/tailor/tree/main/augmentation) for the perturbations used in our NLI data augmentation experiments. (More information in Section 6 of the paper.)
 
 ## Using Tailor: walkthrough cases
 
