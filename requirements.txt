@@ -1,5 +1,5 @@
 ai2-tango[datasets]>=0.4.0
-spacy<=3.1.4
+spacy<3.4.3
 allennlp-models==2.9.0
 stanford-openie==1.0.3
 transformers<=4.4.2
